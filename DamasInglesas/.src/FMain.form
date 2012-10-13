@@ -1,18 +1,61 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,52,50)
+  MoveScaled(0,0,89,59)
   { DrawingArea1 DrawingArea
-    MoveScaled(2,5,36,34)
+    MoveScaled(2,7,50,50)
     Border = Border.Plain
+    Cached = True
   }
   { ListBox1 ListBox
-    MoveScaled(39,5,13,34)
+    MoveScaled(57,5,29,34)
+  }
+  { ToolButtonJugar ToolButton
+    MoveScaled(60,40,25,4)
+    Text = ("Jugar")
+    Border = True
+  }
+  { ToolButtonGuardarPartida ToolButton
+    MoveScaled(60,45,25,4)
+    Text = ("Guardar Partida")
+    Border = True
+  }
+  { ToolButtonPartidaAnterior ToolButton
+    MoveScaled(60,50,25,4)
+    Text = ("Cargar Partida Anterior")
+    Border = True
   }
   { TextLabel1 TextLabel
-    MoveScaled(39,1,13,3)
+    MoveScaled(57,1,29,3)
     Text = ("Jugadas")
     Alignment = Align.Center
     Border = Border.Plain
+  }
+  { TextLabelTitulo TextLabel
+    MoveScaled(15,1,27,5)
+    Text = ("<b><h2>Damas Inglesas</h2></b>")
+    Alignment = Align.Center
+    Border = Border.Raised
+  }
+  { PictureBox1 PictureBox
+    MoveScaled(2,1,5,5)
+    Picture = Picture["reina_blanca.png"]
+  }
+  { PictureBox2 PictureBox
+    MoveScaled(7,1,5,5)
+    Picture = Picture["reina_negra.png"]
+  }
+  { PictureBox3 PictureBox
+    MoveScaled(42,0,5,6)
+    Picture = Picture["peon_blanco.png"]
+  }
+  { PictureBox4 PictureBox
+    MoveScaled(47,0,5,6)
+    Picture = Picture["peon_negro.png"]
+  }
+  { ToolButtonConfigurar ToolButton
+    MoveScaled(60,55,25,4)
+    Text = ("Configurar")
+    Border = True
   }
 }

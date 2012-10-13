@@ -1,9 +1,23 @@
 ' Gambas class file
 
+Public tablero As New ClassBoard(8)
+
 Public Sub _new()
 
 End
 
 Public Sub Form_Open()
+
+  Constantes.iniciar
+
+  Me.center
+  tablero.displayboard(DrawingArea1)
+
+End
+
+Public Sub ToolButtonConfigurar_Click()
+
+  FormConfigurar.ShowDialog
+  tablero.displayboard(DrawingArea1)
 
 End

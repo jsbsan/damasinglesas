@@ -1,0 +1,33 @@
+' Gambas class file
+
+Public Sub Form_Open()
+
+  ToggleButtonBlanca.background = Constantes.ColorDarkSquare
+  ToggleButtonNegra.background = Constantes.ColorLightSquare
+  Me.center
+
+End
+
+Public Sub ToggleButtonBlanca_Click()
+
+  Dialog.Color = ToggleButtonBlanca.background
+  If Dialog.SelectColor() Then Return
+  ToggleButtonBlanca.background = Dialog.Color
+  Constantes.ColorDarkSquare = Dialog.Color
+
+End
+
+Public Sub ButtonOK_Click()
+
+  Me.Close
+
+End
+
+Public Sub ToggleButtonNegra_Click()
+
+  Dialog.Color = ToggleButtonNegra.background
+  If Dialog.SelectColor() Then Return
+  ToggleButtonNegra.background = Dialog.Color
+  Constantes.ColorLightSquare = Dialog.Color
+
+End
