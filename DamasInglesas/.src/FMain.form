@@ -3,6 +3,10 @@
 { Form Form
   MoveScaled(0,0,50,50)
   { DrawingArea1 DrawingArea
-    MoveScaled(3,5,36,33)
+    MoveScaled(2,5,36,33)
+  }
+  { TextArea1 TextArea
+    MoveScaled(40,5,8,34)
+    Text = ("TextArea1")
   }
 }
