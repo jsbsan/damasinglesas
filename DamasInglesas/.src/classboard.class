@@ -50,6 +50,8 @@ End
 
 Public Sub displayboard(area As DrawingArea)
 
+  Dim pieza As Picture
+  Dim colorpieza As String
   Dim x As Integer
   Dim y As Integer
   Dim fillcolor As Integer
@@ -71,24 +73,35 @@ Public Sub displayboard(area As DrawingArea)
     For y = 1 To htamano
       If tablero[x, y] <> Constantes.blank Then
         If Sgn(tablero[x, y]) = Constantes.white Then
-          Draw.fillcolor = color.blue
+          '  Draw.fillcolor = color.blue 'color de white (blancass)
+          colorpieza = "_negro.png"
         Else
           If Sgn(tablero[x, y]) = Constantes.black Then
-            Draw.fillcolor = Color.green 'Constantes.ColorBlack
-
+            '  Draw.fillcolor = Color.green 'Color de black (negras)
+            colorpieza = "_blanco.png"
           Endif
 
         Endif
 
-        Draw.FillStyle = fill.solid
-        Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.375)
-
         'damas...
         If Abs(tablero[x, y]) = Constantes.king Then
-          Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.375)
-          Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.275)
-          Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.175)
-          Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.075)
+          'Draw.FillStyle = fill.solid
+          'Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.375)
+          'Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.375)
+          'Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.275)
+          'Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.175)
+          'Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.075)
+          colorpieza = "reina" & colorpieza
+          pieza = Picture[colorpieza]
+          Draw.Picture(pieza, (x - 1) * boxsize, (y - 1) * boxsize)
+        Else
+
+          'Draw.FillStyle = fill.solid
+          'Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.375)
+          colorpieza = "peon" & colorpieza
+          pieza = Picture[colorpieza]
+          Draw.Picture(pieza, (x - 1) * boxsize, (y - 1) * boxsize)
+
         Endif
 
       Endif

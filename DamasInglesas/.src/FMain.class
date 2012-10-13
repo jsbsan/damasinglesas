@@ -21,3 +21,9 @@ Public Sub ToolButtonConfigurar_Click()
   tablero.displayboard(DrawingArea1)
 
 End
+
+Public Sub ToolButtonJugar_Click()
+
+  FormNueva.ShowDialog()
+
+End

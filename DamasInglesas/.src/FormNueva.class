@@ -1,0 +1,11 @@
+' Gambas class file
+
+Public Sub Form_Open()
+
+  Me.center
+
+End
+
+Public Sub ButtonOK_Click()
+
+End
