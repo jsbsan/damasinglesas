@@ -27,3 +27,9 @@ Public Sub ToolButtonJugar_Click()
   FormNueva.ShowDialog()
 
 End
+
+Public Sub ToolButton1_Click()
+
+  FormAcercaDe.show
+
+End
