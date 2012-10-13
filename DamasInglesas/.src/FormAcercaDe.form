@@ -1,0 +1,25 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,38,30)
+  Resizable = False
+  { PictureBox1 PictureBox
+    MoveScaled(31,3,6,6)
+    Picture = Picture["reina_blanco.png"]
+  }
+  { TextLabel1 TextLabel
+    MoveScaled(1,1,36,24)
+    Text = ("<h2>Damas Inglesas</h2><br>\nProgramado en Gambas3<br>\nRealizado por Julio Sanchez Berro<br>\n<br>\nBasado en el programa realizado en SmallBasic<br>\npor KC Goldberg e Hijos<br>\n")
+    Alignment = Align.Center
+    Border = Border.Raised
+  }
+  { PictureBox2 PictureBox
+    MoveScaled(1,2,7,8)
+    Picture = Picture["gambas3.png"]
+    Stretch = True
+  }
+  { ButtonAceptar Button
+    MoveScaled(12,26,13,3)
+    Text = ("Aceptar")
+  }
+}

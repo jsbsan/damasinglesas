@@ -2,6 +2,7 @@
 
 Public Sub Form_Open()
 
+  Me.Caption = "Configuración..."
   ToggleButtonBlanca.background = Constantes.ColorDarkSquare
   ToggleButtonNegra.background = Constantes.ColorLightSquare
   Me.center

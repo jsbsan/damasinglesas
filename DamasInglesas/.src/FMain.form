@@ -1,20 +1,20 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,89,59)
+  MoveScaled(0,0,88,61)
   Resizable = False
   { ToolButtonJugar ToolButton
-    MoveScaled(60,40,25,4)
+    MoveScaled(59,37,25,4)
     Text = ("Nuevo Juego")
     Border = True
   }
   { ToolButtonGuardarPartida ToolButton
-    MoveScaled(60,45,25,4)
+    MoveScaled(59,41,25,4)
     Text = ("Guardar Partida")
     Border = True
   }
   { ToolButtonPartidaAnterior ToolButton
-    MoveScaled(60,50,25,4)
+    MoveScaled(59,45,25,4)
     Text = ("Cargar Partida Anterior")
     Border = True
   }
@@ -24,7 +24,7 @@
     Cached = True
   }
   { ListBox1 ListBox
-    MoveScaled(57,5,29,34)
+    MoveScaled(57,5,29,32)
   }
   { TextLabel1 TextLabel
     MoveScaled(57,1,29,3)
@@ -33,7 +33,7 @@
     Border = Border.Plain
   }
   { TextLabelTitulo TextLabel
-    MoveScaled(15,1,27,5)
+    MoveScaled(15,1,25,5)
     Text = ("<b><h2>Damas Inglesas</h2></b>")
     Alignment = Align.Center
     Border = Border.Raised
@@ -43,20 +43,30 @@
     Picture = Picture["reina_blanco.png"]
   }
   { PictureBox2 PictureBox
-    MoveScaled(7,1,5,5)
+    MoveScaled(9,1,5,5)
     Picture = Picture["reina_negro.png"]
   }
   { PictureBox3 PictureBox
-    MoveScaled(42,0,5,6)
+    MoveScaled(40,0,5,6)
     Picture = Picture["peon_blanco.png"]
   }
   { PictureBox4 PictureBox
-    MoveScaled(47,0,5,6)
+    MoveScaled(46,0,5,6)
     Picture = Picture["peon_negro.png"]
   }
   { ToolButtonConfigurar ToolButton
-    MoveScaled(60,55,25,4)
+    MoveScaled(59,49,25,4)
     Text = ("Configurar")
+    Border = True
+  }
+  { LabelMensajes Label
+    MoveScaled(2,57,57,4)
+    Font = Font["DejaVu Sans,Italic,-2"]
+    Text = ("Hola ¡¡Bienvenido!!... en esta linea verá mensajes del programa...")
+  }
+  { ToolButton1 ToolButton
+    MoveScaled(59,53,25,4)
+    Text = ("Acerca de...")
     Border = True
   }
 }

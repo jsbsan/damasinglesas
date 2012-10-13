@@ -1,10 +1,10 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,30,21)
+  MoveScaled(0,0,34,34)
   Resizable = False
   { Frame1 Frame
-    MoveScaled(2,1,31,13)
+    MoveScaled(2,1,28,13)
     Text = ("Colores Casillas")
     { LabelB3 Label
       MoveScaled(7,7,9,3)
@@ -24,7 +24,31 @@
     }
   }
   { ButtonOK Button
-    MoveScaled(17,16,10,4)
+    MoveScaled(20,30,10,4)
     Text = ("OK")
+  }
+  { Frame2 Frame
+    MoveScaled(2,15,28,15)
+    Text = ("Inteligencia Artificial")
+    { ComboBox2 ComboBox
+      MoveScaled(5,4,21,3)
+      ReadOnly = True
+      List = [("Humano"), ("Ordenador Fácil"), ("Ordenador Medio"), ("Ordenador Difícil")]
+      Text = ("Humano")
+    }
+    { ComboBox1 ComboBox
+      MoveScaled(5,9,21,3)
+      ReadOnly = True
+      List = [("Humano"), ("Ordenador Fácil"), ("Ordenador Medio"), ("Ordenador Difícil")]
+      Text = ("Humano")
+    }
+    { PictureBox4 PictureBox
+      MoveScaled(-1,7,5,6)
+      Picture = Picture["peon_negro.png"]
+    }
+    { PictureBox3 PictureBox
+      MoveScaled(-1,2,5,6)
+      Picture = Picture["peon_blanco.png"]
+    }
   }
 }

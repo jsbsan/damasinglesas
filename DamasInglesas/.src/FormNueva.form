@@ -12,7 +12,7 @@
     Text = ("Jugador:")
   }
   { PictureBox3 PictureBox
-    MoveScaled(0,0,5,6)
+    MoveScaled(1,0,5,6)
     Picture = Picture["peon_blanco.png"]
   }
   { PictureBox4 PictureBox
