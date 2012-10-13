@@ -1,7 +1,8 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,57,28)
+  MoveScaled(0,0,30,21)
+  Resizable = False
   { Frame1 Frame
     MoveScaled(2,1,31,13)
     Text = ("Colores Casillas")
@@ -23,7 +24,7 @@
     }
   }
   { ButtonOK Button
-    MoveScaled(46,24,10,4)
+    MoveScaled(17,16,10,4)
     Text = ("OK")
   }
 }

@@ -1,0 +1,38 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,45,24)
+  Resizable = False
+  { Label1 Label
+    MoveScaled(6,1,11,4)
+    Text = ("Jugador:")
+  }
+  { Label2 Label
+    MoveScaled(6,10,11,4)
+    Text = ("Jugador:")
+  }
+  { PictureBox3 PictureBox
+    MoveScaled(0,0,5,6)
+    Picture = Picture["peon_blanco.png"]
+  }
+  { PictureBox4 PictureBox
+    MoveScaled(1,9,5,6)
+    Picture = Picture["peon_negro.png"]
+  }
+  { ComboBox1 ComboBox
+    MoveScaled(16,1,25,4)
+    ReadOnly = True
+    List = [("Humano"), ("Ordenador Fácil"), ("Ordenador Medio"), ("Ordenador Difícil")]
+    Text = ("Humano")
+  }
+  { ComboBox2 ComboBox
+    MoveScaled(16,10,25,4)
+    ReadOnly = True
+    List = [("Humano"), ("Ordenador Fácil"), ("Ordenador Medio"), ("Ordenador Difícil")]
+    Text = ("Humano")
+  }
+  { ButtonOK Button
+    MoveScaled(15,19,12,3)
+    Text = ("Aceptar")
+  }
+}
