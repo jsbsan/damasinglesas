@@ -1,0 +1,29 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,57,28)
+  { Frame1 Frame
+    MoveScaled(2,1,31,13)
+    Text = ("Colores Casillas")
+    { LabelB3 Label
+      MoveScaled(7,7,9,3)
+      Text = ("Negra:")
+      Alignment = Align.Right
+    }
+    { LabelB4 Label
+      MoveScaled(7,3,9,3)
+      Text = ("Blanca:")
+      Alignment = Align.Right
+    }
+    { ToggleButtonBlanca ToggleButton
+      MoveScaled(17,2,5,4)
+    }
+    { ToggleButtonNegra ToggleButton
+      MoveScaled(17,7,5,4)
+    }
+  }
+  { ButtonOK Button
+    MoveScaled(46,24,10,4)
+    Text = ("OK")
+  }
+}

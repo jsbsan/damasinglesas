@@ -1,0 +1,28 @@
+' Gambas module file
+
+'Zona de constantes
+Public squares As Integer = 8 'cuadros del tablero
+Public initialrows As Integer = 3
+
+Public piece As Integer = 1
+Public king As Integer = 2
+Public blank As Integer = 0
+
+Public black As Integer = -1
+Public white As Integer = 1
+
+Public ColorDarkSquare As Integer = Color.gray 'black
+Public ColorLightSquare As Integer = Color.orange 'red
+
+Public colorSelect As Integer = 1 ' blue
+Public ColorSelectFinal As Integer = 9 'cyan
+
+Public ColorBlack As Integer = 8 'gray
+Public colorWhite As Integer = 15 'white
+
+Public Sub iniciar()
+
+  Constantes.ColorDarkSquare = Color.LightGray
+  Constantes.ColorLightSquare = Color.Orange
+
+End

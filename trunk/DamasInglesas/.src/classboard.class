@@ -1,0 +1,164 @@
+' Gambas class file
+
+Property tamano As Integer
+Private htamano As Integer
+Private tablero As New Integer[9, 9] 'tablero maximo de 8x8
+
+Public Sub _new(squares As Integer)
+
+  Dim x As Integer
+  Dim y As Integer
+
+  htamano = squares
+  Constantes.squares = squares
+
+  For x = 1 To squares
+    For y = 1 To squares
+      tablero[x, y] = Constantes.blank
+    Next
+  Next
+
+  For y = 1 To Constantes.initialrows
+    For x = 1 To squares
+      If (x + y) Mod 2 = 0 Then
+        tablero[x, y] = Constantes.white
+
+      Endif
+
+      If (x + ((squares + 1) - y)) Mod 2 = 0 Then
+        tablero[x, squares + 1 - y] = Constantes.black
+
+      Endif
+
+    Next
+  Next
+
+  'tablero iniciado...
+End
+
+Private Function tamano_Read() As Integer
+
+  Return htamano
+
+End
+
+Private Sub tamano_Write(Value As Integer)
+
+  htamano = value
+
+End
+
+Public Sub displayboard(area As DrawingArea)
+
+  Dim x As Integer
+  Dim y As Integer
+  Dim fillcolor As Integer
+  Dim boxsize As Float
+  ''note: hola
+  boxsize = area.h / htamano
+  Draw.Begin(area)
+  For x = 1 To htamano
+    For y = 1 To htamano
+
+      Draw.FillColor = If((x + y) Mod 2 = 0, Constantes.ColorDarkSquare, Constantes.ColorLightSquare)
+      Draw.FillRect((x - 1) * boxsize, (htamano - y) * boxsize, boxsize, boxsize)
+
+    Next
+  Next
+
+  'fichas
+  For x = 1 To htamano
+    For y = 1 To htamano
+      If tablero[x, y] <> Constantes.blank Then
+        If Sgn(tablero[x, y]) = Constantes.white Then
+          Draw.fillcolor = color.blue
+        Else
+          If Sgn(tablero[x, y]) = Constantes.black Then
+            Draw.fillcolor = Color.green 'Constantes.ColorBlack
+
+          Endif
+
+        Endif
+
+        Draw.FillStyle = fill.solid
+        Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.375)
+
+        'damas...
+        If Abs(tablero[x, y]) = Constantes.king Then
+          Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.375)
+          Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.275)
+          Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.175)
+          Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.075)
+        Endif
+
+      Endif
+    Next
+  Next
+
+  Draw.End
+
+End
+
+'---------------------------------
+' generar movimiento
+'
+Public Function makemove(movelist As ClassMovimiento[], showmoves As Integer) As Integer
+
+End
+
+Public Function generateMoveList(side As Integer) As Integer
+
+End
+
+Public Function validsinglemove(x As Integer, y As Integer, dx As Integer, dy As Integer) As Boolean
+
+  If ((x + dx) >= 1) And ((x + dx) <= htamano) And ((y + dy) >= 1) And ((y + dy) <= htamano) Then
+    If tablero[x + dx, y + dy] = Constantes.blank Then
+      Return True
+    Endif
+  Endif
+  Return False
+
+End
+
+Public Function findjumps(x As Integer, y As Integer, side As Integer) As Classmovimiento[]
+
+  Dim movimiento As ClassMovimiento
+  Dim MoveList As New ClassMovimiento[]
+  Dim dx As Integer
+
+  For dx = -1 To 1
+    If dx = 0 Then Continue
+    '' todas las piezas pueden saltar hacia delante...
+    '' First, check that coordinates of destination square are legal
+    If ((x + dx * 2) >= 1) And ((x + dx * 2) <= htamano) And ((y + 2 * Side) >= 1) And ((y + 2 * Side) <= htamano) Then
+      '' Then, check if destination square is open and
+      '' that intermediate square is enemy piece
+      If (tablero[x + dx * 2, y + 2 * Side] = Constantes.Blank) And (Sgn(tablero[x + dx, y + side]) = - Side) Then
+
+        movimiento = New ClassMovimiento(x, y, x + dx, y + Side)
+        MoveList.add(movimiento)
+
+        movimiento = New ClassMovimiento(x + dx, y + Side, x + dx * 2, y + Side * 2)
+        MoveList.add(movimiento)
+      Endif
+    Endif
+
+    '' only kings can jump "atras"
+    If Abs(tablero[x, y]) = Constantes.king Then
+      If ((x + dx * 2) >= 1) And ((x + dx * 2) <= htamano) And ((y - 2 * Side) >= 1) And ((y - 2 * Side) <= htamano) Then
+        If (Tablero[x + dx * 2, y - 2 * Side] = Constantes.Blank) And (Sgn(tablero[x + dx, y - side]) = - Side) Then
+          '' If we get here, we have a valid jump; add it
+          '' to the movelist
+          movimiento = New ClassMovimiento(x, y, x + dx, y - Side)
+          MoveList.Add(movimiento)
+
+          movimiento = New ClassMovimiento(x + dx, y - Side, x + dx * 2, y - Side * 2)
+          MoveList.Add(movimiento)
+
+        Endif
+      Endif
+    Endif
+  Next
+
+End
