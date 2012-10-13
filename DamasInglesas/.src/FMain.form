@@ -1,12 +1,18 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,50,50)
+  MoveScaled(0,0,52,50)
   { DrawingArea1 DrawingArea
-    MoveScaled(2,5,36,33)
+    MoveScaled(2,5,36,34)
+    Border = Border.Plain
   }
-  { TextArea1 TextArea
-    MoveScaled(40,5,8,34)
-    Text = ("TextArea1")
+  { ListBox1 ListBox
+    MoveScaled(39,5,13,34)
+  }
+  { TextLabel1 TextLabel
+    MoveScaled(39,1,13,3)
+    Text = ("Jugadas")
+    Alignment = Align.Center
+    Border = Border.Plain
   }
 }
