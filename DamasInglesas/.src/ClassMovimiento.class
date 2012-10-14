@@ -3,7 +3,6 @@
 Property y0 As Integer
 Private hy0 As Integer
 
-
 Property x0 As Integer
 Private hx0 As Integer
 
@@ -31,10 +30,8 @@ Private Sub y0_Write(Value As Integer)
 
 End
 
-
 Property y1 As Integer
 Private hy1 As Integer
-
 
 Property x1 As Integer
 Private hx1 As Integer
@@ -63,12 +60,24 @@ Private Sub y1_Write(Value As Integer)
 
 End
 
-
 Public Sub _new(x0a As Integer, y0a As Integer, x1a As Integer, y1a As Integer)
-  
+
   hx0 = x0a
   hy0 = y0a
   hx1 = x1a
   hy1 = y1a
-  
+
+End
+
+Public Function escribe() As String
+
+  Dim cadena As String
+
+  cadena = "(" & Str$(hx0)
+  cadena &= "," & Str$(hy0)
+  cadena &= ") a (" & Str$(hx1)
+  cadena &= "," & Str$(hy1)
+  cadena &= ")"
+  Return cadena
+
 End

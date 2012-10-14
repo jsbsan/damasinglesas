@@ -172,7 +172,7 @@ Public Sub RelojIA()
         solucion = ModuloCalculos.Minimax(tablero, turno, 0, 4, 4)
         jugada = solucion.mov
     End Select
-    escribeMovimientoyCambiaTurno(jugada)
+    If jugada <> Null Then escribeMovimientoyCambiaTurno(jugada)
 
     LabelMensajes.text = Replace(LabelMensajes.text, (". Pensando..."), "")
     ']
@@ -194,10 +194,10 @@ Public Sub escribeMovimientoyCambiaTurno(jugada As ClassMovimiento[])
   'cambio turno
   If turno = constantes.white Then
     turno = constantes.black
-    LabelMensajes.text = "Turno del jugador Blanco"
+    LabelMensajes.text = "Turno del jugador Negro"
   Else
     turno = constantes.white
-    LabelMensajes.text = "Turno del jugador Negro"
+    LabelMensajes.text = "Turno del jugador Blanco"
   Endif
 
 End
