@@ -1,7 +1,7 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,88,61)
+  MoveScaled(0,0,88,62)
   Icon = Picture["reina_blanco.png"]
   Resizable = False
   { ToolButtonJugar ToolButton
@@ -56,7 +56,7 @@
     Border = True
   }
   { LabelMensajes Label
-    MoveScaled(2,57,57,4)
+    MoveScaled(1,58,57,4)
     Font = Font["DejaVu Sans,Italic,-2"]
     Text = ("Hola ¡¡Bienvenido!!... en esta linea verá mensajes del programa...")
   }
