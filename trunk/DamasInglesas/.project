@@ -2,6 +2,7 @@
 # Compiled with Gambas 3.3.90
 Title=DamasInglesas
 Startup=FMain
+Icon=reina_blanco.png
 Version=0.0.2
 Component=gb.image
 Component=gb.gui

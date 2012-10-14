@@ -12,6 +12,7 @@ End
 
 Public Sub Form_Open()
 
+  Me.Caption = ("Damas Inglesas")
   Constantes.iniciar
 
   Me.center
@@ -29,7 +30,12 @@ End
 Public Sub ToolButtonJugar_Click()
 
   FormNueva.ShowDialog()
-  turno = constantes.black
+  turno = constantes.white 'el primer jugador es el blanco (white)
+  'compruebo que el jugador white es humano
+  If constantes.PlayerStrategy[Str$(turno)] <> 0 Then
+    'es el turno del ordenador
+    RelojIA()
+  Endif
 
 End
 
@@ -58,22 +64,18 @@ Public Sub DrawingArea1_MouseDown()
         tablero.seleccionado[1, 0] = x
         tablero.seleccionado[1, 1] = 8 - y + 1
         tablero.displayboard(DrawingArea1)
-        Print "Movimiento de: X: "; tablero.seleccionado[0, 0]; " e Y:"; tablero.seleccionado[0, 1]; " A "
-        Print tablero.seleccionado[1, 0]; " e Y:"; tablero.seleccionado[1, 1]
+        'TODO: imprime movimiento en pantalla leido del tablero
+        '    Print "Movimiento de: X: "; tablero.seleccionado[0, 0]; " e Y:"; tablero.seleccionado[0, 1]; " A "
+        '   Print tablero.seleccionado[1, 0]; " e Y:"; tablero.seleccionado[1, 1]
         mov = New ClassMovimiento(tablero.seleccionado[0, 0], 8 - tablero.seleccionado[0, 1] + 1, tablero.seleccionado[1, 0], 8 - tablero.seleccionado[1, 1] + 1)
         listamovimientos.Clear
         listamovimientos.Add(mov)
         ButtonCancela_Click()
-        tablero = ModuloCalculos.MakeMove(tablero, listamovimientos, False)
-        tablero.displayboard(drawingarea1)
-        'NOTE: dibujando movimiento manual
-        'cambio turno
-        If turno = constantes.white Then
-          turno = constantes.black
-          LabelMensajes.text = "Turno del jugador Blanco"
-        Else
-          turno = constantes.white
-          LabelMensajes.text = "Turno del jugador Negro"
+        escribeMovimientoyCambiaTurno(listamovimientos)
+
+        If constantes.PlayerStrategy[Str$(turno)] <> 0 Then
+          'el siguiente jugador es el ordenador
+          RelojIA()
         Endif
       Endif
 
@@ -132,10 +134,6 @@ Public Sub jugar()
 
 End
 
-Public Sub DrawingArea1_Draw()
-
-End
-
 Public Sub ButtonCancela_Click()
 
   tablero.seleccionado[0, 0] = 0
@@ -150,5 +148,56 @@ End
 Public Sub Form_Close()
 
   tablero = Null
+
+End
+
+Public Sub RelojIA()
+
+  Dim solucion As ClassRespuesta
+  Dim jugada As New ClassMovimiento[]
+
+  If constantes.PlayerStrategy[Str$(turno)] <> 0 Then
+    'es el turno del ordenador...
+    LabelMensajes.text &= (". Pensando...")
+    '[
+    Select constantes.PlayerStrategy[Str$(turno)]
+        'NOTE: caso de IA
+      Case 1
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 2, 2)
+        jugada = solucion.mov
+      Case 2
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 4, 2)
+        jugada = solucion.mov
+      Case 3
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 4, 4)
+        jugada = solucion.mov
+    End Select
+    escribeMovimientoyCambiaTurno(jugada)
+
+    LabelMensajes.text = Replace(LabelMensajes.text, (". Pensando..."), "")
+    ']
+    If constantes.PlayerStrategy[Str$(turno)] <> 0 Then
+      'es el turno del ordenador
+      RelojIA()
+      Wait 500 'espero 0.5 segundo para recibir ordenes del GUI
+    Endif
+
+  Endif
+
+End
+
+' Escribe movimiento en tablero
+Public Sub escribeMovimientoyCambiaTurno(jugada As ClassMovimiento[])
+
+  tablero = ModuloCalculos.MakeMove(tablero, jugada, False)
+  tablero.displayboard(drawingarea1)
+  'cambio turno
+  If turno = constantes.white Then
+    turno = constantes.black
+    LabelMensajes.text = "Turno del jugador Blanco"
+  Else
+    turno = constantes.white
+    LabelMensajes.text = "Turno del jugador Negro"
+  Endif
 
 End
