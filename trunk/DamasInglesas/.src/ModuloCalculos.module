@@ -70,10 +70,10 @@ Public Function validsinglemove(tablero As Classboard, x As Integer, y As Intege
 
 End
 
-Public Function findjumps(tablero As Classboard, x As Integer, y As Integer, side As Integer) As Classmovimiento[]
+Public Function findjumps(tablero As Classboard, x As Integer, y As Integer, side As Integer) As ClassMoveList
 
   Dim movimiento As ClassMovimiento
-  Dim MoveList As New ClassMovimiento[]
+  Dim MoveList As New ClassMovelist
   Dim dx As Integer
 
   For dx = -1 To 1
@@ -86,10 +86,10 @@ Public Function findjumps(tablero As Classboard, x As Integer, y As Integer, sid
       If (tablero.tablero[x + dx * 2, y + 2 * Side] = Constantes.Blank) And (Sgn(tablero.tablero[x + dx, y + side]) = - Side) Then
         'añado salto
         movimiento = New ClassMovimiento(x, y, x + dx, y + Side)
-        MoveList.add(movimiento)
+        MoveList.movimiento.add(movimiento)
 
         movimiento = New ClassMovimiento(x + dx, y + Side, x + dx * 2, y + Side * 2)
-        MoveList.add(movimiento)
+        MoveList.movimiento.add(movimiento)
       Endif
     Endif
 
@@ -98,14 +98,14 @@ Public Function findjumps(tablero As Classboard, x As Integer, y As Integer, sid
       If ((x + dx * 2) >= 1) And ((x + dx * 2) <= 8) And ((y - 2 * Side) >= 1) And ((y - 2 * Side) <= 8) Then
         'comprueba que  la celda de destina esta vacia
         'y que la intermedia es una pieza enemiga
-        If (Tablero.tablero[x + dx * 2, y - 2 * Side] = Constantes.Blank) And (Sgn(tablero[x + dx, y - side]) = - Side) Then
+        If (Tablero.tablero[x + dx * 2, y - 2 * Side] = Constantes.Blank) And (Sgn(tablero.tablero[x + dx, y - side]) = - Side) Then
           '' If we get here, we have a valid jump; add it
           '' to the movelist
           movimiento = New ClassMovimiento(x, y, x + dx, y - Side)
-          MoveList.Add(movimiento)
+          MoveList.movimiento.Add(movimiento)
 
           movimiento = New ClassMovimiento(x + dx, y - Side, x + dx * 2, y - Side * 2)
-          MoveList.Add(movimiento)
+          MoveList.movimiento.Add(movimiento)
 
         Endif
       Endif
@@ -119,27 +119,27 @@ Public Function FindAllJumps(board As Classboard, x As Integer, y As Integer, si
   'NOTE: FindAllJumps, falta
 
   Dim movelist As New ClassMovimiento[]
-  Dim movelistArray As New ClassMovimiento[]
+  Dim movelistArray As New ClassMoveListArray
   Dim movimi As ClassMovimiento
   Dim board2 As Classboard
   Dim movelist2 As New ClassMovimiento[]
-  Dim movelistArray2 As New ClassMovimiento[]
-  Dim movelist3 As ClassMovimiento
+  Dim movelistArray2 As New ClassMoveListArray
+  Dim movelist3 As New ClassMovimiento[]
   Dim counter As Integer
 
   'Rellenar lista de movimientos con primer grado de saltos disponibles
-  movelistArray.Insert(findjumps(board, x, y, side))
+  movelistArray.lista.Add(findjumps(board, x, y, side))
 
-  If movelistArray.count <> 0 Then
+  If movelistArray.lista.count <> 0 Then
     ' En cada salto, "hacer" el salto en un tablero temporal y
     ' Ver si  que conduce a nuevos saltos, si lo hace, entonces
     ' Tenemos que hacer una lista de nuevos saltos con el original
     ' Secuencia como una base y eliminar la secuencia de iniciación
     counter = 0
-    While (Not movelistArray[counter].count = 0)
+    While (Not movelistArray.lista[counter].count = 0)
 
-      If Not movelistArray[counter].count = 0 Then
-        movelist = movelistArray[counter]
+      If Not movelistArray.lista[counter].count = 0 Then
+        movelist = movelistArray.list[counter]
 
         board2 = MakeMove(board, movelist, False)
         movimi = movelist[movelist[movelist.max]]
