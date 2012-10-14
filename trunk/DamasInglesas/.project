@@ -2,11 +2,12 @@
 # Compiled with Gambas 3.3.90
 Title=DamasInglesas
 Startup=FMain
-Version=0.0.1
+Version=0.0.2
 Component=gb.image
 Component=gb.gui
 Component=gb.form
 TabSize=2
 Translate=1
 Language=es
+ExecPath=/home/uno/DamasInglesas.gambas
 Packager=1
