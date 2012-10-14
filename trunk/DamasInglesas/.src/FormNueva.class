@@ -8,4 +8,15 @@ End
 
 Public Sub ButtonOK_Click()
 
+  Constantes.PlayerStrategy[Str$(Constantes.black)] = comboboxblack.index '0 ("Humano"), 1 ("Ordenador Fácil"),2 ("Ordenador Medio"), 3 ("Ordenador Difícil"))
+  Constantes.PlayerStrategy[Str$(Constantes.white)] = comboboxblack.index '0 ("Humano"), 1 ("Ordenador Fácil"), 2 ("Ordenador Medio"), 3 ("Ordenador Difícil"))
+  Constantes.jugando = True
+  Me.Close
+
+End
+
+Public Sub ComboBoxBlack_Change()
+
+  Constantes.PlayerStrategy[Constantes.ColorBlack] = comboboxblack.text
+
 End
