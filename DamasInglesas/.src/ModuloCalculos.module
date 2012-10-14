@@ -1,0 +1,36 @@
+' Gambas module file
+
+Public Sub GenerateMoveList(board As Classboard, side As Integer)
+
+  'NOTE: generando movimiento
+
+End
+
+Public Sub determineMove(board As Classboard, site As Integer) As Classmovimiento[]
+
+  'NOTE: Determinar Movimiento
+
+End
+
+Public Sub MakeMove(board As Classboard, movelist As Classmovimiento[], valor As Boolean) As Classboard
+
+  Dim a As Integer
+  'NOTE: MakeMove: hacer movimiento
+  Dim pieza As Integer
+
+  For a = 0 To movelist.max
+
+    pieza = board.tablero[movelist[a].x0, movelist[a].y0]
+    board.tablero[movelist[a].x0, movelist[a].y0] = Constantes.blank
+
+    board.tablero[movelist[a].x1, movelist[a].y1] = pieza
+
+    If movelist[a].y1 = 8 Or movelist[a].y1 = 1 Then
+      'se consique reina
+      board.tablero[movelist[a].x1, movelist[a].y1] = constantes.king * Sgn(pieza)
+    Endif
+
+  Next
+  Return board
+
+End

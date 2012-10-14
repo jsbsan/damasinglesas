@@ -2,7 +2,8 @@
 
 Property tamano As Integer
 Private htamano As Integer
-Private tablero As New Integer[9, 9] 'tablero maximo de 8x8
+Public tablero As New Integer[9, 9] 'tablero maximo de 8x8
+Public seleccionado As New Integer[2, 2] 'celda de tablero seleccionado
 
 Public Sub _new(squares As Integer)
 
@@ -50,6 +51,7 @@ End
 
 Public Sub displayboard(area As DrawingArea)
 
+  Dim a As Integer
   Dim pieza As Picture
   Dim colorpieza As String
   Dim x As Integer
@@ -68,9 +70,18 @@ Public Sub displayboard(area As DrawingArea)
     Next
   Next
 
+  'dibujo ficha seleccionada
+  '
+  For a = 0 To 1
+    Draw.fillcolor = color.green
+    Draw.FillStyle = fill.Dense37
+    Draw.FillRect((seleccionado[a, 0] - 1) * boxsize, (htamano - seleccionado[a, 1]) * boxsize, boxsize, boxsize)
+  Next
+
   'fichas
   For x = 1 To htamano
     For y = 1 To htamano
+
       If tablero[x, y] <> Constantes.blank Then
         If Sgn(tablero[x, y]) = Constantes.white Then
           '  Draw.fillcolor = color.blue 'color de white (blancass)

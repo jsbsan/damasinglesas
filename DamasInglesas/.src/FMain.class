@@ -1,6 +1,10 @@
 ' Gambas class file
 
+Public turno As Integer 'controla el turno del jugador que tiene que jugar ahora
 Public tablero As New ClassBoard(8)
+Public casilla As Integer '1 es la primera casilla seleccionada (origen) , 2 es la casilla la 2º casilla (destino)
+
+Public listamovimientos As New ClassMovimiento[] 'lista de movimientos a realizar..
 
 Public Sub _new()
 
@@ -25,11 +29,120 @@ End
 Public Sub ToolButtonJugar_Click()
 
   FormNueva.ShowDialog()
+  turno = constantes.black
 
 End
 
 Public Sub ToolButton1_Click()
 
   FormAcercaDe.show
+
+End
+
+Public Sub DrawingArea1_MouseDown()
+
+  Dim mov As ClassMovimiento
+  Dim x As Integer
+  Dim y As Integer
+
+  'he pulsado click en el area de dibujo...
+  'compruebo que el jugador del turno es "Humano"
+  If constantes.PlayerStrategy[Str$(turno)] = 0 Then
+    'obtengo coordenada x,y del tablero donde he hecho clik..
+    x = Mouse.x / (DrawingArea1.h / 8) + 1
+    y = Mouse.y / (DrawingArea1.h / 8) + 1
+
+    'es Humano
+    If casilla = 2 Then
+      If tablero.tablero[x, y] = constantes.blank Then
+        tablero.seleccionado[1, 0] = x
+        tablero.seleccionado[1, 1] = 8 - y + 1
+        tablero.displayboard(DrawingArea1)
+        Print "Movimiento de: X: "; tablero.seleccionado[0, 0]; " e Y:"; tablero.seleccionado[0, 1]; " A "
+        Print tablero.seleccionado[1, 0]; " e Y:"; tablero.seleccionado[1, 1]
+        mov = New ClassMovimiento(tablero.seleccionado[0, 0], 8 - tablero.seleccionado[0, 1] + 1, tablero.seleccionado[1, 0], 8 - tablero.seleccionado[1, 1] + 1)
+        listamovimientos.Clear
+        listamovimientos.Add(mov)
+        ButtonCancela_Click()
+        tablero = ModuloCalculos.MakeMove(tablero, listamovimientos, False)
+        tablero.displayboard(drawingarea1)
+        'NOTE: dibujando movimiento manual
+        'cambio turno
+        If turno = constantes.white Then
+          turno = constantes.black
+          LabelMensajes.text = "Turno del jugador Blanco"
+        Else
+          turno = constantes.white
+          LabelMensajes.text = "Turno del jugador Negro"
+        Endif
+      Endif
+
+    Endif
+
+    'Si es la primera casilla, debe de contener pieza del mismo color del turno
+    If casilla = 1 Then
+      'contiene misma ficha de color
+      If tablero.tablero[x, y] = turno Then
+        tablero.seleccionado[0, 0] = x
+        tablero.seleccionado[0, 1] = 8 - y + 1
+        tablero.displayboard(DrawingArea1)
+        casilla = 2
+      Endif
+    Endif
+
+  Endif
+
+End
+
+Public Sub jugar()
+
+  Dim listamovimientos As ClassMovimiento[]
+  'comprobar ganador
+
+  Dim movimientos As New ClassMovimiento[]
+
+  movimientos = ModuloCalculos.GenerateMoveList(tablero, constantes.white)
+
+  If movimientos.max = 0 Then
+    Message.Info(("Ganador es el jugador Negro"))
+    Constantes.jugando = False
+  Else
+    '' conseguir lista movimiento
+    listamovimientos = ModuloCalculos.DetermineMove(tablero, constantes.white)
+
+    '' aplicar movimiento
+    tablero = ModuloCalculos.makemove(tablero, listamovimientos, True)
+    '' mostrar tablero
+    tablero.displayboard(DrawingArea1)
+  Endif
+
+  movimientos = ModuloCalculos.generateMove(tablero, Constantes.black)
+  If movimientos.max = 0 Then
+
+    Message.Info(("Ganador es el jugador Blanco"))
+    Constantes.jugando = False
+  Else
+    '' conseguir lista movimiento
+    listamovimientos = ModuloCalculos.DetermineMovimiento(tablero, constantes.black)
+    '' aplicar movimiento
+    tablero = ModuloCalculos.makemove(tablero, listamovimientos, True)
+    '' mostrar tablero
+    tablero.displayboard(DrawingArea1)
+  Endif
+
+End
+
+Public Sub DrawingArea1_Draw()
+
+End
+
+Public Sub ButtonCancela_Click()
+
+  tablero.seleccionado[0, 0] = 0
+  tablero.seleccionado[0, 1] = 0
+  tablero.seleccionado[1, 0] = 0
+  tablero.seleccionado[1, 1] = 0
+  tablero.displayboard(DrawingArea1)
+  casilla = 1
 
 End

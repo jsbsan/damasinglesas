@@ -20,9 +20,19 @@ Public ColorSelectFinal As Integer = 9 'cyan
 Public ColorBlack As Integer = 8 'gray
 Public colorWhite As Integer = 15 'white
 
+Public jugando As Boolean
+
+Public PlayerStrategy As New Collection 'estrategia de los jugadores black y white,
+
 Public Sub iniciar()
 
+  Constantes.jugando = False
   Constantes.ColorDarkSquare = Color.LightGray
   Constantes.ColorLightSquare = Color.Orange
+  'defino estrategia de los jugadores como "Humanos"
+  PlayerStrategy.Clear()
+  PlayerStrategy.Add(0, Str$(black))
+  PlayerStrategy.Add(0, Str$(white))
+  FMain.casilla = 1 'que siempre empiece por casilla "origen"
 
 End
