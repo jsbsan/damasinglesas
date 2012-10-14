@@ -8,8 +8,8 @@ Public piece As Integer = 1
 Public king As Integer = 2
 Public blank As Integer = 0
 
-Public black As Integer = -1
-Public white As Integer = 1
+Public black As Integer = -1 'jugador negro
+Public white As Integer = 1 'jugador blanco
 
 Public ColorDarkSquare As Integer = Color.gray 'black
 Public ColorLightSquare As Integer = Color.orange 'red

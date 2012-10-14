@@ -1,8 +1,157 @@
 ' Gambas module file
 
-Public Sub GenerateMoveList(board As Classboard, side As Integer)
+Public Function GenerateMoveList(tablero As Classboard, side As Integer) As ClassMovimiento[]
 
   'NOTE: generando movimiento
+  Dim mov As ClassMovimiento
+  Dim movelist As ClassMovimiento
+  Dim movelistArray As New ClassMovimiento[]
+  Dim MastermovelistArray As New ClassMovimiento[]
+  Dim x As Integer
+  Dim y As Integer
+  Dim dx As Integer
+  ' empieza pro ver si hay posibles saltos
+  For x = 1 To 8
+    For y = 1 To 8
+      ' halla una pieza, entonces si puedo salto...
+      If Sgn(tablero.tablero[x, y]) = side Then
+        'empieza a añadir saltos legales estando en x,y
+        movelistArray = FindAllJumps(x, y)
+        ''copia las lista de movimiento a la lista Master
+        MastermovelistArray.Insert(movelistArray)
+      Endif
+    Next
+  Next
+
+  'Compureba los otros movimientos
+  If MastermovelistArray.max = 0 Then
+    For x = 1 To 8
+      For y = 1 To 8
+        If Sgn(tablero.tablero[x, y]) = side Then
+          For dx = -1 To 1
+            If dx = 0 Then Continue
+            If validsinglemove(x, y, dx, side) Then
+              mov = New ClassMovimiento(x, y, x + dx, y + side)
+              MastermovelistArray.Add(mov)
+              mov = Null
+            Endif
+            If Abs(tablero.tablero[x, y]) = constantes.king Then
+              If validsinglemove(x, y, dx, - side) Then
+                mov = New ClassMovimiento(x, y, x + dx, y - side)
+                MastermovelistArray.Add(mov)
+                mov = Null
+
+              Endif
+
+            Endif
+          Next
+        Endif
+      Next
+    Next
+  Endif
+
+  Return MastermovelistArray
+
+End
+
+Public Function validsinglemove(tablero As Classboard, x As Integer, y As Integer, dx As Integer, dy As Integer) As Boolean
+  'El movimeinto en diagonal es posible (no se sale del tablero)
+  'y la celda esta vacia.
+
+  If ((x + dx) >= 1) And ((x + dx) <= 8) And ((y + dy) >= 1) And ((y + dy) <= 8) Then
+    If tablero[x + dx, y + dy] = Constantes.blank Then
+      Return True
+    Endif
+  Endif
+  Return False
+
+End
+
+Public Function findjumps(tablero As Classboard, x As Integer, y As Integer, side As Integer) As Classmovimiento[]
+
+  Dim movimiento As ClassMovimiento
+  Dim MoveList As New ClassMovimiento[]
+  Dim dx As Integer
+
+  For dx = -1 To 1
+    If dx = 0 Then Continue
+    '' todas las piezas pueden saltar hacia delante...
+    '' First, check that coordinates of destination square are legal
+    If ((x + dx * 2) >= 1) And ((x + dx * 2) <= 8) And ((y + 2 * Side) >= 1) And ((y + 2 * Side) <= 8) Then
+      '' Then, check if destination square is open and
+      '' that intermediate square is enemy piece
+      If (tablero[x + dx * 2, y + 2 * Side] = Constantes.Blank) And (Sgn(tablero[x + dx, y + side]) = - Side) Then
+        'añado salto
+        movimiento = New ClassMovimiento(x, y, x + dx, y + Side)
+        MoveList.add(movimiento)
+
+        movimiento = New ClassMovimiento(x + dx, y + Side, x + dx * 2, y + Side * 2)
+        MoveList.add(movimiento)
+      Endif
+    Endif
+
+    '' solamente las Reinas pueden saltar hacia atras
+    If Abs(tablero[x, y]) = Constantes.king Then
+      If ((x + dx * 2) >= 1) And ((x + dx * 2) <= 8) And ((y - 2 * Side) >= 1) And ((y - 2 * Side) <= 8) Then
+        'comprueba que  la celda de destina esta vacia
+        'y que la intermedia es una pieza enemiga
+        If (Tablero[x + dx * 2, y - 2 * Side] = Constantes.Blank) And (Sgn(tablero[x + dx, y - side]) = - Side) Then
+          '' If we get here, we have a valid jump; add it
+          '' to the movelist
+          movimiento = New ClassMovimiento(x, y, x + dx, y - Side)
+          MoveList.Add(movimiento)
+
+          movimiento = New ClassMovimiento(x + dx, y - Side, x + dx * 2, y - Side * 2)
+          MoveList.Add(movimiento)
+
+        Endif
+      Endif
+    Endif
+  Next
+  Return movelist 'retorno los movimientos calculados
+
+End
+
+Public Function FindAllJumps(board As Classboard, x As Integer, y As Integer)
+  'NOTE: FindAllJumps, falta
+
+  Dim movelist As New ClassMovimiento[]
+  Dim movelistArray As New ClassMovimiento[]
+  Dim movimi As ClassMovimiento
+  Dim board2 As Classboard
+  Dim movelist2 As New ClassMovimiento[]
+  Dim movelistArray2 As New ClassMovimiento[]
+  Dim movelist3 As ClassMovimiento
+  Dim counter As Integer
+
+  'Rellenar lista de movimientos con primer grado de saltos disponibles
+  movelistArray.Insert(findjumps(board, x, y))
+
+  If movelistArray.count <> 0 Then
+    ' En cada salto, "hacer" el salto en un tablero temporal y
+    ' Ver si  que conduce a nuevos saltos, si lo hace, entonces
+    ' Tenemos que hacer una lista de nuevos saltos con el original
+    ' Secuencia como una base y eliminar la secuencia de iniciación
+    counter = 0
+    While (Not movelistArray(counter).count = 0)
+
+      If Not movelistArray(counter).count = 0 Then
+        movelist = movelistArray(counter)
+
+        board2 = MakeMove(board, movelist, False)
+        movimi = movelist(movelist[movelist.max])
+
+        movelistArray2 = findjumps(board2, movimi[2], movimi[3])
+
+        If Not movelistArray2.count = 0 Then
+
+        Endif
+
+      Endif
+
+    Wend
+
+  Endif
 
 End
 
@@ -32,5 +181,151 @@ Public Sub MakeMove(board As Classboard, movelist As Classmovimiento[], valor As
 
   Next
   Return board
+
+End
+
+Public Sub minimax(board As Classboard, side As Integer, Depth As Integer, DepthMax As Integer, Evaluator As Integer) As ClassRespuesta
+
+  Dim a As Integer
+  Dim solucion As ClassRespuesta
+  'NOTE: MINIMAX funcion
+  Dim movelist As New ClassMovimiento[]
+  Dim movimi As ClassMovimiento
+  Dim score As Integer
+  Dim bestscore As Integer
+  Dim nextmini As ClassRespuesta 'FIXME: respuesta de una rama del arbol.
+
+  Dim bestmovelist As New ClassMovimiento[]
+
+  If Depth > depthmax Then
+    'hemos accedido a la profundidad de busqueda, retorna el valor del tablero y lista nula de movimientos
+    solucion = New ClassRespuesta(evaluateBoard(board, side, evaluator), Null)
+    Return solucion
+  Else
+
+    movelist = GenerateMoveList(board, side)
+
+    If movelist.count = 0 Then
+      'lista vacia
+      solucion = New ClassRespuesta(evaluateBoard(board, side, evaluator), Null)
+      Return solucion
+    Else
+      'hallar el mejor movimiento....
+      '
+      bestscore = -999999
+      For a = 0 To movelist.Max
+        nextmini = minimax(MakeMove(board, movelist[a], False), - side, depth + 1, depthmax, evaluator)
+        score = - nextmini.valor
+
+        If score >= bestscore Then
+          If score = bestscore Then
+            'la añado a la lista de mejores...
+            bestmovelist.Insert(movelist[a], 0)
+          Else
+
+            bestscore = score
+            bestmovelist.Clear()
+            bestmovelist.Insert(movelist[a], 0)
+
+          Endif
+
+        Endif
+
+      Next
+
+      solucion = New ClassRespuesta(bestscore, bestmovelist[Int(Rnd(0, movelist.count))])
+    Endif
+  Endif
+
+End
+''-----------------------------------------------
+''         Funcion Evaluador de tableros...
+''-----------------------------------------------
+
+Public Function evaluateBoard(tablero As Classboard, side As Integer, evaluator As Integer) As Integer
+
+  Select Evaluator
+    Case 2
+      Return scoreSimple(tablero, side)
+    Case 3
+      Return scoreNat(tablero, side)
+    Case 4
+      Return scoreSam(tablero, side)
+  End Select
+
+End
+
+''**************************************************
+'' Funciones de valoracion...
+''**************************************************
+'funcion simple para retornar valor de las piezas en el tablero
+Public Function scoresimple(tablero As Classboard, side As Integer) As Integer
+
+  Dim x As Integer
+  Dim y As Integer
+  Dim score As Integer
+
+  For x = 1 To 8
+    For y = 1 To 8
+      score += tablero.tablero[x.y]
+    Next
+  Next
+  Return score * side
+
+End
+
+'funcion que añade bonux por canales de cuadrados
+'y piezas avanzadas...
+
+Public Function scorenat(tablero As Classboard, side As Integer) As Integer
+
+  Dim x As Integer
+  Dim y As Integer
+  Dim score As Integer
+
+  For x = 1 To 8
+    For y = 1 To 8
+      score += tablero.tablero[x, y]
+      If x = 1 Or x = 8 Then
+        score += 0.5 * tablero.tablero[x, y]
+      Endif
+
+      'bonus por abance al final
+      If Abs(tablero.tablero[x, y]) = constantes.piece Then
+        If side = 1 Then
+          score += 0.125 * y
+        Else
+          score += -0.125 * (8 + 1 - y)
+
+        Endif
+      Endif
+
+    Next
+  Next
+  Return score * side
+
+End
+
+Public Function scoreSam(tablero As Classboard, side As Integer) As Integer
+
+  Dim x As Integer
+  Dim y As Integer
+  Dim score As Integer
+
+  For x = 1 To 8
+    For y = 1 To 8
+      score += tablero.tablero[x, y]
+      If (x = 1) Or (x = 8) Then
+        score += -0.5 * tablero.tablero[x, y]
+      Endif
+
+      If ((x = 1) Or (x = 8)) And (y = 1 Or y = 8) Then
+        score += -0.5 * tablero.tablero[x, y]
+      Endif
+
+    Next
+  Next
+
+  Return score * side
 
 End

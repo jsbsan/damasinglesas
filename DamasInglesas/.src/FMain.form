@@ -2,6 +2,7 @@
 
 { Form Form
   MoveScaled(0,0,88,61)
+  Icon = Picture["reina_blanco.png"]
   Resizable = False
   { ToolButtonJugar ToolButton
     MoveScaled(58,1,25,4)
@@ -75,8 +76,9 @@
     }
   }
   { PictureBox5 PictureBox
-    MoveScaled(56,27,27,30)
+    MoveScaled(56,27,27,27)
     Picture = Picture["gambas3.png"]
+    Stretch = True
   }
   { ToolButton2 ToolButton
     MoveScaled(58,21,25,4)
@@ -85,7 +87,7 @@
   }
   { ButtonCancela Button
     MoveScaled(59,58,23,3)
-    Text = ("Cancela movimiento")
+    Text = ("Cancelar movimiento")
     Picture = Picture["icon:/16/cancel"]
   }
 }

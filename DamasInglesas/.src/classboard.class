@@ -85,11 +85,11 @@ Public Sub displayboard(area As DrawingArea)
       If tablero[x, y] <> Constantes.blank Then
         If Sgn(tablero[x, y]) = Constantes.white Then
           '  Draw.fillcolor = color.blue 'color de white (blancass)
-          colorpieza = "_negro.png"
+          colorpieza = "_blanco.png"
         Else
           If Sgn(tablero[x, y]) = Constantes.black Then
             '  Draw.fillcolor = Color.green 'Color de black (negras)
-            colorpieza = "_blanco.png"
+            colorpieza = "_negro.png"
           Endif
 
         Endif
@@ -104,14 +104,14 @@ Public Sub displayboard(area As DrawingArea)
           'Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.075)
           colorpieza = "reina" & colorpieza
           pieza = Picture[colorpieza]
-          Draw.Picture(pieza, (x - 1) * boxsize, (y - 1) * boxsize)
+          Draw.Picture(pieza, (x - 1) * boxsize + 5, (y - 1) * boxsize)
         Else
 
           'Draw.FillStyle = fill.solid
           'Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.375)
           colorpieza = "peon" & colorpieza
           pieza = Picture[colorpieza]
-          Draw.Picture(pieza, (x - 1) * boxsize, (y - 1) * boxsize)
+          Draw.Picture(pieza, (x - 1) * boxsize + 5, (y - 1) * boxsize)
 
         Endif
 
@@ -120,69 +120,5 @@ Public Sub displayboard(area As DrawingArea)
   Next
 
   Draw.End
-
-End
-
-'---------------------------------
-' generar movimiento
-'
-Public Function makemove(movelist As ClassMovimiento[], showmoves As Integer) As Integer
-
-End
-
-Public Function generateMoveList(side As Integer) As Integer
-
-End
-
-Public Function validsinglemove(x As Integer, y As Integer, dx As Integer, dy As Integer) As Boolean
-
-  If ((x + dx) >= 1) And ((x + dx) <= htamano) And ((y + dy) >= 1) And ((y + dy) <= htamano) Then
-    If tablero[x + dx, y + dy] = Constantes.blank Then
-      Return True
-    Endif
-  Endif
-  Return False
-
-End
-
-Public Function findjumps(x As Integer, y As Integer, side As Integer) As Classmovimiento[]
-
-  Dim movimiento As ClassMovimiento
-  Dim MoveList As New ClassMovimiento[]
-  Dim dx As Integer
-
-  For dx = -1 To 1
-    If dx = 0 Then Continue
-    '' todas las piezas pueden saltar hacia delante...
-    '' First, check that coordinates of destination square are legal
-    If ((x + dx * 2) >= 1) And ((x + dx * 2) <= htamano) And ((y + 2 * Side) >= 1) And ((y + 2 * Side) <= htamano) Then
-      '' Then, check if destination square is open and
-      '' that intermediate square is enemy piece
-      If (tablero[x + dx * 2, y + 2 * Side] = Constantes.Blank) And (Sgn(tablero[x + dx, y + side]) = - Side) Then
-
-        movimiento = New ClassMovimiento(x, y, x + dx, y + Side)
-        MoveList.add(movimiento)
-
-        movimiento = New ClassMovimiento(x + dx, y + Side, x + dx * 2, y + Side * 2)
-        MoveList.add(movimiento)
-      Endif
-    Endif
-
-    '' only kings can jump "atras"
-    If Abs(tablero[x, y]) = Constantes.king Then
-      If ((x + dx * 2) >= 1) And ((x + dx * 2) <= htamano) And ((y - 2 * Side) >= 1) And ((y - 2 * Side) <= htamano) Then
-        If (Tablero[x + dx * 2, y - 2 * Side] = Constantes.Blank) And (Sgn(tablero[x + dx, y - side]) = - Side) Then
-          '' If we get here, we have a valid jump; add it
-          '' to the movelist
-          movimiento = New ClassMovimiento(x, y, x + dx, y - Side)
-          MoveList.Add(movimiento)
-
-          movimiento = New ClassMovimiento(x + dx, y - Side, x + dx * 2, y - Side * 2)
-          MoveList.Add(movimiento)
-
-        Endif
-      Endif
-    Endif
-  Next
 
 End
