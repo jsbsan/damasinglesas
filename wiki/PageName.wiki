@@ -1,4 +1,4 @@
-#summary Resumen del Proeycto
+#summary Resumen del Proyecto
 
 = Introduction =
 
