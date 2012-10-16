@@ -1,7 +1,7 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,34,34)
+  MoveScaled(0,0,64,35)
   Icon = Picture["reina_blanco.png"]
   Resizable = False
   { Frame1 Frame
@@ -50,6 +50,44 @@
     { PictureBox3 PictureBox
       MoveScaled(-1,2,5,6)
       Picture = Picture["peon_blanco.png"]
+    }
+  }
+  { Frame3 Frame
+    MoveScaled(32,1,28,18)
+    Text = ("Piezas (44x44)")
+    { LabelB1 Label
+      MoveScaled(0,12,9,3)
+      Text = ("Negra:")
+      Alignment = Align.Right
+    }
+    { LabelB2 Label
+      MoveScaled(0,5,9,3)
+      Text = ("Blanca:")
+      Alignment = Align.Right
+    }
+    { Label1 Label
+      MoveScaled(21,2,7,3)
+      Text = ("Dama")
+    }
+    { Label2 Label
+      MoveScaled(12,2,7,3)
+      Text = ("Peon")
+    }
+    { PictureBox1 PictureBox
+      MoveScaled(12,11,6,6)
+      Picture = Picture["peon_negro.png"]
+    }
+    { PictureBox2 PictureBox
+      MoveScaled(12,5,6,6)
+      Picture = Picture["peon_blanco.png"]
+    }
+    { PictureBox5 PictureBox
+      MoveScaled(21,5,6,6)
+      Picture = Picture["reina_blanco.png"]
+    }
+    { PictureBox6 PictureBox
+      MoveScaled(21,11,6,6)
+      Picture = Picture["reina_negro.png"]
     }
   }
 }

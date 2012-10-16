@@ -157,7 +157,7 @@ Public Function FindAllJumps(board As Classboard, x As Integer, y As Integer, si
   'Rellenar lista de movimientos con primer grado de saltos disponiblesevi
   'FIXME: revisar movimientos de findjumps
   ' devuelve = findjumps(board, x, y, side)
-  Print devuelve; " ";
+  '  Print devuelve; " ";
 
   If devuelve <> Null Then movelistArray.lista.Add(devuelve)
 
@@ -249,8 +249,8 @@ Public Sub minimax(board As Classboard, side As Integer, Depth As Integer, Depth
   Else
     movelistArray = GenerateMoveList(board, side)
     'TODO: Escribo los movimientos posibles...
-    Print "Movimientos posibles...Turno "; side; " Profundidad: "; depth
-    Print movelistArray.escribe()
+    '  Print "Movimientos posibles...Turno "; side; " Profundidad: "; depth
+    '    Print movelistArray.escribe()
 
     If movelistArray.lista.count = 0 Then
       'lista vacia
@@ -283,10 +283,10 @@ Public Sub minimax(board As Classboard, side As Integer, Depth As Integer, Depth
 
       Next
       movimientoArray = bestmovelistArray.lista[Int(Rnd(0, bestmovelistArray.lista.count))].movimiento
-      Print "Solucion mejor: ";
-      For a = 0 To movimientoArray.Max
-        Print movimientoArray[a].escribe()
-      Next
+      '   Print "Solucion mejor: ";
+      ' For a = 0 To movimientoArray.Max
+      '   Print movimientoArray[a].escribe()
+      ' Next
       solucion = New ClassRespuesta(bestscore, movimientoArray)
     Endif
   Endif

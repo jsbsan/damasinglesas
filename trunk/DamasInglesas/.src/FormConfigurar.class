@@ -32,3 +32,7 @@ Public Sub ToggleButtonNegra_Click()
   Constantes.ColorLightSquare = Dialog.Color
 
 End
+
+Public Sub Label2_MouseDown()
+
+End

@@ -177,7 +177,7 @@ Public Sub RelojIA()
         'NOTE: tipos de inteligencia artificial IA
         ' minimax(board As Classboard, side As Integer, Depth As Integer, DepthMax As Integer, Evaluator As Integer)
       Case 1
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 0, 2)
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 2, 2)
         jugada.movimiento = solucion.mov
       Case 2
         solucion = ModuloCalculos.Minimax(tablero, turno, 0, 4, 2)
@@ -190,7 +190,7 @@ Public Sub RelojIA()
       escribeMovimientoyCambiaTurno(jugada)
       tablero.displayboard(drawingarea1)
       Wait 0.5
-      Print jugada.escribe()
+      '  Print jugada.escribe()
       ']
       If constantes.PlayerStrategy[Str$(turno)] <> 0 Then
         'es el turno del ordenador
