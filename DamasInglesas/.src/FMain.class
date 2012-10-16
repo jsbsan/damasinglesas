@@ -42,7 +42,7 @@ Public Sub ToolButtonJugar_Click()
     'es el turno del ordenador
 
     RelojIA()
-    Wait 1000
+
   Endif
 
 End
@@ -188,12 +188,16 @@ Public Sub RelojIA()
     End Select
     If jugada.movimiento <> Null Then
       escribeMovimientoyCambiaTurno(jugada)
+      tablero.displayboard(drawingarea1)
+      Wait 0.5
       Print jugada.escribe()
       ']
       If constantes.PlayerStrategy[Str$(turno)] <> 0 Then
         'es el turno del ordenador
+
+        '  Wait 1000 'espero 0.5 segundo para recibir ordenes del GUI
         RelojIA()
-        Wait 1000 'espero 0.5 segundo para recibir ordenes del GUI
+
       Endif
 
     Else
