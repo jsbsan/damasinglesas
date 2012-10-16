@@ -10,7 +10,7 @@ Public Sub ButtonOK_Click()
   'tipo de jugador humano o ordenador de distinta IA
 
   Constantes.PlayerStrategy[Str$(Constantes.black)] = comboboxblack.index '0 ("Humano"), 1 ("Ordenador Fácil"),2 ("Ordenador Medio"), 3 ("Ordenador Difícil"))
-  Constantes.PlayerStrategy[Str$(Constantes.white)] = comboboxblack.index '0 ("Humano"), 1 ("Ordenador Fácil"), 2 ("Ordenador Medio"), 3 ("Ordenador Difícil"))
+  Constantes.PlayerStrategy[Str$(Constantes.white)] = comboboxWhite.index '0 ("Humano"), 1 ("Ordenador Fácil"), 2 ("Ordenador Medio"), 3 ("Ordenador Difícil"))
   Constantes.jugando = True
   Me.Close
 
@@ -19,5 +19,11 @@ End
 Public Sub ComboBoxBlack_Change()
 
   Constantes.PlayerStrategy[Constantes.ColorBlack] = comboboxblack.text
+
+End
+
+Public Sub ComboBoxWhite_Click()
+
+  Constantes.PlayerStrategy[Constantes.Colorwhite] = comboboxWhite.text
 
 End

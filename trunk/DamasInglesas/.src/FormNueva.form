@@ -2,6 +2,7 @@
 
 { Form Form
   MoveScaled(0,0,45,24)
+  Icon = Picture["reina_blanco.png"]
   Resizable = False
   { Label1 Label
     MoveScaled(6,1,11,4)
@@ -20,7 +21,7 @@
     Picture = Picture["peon_negro.png"]
   }
   { ComboBoxWhite ComboBox
-    MoveScaled(16,10,25,4)
+    MoveScaled(15,1,25,4)
     ReadOnly = True
     List = [("Humano"), ("Ordenador Fácil"), ("Ordenador Medio"), ("Ordenador Difícil")]
     Text = ("Humano")
@@ -30,7 +31,7 @@
     Text = ("Aceptar")
   }
   { ComboBoxBlack ComboBox
-    MoveScaled(16,1,25,4)
+    MoveScaled(15,10,25,4)
     ReadOnly = True
     List = [("Humano"), ("Ordenador Fácil"), ("Ordenador Medio"), ("Ordenador Difícil")]
     Text = ("Humano")

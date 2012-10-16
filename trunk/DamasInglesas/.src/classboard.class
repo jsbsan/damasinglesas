@@ -7,6 +7,13 @@ Public seleccionado As New Integer[2, 2] 'celda de tablero seleccionado
 
 Public Sub _new(squares As Integer)
 
+  inicio(squares)
+  'tablero iniciado...
+
+End
+
+Public Sub inicio(squares As Integer)
+
   Dim x As Integer
   Dim y As Integer
 
@@ -34,7 +41,6 @@ Public Sub _new(squares As Integer)
     Next
   Next
 
-  'tablero iniciado...
 End
 
 Private Function tamano_Read() As Integer

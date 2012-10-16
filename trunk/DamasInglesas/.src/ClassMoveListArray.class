@@ -1,3 +1,41 @@
 ' Gambas class file
 
-Public lista As New ClassMoveList[]
+Property valor As Integer
+
+Property lista As ClassMoveList[]
+Private hlista As New ClassMoveList[]
+
+Private Function lista_Read() As ClassMoveList[]
+
+  Return hlista
+
+End
+
+Private Sub lista_Write(Value As ClassMoveList[])
+
+  hlista = value
+
+End
+
+Private Function valor_Read() As Integer
+
+End
+
+Private Sub valor_Write(Value As Integer)
+
+End
+
+Public Sub escribe() As String
+
+  Dim valor As ClassMoveList
+  Dim a As Integer
+  Dim cadena As String
+
+  cadena = "Jugadas en el array de jugadas\n"
+  For Each valor In hlista
+    a += 1
+    cadena &= Str$(a) & " " & valor.escribe() & "\n"
+  Next
+  Return cadena
+
+End
