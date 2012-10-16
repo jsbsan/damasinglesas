@@ -2,6 +2,7 @@
 
 { Form Form
   MoveScaled(0,0,34,34)
+  Icon = Picture["reina_blanco.png"]
   Resizable = False
   { Frame1 Frame
     MoveScaled(2,1,28,13)

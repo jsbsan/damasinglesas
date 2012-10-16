@@ -2,6 +2,7 @@
 
 { Form Form
   MoveScaled(0,0,38,30)
+  Icon = Picture["reina_blanco.png"]
   Resizable = False
   { PictureBox1 PictureBox
     MoveScaled(31,3,6,6)

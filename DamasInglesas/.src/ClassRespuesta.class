@@ -1,7 +1,7 @@
 ' Gambas class file
 
-Property mov As ClassMovimiento
-Private hmov As ClassMovimiento
+Property mov As ClassMovimiento[]
+Private hmov As New ClassMovimiento[]
 Property valor As Integer
 Private hvalor As Integer
 
@@ -17,19 +17,19 @@ Private Sub valor_Write(Value As Integer)
 
 End
 
-Private Function mov_Read() As ClassMovimiento
+Private Function mov_Read() As ClassMovimiento[]
 
   Return hmov
 
 End
 
-Private Sub mov_Write(Value As ClassMovimiento)
+Private Sub mov_Write(Value As ClassMovimiento[])
 
   hmov = Value
 
 End
 
-Public Sub _new(v As Integer, movimiento As ClassMovimiento)
+Public Sub _new(v As Integer, movimiento As ClassMovimiento[])
 
   hvalor = v
   hmov = movimiento

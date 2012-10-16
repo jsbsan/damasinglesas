@@ -1,3 +1,28 @@
 ' Gambas class file
 
-Public movimiento As New ClassMovimiento[]
+Property movimiento As ClassMovimiento[]
+Private hmovimiento As New ClassMovimiento[]
+
+Public Function escribe() As String
+
+  Dim a As Integer
+  Dim cadena As String
+
+  For a = 0 To hmovimiento.Max
+    cadena &= " | " & hmovimiento[a].escribe()
+  Next
+  Return cadena
+
+End
+
+Private Function movimiento_Read() As ClassMovimiento[]
+
+  Return hmovimiento
+
+End
+
+Private Sub movimiento_Write(Value As ClassMovimiento[])
+
+  hmovimiento = value
+
+End
