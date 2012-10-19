@@ -1,7 +1,7 @@
 ' Gambas class file
 
 'url interesantes: http://thinks.com/java/checkers/checkers.htm
-
+'http://juegos.casualarena.com/games-checkers.php
 'comentarios especiales:
 'FIXME: comentario especial
 'NOTE: comentario especial
@@ -9,7 +9,7 @@
 Public turno As Integer 'controla el turno del jugador que tiene que jugar ahora
 Public tablero As New ClassBoard(8)
 Public casilla As Integer '1 es la primera casilla seleccionada (origen) , 2 es la casilla la 2º casilla (destino)
-
+Public finjuego As Boolean
 Public listamovimientos As New ClassMovimiento[] 'lista de movimientos a realizar..
 
 Public ejecutajugada As Boolean 'revisa si la jugada introducida por un humano se puede hacer
@@ -46,9 +46,13 @@ Public Sub ToolButtonJugar_Click()
 
   FormNueva.ShowDialog()
 
+  LabelMensajes.text = "Turno del jugador Negro (" & Constantes.PlayerStrategy[Constantes.Colorblack] & ")"
+  LabelMensajes.Refresh()
+  FMain.finjuego = False
+  Wait 0.01
   tablero.inicio(8)
   tablero.displayboard(drawingarea1)
-  turno = constantes.white 'el primer jugador es el blanco (white)
+  turno = constantes.black 'el primer jugador es el blanco (white)
   'compruebo que el jugador white es humano
   If constantes.PlayerStrategy[Str$(turno)] <> "0" Then
     'es el turno del ordenador
@@ -76,7 +80,7 @@ Public Sub jugar()
 
   If movimientos.max = 0 Then
     Message.Info(("Ganador es el jugador Negro"))
-    Constantes.jugando = False
+    finjuego = True
   Else
     '' conseguir lista movimiento
     listamovimientos = ModuloCalculos.DetermineMove(tablero, constantes.white)
@@ -91,7 +95,7 @@ Public Sub jugar()
   If movimientos.max = 0 Then
 
     Message.Info(("Ganador es el jugador Blanco"))
-    Constantes.jugando = False
+    finjuego = True
   Else
     '' conseguir lista movimiento
     listamovimientos = ModuloCalculos.DetermineMovimiento(tablero, constantes.black)
@@ -125,24 +129,40 @@ Public Sub RelojIA()
   Dim solucion As ClassRespuesta
   Dim jugada As New Classmovelist
 
+  If finjuego = True Then Return
+
   If constantes.PlayerStrategy[Str$(turno)] <> "0" Then
     'es el turno del ordenador...
     LabelMensajes.text &= (". Pensando...")
+
     '[
-    LabelMensajes.text = Replace(LabelMensajes.text, (". Pensando..."), "")
+    '  LabelMensajes.text = Replace(LabelMensajes.text, (". Pensando..."), "")
+    Wait 0.01
     Select constantes.PlayerStrategy[Str$(turno)]
         'NOTE: tipos de inteligencia artificial IA
         ' minimax(board As Classboard, side As Integer, Depth As Integer, DepthMax As Integer, Evaluator As Integer)
+        '  Select Evaluator
+        ' Case 1      Return scoreS(tablero, side) 'solo cuenta piezas
+        ' Case 2      Return scoreSimple(tablero, side) 'cuenta piezas y reinas al centro.
+        ' Case 3      Return scoreNat(tablero, side)
+        ' Case 4      Return scoreSam(tablero, side)
+        '
+        '
+        '
       Case 1
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 2, 2)
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 2, 1) 'solo valores de piezas...
         jugada.movimiento = solucion.mov
+
       Case 2
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 4, 3)
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 2, 3) 'valoracion tablero Nat
         jugada.movimiento = solucion.mov
+
       Case 3
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 4, 4)
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 5, 4)
         jugada.movimiento = solucion.mov
+
     End Select
+    Print "Valoracion.."; solucion.valor
     If jugada.movimiento <> Null Then
       escribeMovimientoyCambiaTurno(jugada)
       tablero.displayboard(drawingarea1)
@@ -177,18 +197,24 @@ Public Sub escribeMovimientoyCambiaTurno(jugada As Classmovelist)
   'cambio turno
   If turno = constantes.white Then
     turno = constantes.black
-    LabelMensajes.text = "Turno del jugador Negro"
+    LabelMensajes.text = "Turno del jugador Negro (" & Constantes.PlayerStrategy[Constantes.Colorblack] & ")"
     'comprobar que hay movimientos posibles, si no lo hay gana el Blanco...
-    'FIXME: comprobar si se puede mover
+    'FIXME: turnos...
     listamovArray = ModuloCalculos.GenerateMoveList(tablero, turno)
-    If listamovArray.lista.count = 0 Then message.info("Ganan las Blancas porque no puedes mover ninguna pieza")
+    If listamovArray.lista.count = 0 Then
+      message.info("Ganan las Blancas porque no puedes mover ninguna pieza")
+      finjuego = True
+    Endif
 
   Else
     turno = constantes.white
-    LabelMensajes.text = "Turno del jugador Blanco"
+    LabelMensajes.text = "Turno del jugador Blanco (" & Constantes.PlayerStrategy[Constantes.Colorwhite] & ")"
     'comprobar que hay movimientos posibles, si no lo hay gana el Negro...
     listamovArray = ModuloCalculos.GenerateMoveList(tablero, turno)
-    If listamovArray.lista.count = 0 Then message.info("Ganan las Negras porque no puedes mover ninguna pieza")
+    If listamovArray.lista.count = 0 Then
+      message.info("Ganan las Negras porque no puedes mover ninguna pieza")
+      finjuego = True
+    Endif
   Endif
 
 End
@@ -200,8 +226,8 @@ Public Sub GenerarGridJugadas()
     .header = 3
     '  .rows.count = 2
     .columns.count = 2
-    .Columns[0].title = "Blancas"
-    .Columns[1].title = "Negras"
+    .Columns[0].title = "Negras"
+    .Columns[1].title = "Blancas"
     .Columns[0].width = 100
     .Columns[1].width = 100
     .font.name = "Bitstream Charter"
@@ -237,6 +263,8 @@ Public Sub comprobarVictoria()
   Dim tienen As String
   'si hay piezas, entonces
   'si solo hay blancas-> victoria blancas
+  If finjuego = True Then Return
+
   If tablero.piezasDisponibles(constantes.white) Then
     'hay piezas blancas
     s = 1
@@ -251,12 +279,15 @@ Public Sub comprobarVictoria()
 
   If tienen = "" Then
     Message.Info("Tablas!!!\nNo puedo hacer ningun movimiento")
+    finjuego = True
   Else
     If InStr(tienen, "blancas") <> 0 And InStr(tienen, "negras") = 0 Then
       Message.Info("Blancas ganas!!!")
+      finjuego = True
     Else
       If InStr(tienen, "blancas") = 0 And InStr(tienen, "negras") <> 0 Then
         Message.Info("Negras ganas!!!")
+        finjuego = True
       Endif
     Endif
   Endif
@@ -418,7 +449,7 @@ Public Sub ButtonJugar_Click()
   ButtonJugar.enabled = False
   FormNueva.ShowDialog()
   editandotablero = 0
-  turno = constantes.white 'el primer jugador es el blanco (white)
+  turno = constantes.black 'el primer jugador es el negro
   'compruebo que el jugador white es humano
   If constantes.PlayerStrategy[Str$(turno)] <> "0" Then
     'es el turno del ordenador

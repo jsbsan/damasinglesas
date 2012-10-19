@@ -96,6 +96,7 @@
   }
   { Frame4 Frame
     MoveScaled(33,21,29,14)
+    Enabled = False
     Text = ("Tamaño Tablero")
     { RadioButton8 RadioButton
       MoveScaled(3,4,16,3)

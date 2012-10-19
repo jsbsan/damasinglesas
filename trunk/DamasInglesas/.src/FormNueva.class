@@ -13,7 +13,7 @@ Public Sub ButtonOK_Click()
 
   Constantes.PlayerStrategy[Str$(Constantes.black)] = Str$(comboboxblack.index) '0 ("Humano"), 1 ("Ordenador Fácil"),2 ("Ordenador Medio"), 3 ("Ordenador Difícil"))
   Constantes.PlayerStrategy[Str$(Constantes.white)] = Str$(comboboxWhite.index) '0 ("Humano"), 1 ("Ordenador Fácil"), 2 ("Ordenador Medio"), 3 ("Ordenador Difícil"))
-  Constantes.jugando = True
+  fmain.finjuego = False
   Me.Close
 
 End
