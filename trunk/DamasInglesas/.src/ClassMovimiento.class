@@ -1,10 +1,14 @@
 ' Gambas class file
 
+Property x0 As Integer
+Private hx0 As Integer
 Property y0 As Integer
 Private hy0 As Integer
 
-Property x0 As Integer
-Private hx0 As Integer
+Property x1 As Integer
+Private hx1 As Integer
+Property y1 As Integer
+Private hy1 As Integer
 
 Private Function x0_Read() As Integer
 
@@ -29,12 +33,6 @@ Private Sub y0_Write(Value As Integer)
   hy0 = value
 
 End
-
-Property y1 As Integer
-Private hy1 As Integer
-
-Property x1 As Integer
-Private hx1 As Integer
 
 Private Function x1_Read() As Integer
 
@@ -78,6 +76,19 @@ Public Function escribe() As String
   cadena &= ") a (" & Str$(hx1)
   cadena &= "," & Str$(hy1)
   cadena &= ")"
+  Return cadena
+
+End
+
+Public Function escribeFC() As String
+
+  Dim cadena As String
+
+  cadena = Choose(hx0, "A", "B", "C", "D", "E", "F", "G", "H")
+  cadena &= Str$(hy0)
+  cadena &= " a " & Choose(hx1, "A", "B", "C", "D", "E", "F", "G", "H")
+  cadena &= Str$(hy1)
+
   Return cadena
 
 End
