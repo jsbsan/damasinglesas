@@ -28,12 +28,12 @@ Public Sub inicio(squares As Integer)
 
   For y = 1 To Constantes.initialrows
     For x = 1 To squares
-      If (x + y) Mod 2 = 0 Then
+      If (x + y) Mod 2 <> 0 Then
         tablero[x, y] = Constantes.white
 
       Endif
 
-      If (x + ((squares + 1) - y)) Mod 2 = 0 Then
+      If (x + ((squares + 1) - y)) Mod 2 <> 0 Then
         tablero[x, squares + 1 - y] = Constantes.black
 
       Endif
@@ -108,14 +108,14 @@ Public Sub displayboard(area As DrawingArea)
           'Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.275)
           'Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.175)
           'Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.075)
-          colorpieza = "reina" & colorpieza
+          colorpieza = Constantes.dibujoReina & colorpieza
           pieza = Picture[colorpieza]
           Draw.Picture(pieza, (x - 1) * boxsize + 5, (y - 1) * boxsize)
         Else
 
           'Draw.FillStyle = fill.solid
           'Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.375)
-          colorpieza = "peon" & colorpieza
+          colorpieza = Constantes.dibujoPeon & colorpieza
           pieza = Picture[colorpieza]
           Draw.Picture(pieza, (x - 1) * boxsize + 5, (y - 1) * boxsize)
 
@@ -126,5 +126,22 @@ Public Sub displayboard(area As DrawingArea)
   Next
 
   Draw.End
+
+End
+'FIXME: revisar si hay piezas de un color en el tablero
+
+Public Sub piezasDisponibles(turno As Integer) As Boolean
+
+  Dim x As Integer
+  Dim y As Integer
+
+  For x = 1 To htamano
+    For y = 1 To htamano
+      If tablero[x, y] = turno Or tablero[x, y] = turno * Constantes.king Then
+        Return True
+      Endif
+    Next
+  Next
+  Return False 'no hay piezas de ese turno
 
 End

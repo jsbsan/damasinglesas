@@ -12,12 +12,14 @@
   }
   { ToolButtonGuardarPartida ToolButton
     MoveScaled(58,5,25,4)
+    Enabled = False
     Text = ("Guardar Partida")
     Picture = Picture["icon:/16/save"]
     Border = True
   }
   { ToolButtonPartidaAnterior ToolButton
     MoveScaled(58,9,25,4)
+    Enabled = False
     Text = ("Cargar Partida Anterior")
     Picture = Picture["icon:/16/open"]
     Border = True
@@ -61,27 +63,14 @@
     Text = ("Hola ¡¡Bienvenido!!... en esta linea verá mensajes del programa...")
   }
   { ToolButton1 ToolButton
-    MoveScaled(58,17,25,4)
+    MoveScaled(58,21,25,4)
     Text = ("Acerca de...")
     Picture = Picture["icon:/16/help"]
     Border = True
   }
-  { Expander2 Expander
-    MoveScaled(54,25,32,33)
-    Expand = True
-    Arrangement = Arrange.Fill
-    Text = ("Jugadas")
-    { ListBox1 ListBox
-      MoveScaled(1,3,24,18)
-    }
-  }
-  { PictureBox5 PictureBox
-    MoveScaled(56,27,27,27)
-    Picture = Picture["gambas3.png"]
-    Stretch = True
-  }
   { ToolButton2 ToolButton
-    MoveScaled(58,21,25,4)
+    MoveScaled(58,25,25,4)
+    Enabled = False
     Text = ("Instrucciones: Como Jugar")
     Border = True
   }
@@ -89,5 +78,18 @@
     MoveScaled(59,58,23,3)
     Text = ("Cancelar movimiento")
     Picture = Picture["icon:/16/cancel"]
+  }
+  { GridJugadas GridView
+    MoveScaled(57,30,27,27)
+  }
+  { ToolButtonCrearPosicion ToolButton
+    MoveScaled(58,17,19,4)
+    Text = ("Crear Posicion")
+    Picture = Picture["tablero-damas.png"]
+    Border = True
+  }
+  { ButtonJugar Button
+    MoveScaled(77,17,6,4)
+    Text = ("Jugar")
   }
 }

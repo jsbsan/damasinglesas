@@ -1,35 +1,35 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,64,35)
+  MoveScaled(0,0,64,43)
   Icon = Picture["reina_blanco.png"]
   Resizable = False
   { Frame1 Frame
-    MoveScaled(2,1,28,13)
+    MoveScaled(2,3,28,17)
     Text = ("Colores Casillas")
     { LabelB3 Label
-      MoveScaled(7,7,9,3)
+      MoveScaled(7,10,9,3)
       Text = ("Negra:")
       Alignment = Align.Right
     }
     { LabelB4 Label
-      MoveScaled(7,3,9,3)
+      MoveScaled(7,5,9,3)
       Text = ("Blanca:")
       Alignment = Align.Right
     }
     { ToggleButtonBlanca ToggleButton
-      MoveScaled(17,2,5,4)
+      MoveScaled(17,4,5,4)
     }
     { ToggleButtonNegra ToggleButton
-      MoveScaled(17,7,5,4)
+      MoveScaled(17,10,5,4)
     }
   }
   { ButtonOK Button
-    MoveScaled(20,30,10,4)
+    MoveScaled(28,36,10,4)
     Text = ("OK")
   }
   { Frame2 Frame
-    MoveScaled(2,15,28,15)
+    MoveScaled(2,21,28,14)
     Text = ("Inteligencia Artificial")
     { ComboBox2 ComboBox
       MoveScaled(5,4,21,3)
@@ -53,8 +53,8 @@
     }
   }
   { Frame3 Frame
-    MoveScaled(32,1,28,18)
-    Text = ("Piezas (44x44)")
+    MoveScaled(32,2,28,18)
+    Text = ("Piezas ")
     { LabelB1 Label
       MoveScaled(0,12,9,3)
       Text = ("Negra:")
@@ -73,21 +73,37 @@
       MoveScaled(12,2,7,3)
       Text = ("Peon")
     }
-    { PictureBox1 PictureBox
+    { PictureBoxNegraPeon PictureBox
       MoveScaled(12,11,6,6)
+      Tag = "pn"
       Picture = Picture["peon_negro.png"]
     }
-    { PictureBox2 PictureBox
+    { PictureBoxBlancaPeon PictureBox
       MoveScaled(12,5,6,6)
+      Tag = "pb"
       Picture = Picture["peon_blanco.png"]
     }
-    { PictureBox5 PictureBox
+    { PictureBoxBlancaDama PictureBox
       MoveScaled(21,5,6,6)
+      Tag = "rb"
       Picture = Picture["reina_blanco.png"]
     }
-    { PictureBox6 PictureBox
+    { PictureBoxNegraDama PictureBox
       MoveScaled(21,11,6,6)
+      Tag = "rn"
       Picture = Picture["reina_negro.png"]
+    }
+  }
+  { Frame4 Frame
+    MoveScaled(33,21,29,14)
+    Text = ("Tamaño Tablero")
+    { RadioButton8 RadioButton
+      MoveScaled(3,4,16,3)
+      Text = ("8x8")
+    }
+    { RadioButton10 RadioButton
+      MoveScaled(3,8,16,3)
+      Text = ("10x10")
     }
   }
 }

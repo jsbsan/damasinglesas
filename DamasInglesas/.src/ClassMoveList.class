@@ -15,6 +15,34 @@ Public Function escribe() As String
 
 End
 
+Public Function escribegrid(gridviewjugadas As GridView, turno As Integer)
+
+  Dim a As Integer
+  Dim cadena As String
+
+  For a = 0 To hmovimiento.Max
+    If a <> 0 Then
+
+      cadena &= " | "
+    Endif
+    cadena &= hmovimiento[a].escribeFC()
+  Next
+  gridviewjugadas.row = gridviewjugadas.rows.count
+
+  If turno = constantes.white Then
+    'escribo movimiento del turno blanco...
+    'aumento una fila
+    gridviewjugadas.rows.count += 1
+    gridviewjugadas.column = 0
+    gridviewjugadas[gridviewjugadas.rows.count - 1, 0].text = cadena
+  Else
+    gridviewjugadas[gridviewjugadas.rows.count - 1, 1].text = cadena
+    gridviewjugadas.column = 1
+
+  Endif
+
+End
+
 Private Function movimiento_Read() As ClassMovimiento[]
 
   Return hmovimiento

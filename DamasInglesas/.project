@@ -7,6 +7,7 @@ Version=0.0.2
 Component=gb.image
 Component=gb.gui
 Component=gb.form
+Description="-Falta añadir jugadas posibles: comer (saltos) y comer varias...\nmovimiento de damas, etc.\n- Elegir piezas (otras formas o desde un archivo de dibujo png)\nMejora: Añadir distintos tipos de movimientos... (horizontal-vertical) Piezas opcionales"
 TabSize=2
 Translate=1
 Language=es

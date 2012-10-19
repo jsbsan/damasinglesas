@@ -36,3 +36,59 @@ End
 Public Sub Label2_MouseDown()
 
 End
+
+Public Sub PictureBoxBlancaDama_MouseDown()
+
+  If PictureBoxBlancaDama.tag = "rb" Then
+    Constantes.dibujoReina = "n2"
+    PictureBoxBlancaDama.Picture = Picture["n2_blanco.png"]
+    PictureBoxBlancaDama.tag = "n2"
+  Else
+    PictureBoxBlancaDama.Picture = Picture["reina_blanco.png"]
+    PictureBoxBlancaDama.tag = "rb"
+    Constantes.dibujoReina = "reina"
+  Endif
+
+End
+
+Public Sub PictureBoxNegraDama_MouseDown()
+
+  If PictureBoxNegraDama.tag = "rn" Then
+    PictureBoxNegraDama.Picture = Picture["n2_negro.png"]
+    PictureBoxNegraDama.tag = "n2"
+    Constantes.dibujoReina = "n2"
+  Else
+    PictureBoxNegraDama.Picture = Picture["reina_negro.png"]
+    PictureBoxNegraDama.tag = "rn"
+    Constantes.dibujoReina = "reina"
+  Endif
+
+End
+
+Public Sub PictureBoxBlancaPeon_MouseDown()
+
+  If PictureBoxBlancaPeon.tag = "rb" Then
+    PictureBoxBlancaPeon.Picture = Picture["n1_blanco.png"]
+    PictureBoxBlancaPeon.tag = "n1"
+    Constantes.dibujoPeon = "n1"
+  Else
+    PictureBoxBlancaPeon.Picture = Picture["peon_blanco.png"]
+    PictureBoxBlancaPeon.tag = "rb"
+    Constantes.dibujoPeon = "peon"
+  Endif
+
+End
+
+Public Sub PictureBoxNegraPeon_MouseDown()
+
+  If PictureBoxNegraPeon.tag = "pn" Then
+    PictureBoxNegraPeon.Picture = Picture["n1_negro.png"]
+    PictureBoxNegraPeon.tag = "n1"
+    Constantes.dibujoPeon = "n1"
+  Else
+    PictureBoxNegraPeon.Picture = Picture["peon_negro.png"]
+    PictureBoxNegraPeon.tag = "pn"
+    constantes.dibujoPeon = "peon"
+  Endif
+
+End

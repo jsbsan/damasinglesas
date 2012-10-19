@@ -11,8 +11,8 @@ Public blank As Integer = 0
 Public black As Integer = -1 'jugador negro
 Public white As Integer = 1 'jugador blanco
 
-Public ColorDarkSquare As Integer = Color.gray 'black
-Public ColorLightSquare As Integer = Color.orange 'red
+Public ColorDarkSquare As Integer = Color.red 'black
+Public ColorLightSquare As Integer = Color.gray 'red
 
 Public colorSelect As Integer = 1 ' blue
 Public ColorSelectFinal As Integer = 9 'cyan
@@ -24,11 +24,14 @@ Public jugando As Boolean
 
 Public PlayerStrategy As New Collection 'estrategia de los jugadores black y white,
 
+Public dibujoPeon As String = "peon"
+Public dibujoReina As String = "reina"
+
 Public Sub iniciar()
 
   Constantes.jugando = False
-  Constantes.ColorDarkSquare = Color.LightGray
-  Constantes.ColorLightSquare = Color.Orange
+  Constantes.ColorDarkSquare = Color.red
+  Constantes.ColorLightSquare = Color.gray
   'defino estrategia de los jugadores como "Humanos"
   PlayerStrategy.Clear()
   PlayerStrategy.Add(0, Str$(black))

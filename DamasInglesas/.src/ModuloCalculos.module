@@ -19,14 +19,15 @@ Public Function GenerateMoveList(tablero As Classboard, side As Integer) As Clas
         'empieza a añadir saltos legales estando en x,y
         movelistArray = FindAllJumps(tablero, x, y, side)
         'Añade  al array de listas de movimiento, la lista de movimiento.
+        'FIXME: se incorpora los movimientos de saltos...
         If movelistArray <> Null Then
-          MastermovelistArray.Insert(movelistArray)
+          MastermovelistArray.lista.Insert(movelistArray.lista)
         Endif
       Endif
     Next
   Next
 
-  'Compureba los otros movimientos
+  'Comprueba los otros movimientos
   If MastermovelistArray.lista.count = 0 Then
     For x = 1 To 8
       For y = 1 To 8
@@ -141,11 +142,14 @@ Public Function findjumps(tablero As Classboard, x As Integer, y As Integer, sid
 
 End
 
-Public Function FindAllJumps(board As Classboard, x As Integer, y As Integer, side As Integer) As ClassMovimiento[]
-  'NOTE: FindAllJumps, falta
+Public Function FindAllJumps(board As Classboard, x As Integer, y As Integer, side As Integer) As ClassMoveListarray
 
+  'NOTE: FindAllJumps, falta
+  Dim a As Integer
+  Dim b As Integer
   Dim movelist As New ClassMovimiento[]
   Dim movelistArray As New ClassMoveListArray
+  Dim lista As New ClassMoveList
   Dim movimi As ClassMovimiento
   Dim board2 As Classboard
   Dim movelist2 As New ClassMovimiento[]
@@ -154,9 +158,10 @@ Public Function FindAllJumps(board As Classboard, x As Integer, y As Integer, si
   Dim counter As Integer
   Dim devuelve As ClassMoveList
 
+  Dim borrarlinea As Boolean
   'Rellenar lista de movimientos con primer grado de saltos disponiblesevi
   'FIXME: revisar movimientos de findjumps
-  ' devuelve = findjumps(board, x, y, side)
+  devuelve = findjumps(board, x, y, side)
   '  Print devuelve; " ";
 
   If devuelve <> Null Then movelistArray.lista.Add(devuelve)
@@ -166,25 +171,58 @@ Public Function FindAllJumps(board As Classboard, x As Integer, y As Integer, si
     ' Ver si  que conduce a nuevos saltos, si lo hace, entonces
     ' Tenemos que hacer una lista de nuevos saltos con el original
     ' Secuencia como una base y eliminar la secuencia de iniciación
+    '  If constantes.prueba = "no" Then Goto finsaltos
+
     counter = 0
-    While (Not movelistArray.lista[counter].count = 0)
+    While (movelistArray.lista[counter].movimiento.count <> 0)
 
-      If Not movelistArray.lista[counter].count = 0 Then
-        movelist = movelistArray.list[counter]
+      If movelistArray.lista.count <> 0 Then
+        movelist = movelistArray.lista[counter].movimiento
 
-        board2 = MakeMove(board, movelist, False)
-        movimi = movelist[movelist[movelist.max]]
+        board2 = MakeMove(board, movelistArray.lista[counter], False)
+        movimi = movelist[movelist.max]
 
-        movelistArray2 = findjumps(board2, movimi[2], movimi[3])
+        movelistArray2.lista.add(findjumps(board2, movimi.x1, movimi.y1, side))
 
-        If Not movelistArray2.count = 0 Then
+        For A = 0 To movelistArray2.lista.count - 1
+          If Not (IsNull(movelistArray2.lista[a])) Then
+            movelist3 = New ClassMovimiento[]
+            movelist3 = movelist
 
-        Endif
+            For b = 0 To movelistArray2.lista[a].movimiento.count - 1
+              movelist3.Add(movelistArray2.lista[a].movimiento[b])
 
+            Next
+
+            lista.movimiento = movelist3
+
+            movelistArray.lista.Add(lista)
+            borrarlinea = True
+          Endif
+
+        Next
+        ' Get rid of the current MoveList from MoveListArray
+        ' Back counter by one because the initiating sequence
+        ' was deleted
+
+        If borrarlinea = True Then movelistArray.lista.Delete(counter)
+
+      Endif
+
+      counter = counter + 1
+
+      If counter > movelistArray.lista.max Then
+        Break 'salimos del bucle
       Endif
 
     Wend
 
+  Endif
+finsaltos:
+
+  If devuelve <> Null Then
+
+    Return movelistArray ' movelistArray
   Endif
 
 End
@@ -297,7 +335,7 @@ End
 ''         Funcion Evaluador de tableros...
 ''-----------------------------------------------
 
-Public Function evaluateBoard(tablero As Classboard, side As Integer, evaluator As Integer) As Integer
+Public Function evaluateBoard(tablero As Classboard, side As Integer, evaluator As Integer) As Float
 
   Select Evaluator
     Case 2
@@ -314,7 +352,7 @@ End
 '' Funciones de valoracion...
 ''**************************************************
 'funcion simple para retornar valor de las piezas en el tablero
-Public Function scoresimple(tablero As Classboard, side As Integer) As Integer
+Public Function scoresimple(tablero As Classboard, side As Integer) As Float
 
   Dim x As Integer
   Dim y As Integer
@@ -332,7 +370,7 @@ End
 'funcion que añade bonux por canales de cuadrados
 'y piezas avanzadas...
 
-Public Function scorenat(tablero As Classboard, side As Integer) As Integer
+Public Function scorenat(tablero As Classboard, side As Integer) As Float
 
   Dim x As Integer
   Dim y As Integer
@@ -361,7 +399,7 @@ Public Function scorenat(tablero As Classboard, side As Integer) As Integer
 
 End
 
-Public Function scoreSam(tablero As Classboard, side As Integer) As Integer
+Public Function scoreSam(tablero As Classboard, side As Integer) As Float
 
   Dim x As Integer
   Dim y As Integer
