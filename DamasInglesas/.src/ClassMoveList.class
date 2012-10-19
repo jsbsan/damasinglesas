@@ -29,7 +29,7 @@ Public Function escribegrid(gridviewjugadas As GridView, turno As Integer)
   Next
   gridviewjugadas.row = gridviewjugadas.rows.count
 
-  If turno = constantes.white Then
+  If turno = constantes.black Then
     'escribo movimiento del turno blanco...
     'aumento una fila
     gridviewjugadas.rows.count += 1
