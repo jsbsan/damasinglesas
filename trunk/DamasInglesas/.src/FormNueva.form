@@ -23,7 +23,7 @@
   { ComboBoxWhite ComboBox
     MoveScaled(15,1,25,4)
     ReadOnly = True
-    List = [("Humano"), ("Ordenador Fácil"), ("Ordenador Medio"), ("Ordenador Difícil")]
+    List = [("Humano"), ("IA Fácil"), ("IA Medio"), ("IA Difícil")]
     Text = ("Humano")
   }
   { ButtonOK Button
@@ -33,7 +33,7 @@
   { ComboBoxBlack ComboBox
     MoveScaled(15,10,25,4)
     ReadOnly = True
-    List = [("Humano"), ("Ordenador Fácil"), ("Ordenador Medio"), ("Ordenador Difícil")]
+    List = [("Humano"), ("IA Fácil"), ("IA Medio"), ("IA Difícil")]
     Text = ("Humano")
   }
 }

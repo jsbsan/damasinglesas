@@ -437,14 +437,16 @@ Public Function scoresimple(tablero As Classboard, side As Integer) As Float
         dist = (Abs(4.5 - x) / 4.5 + Abs(4.5 - y) / 4.5) * pieza
         score += dist
       Else
-        If pieza < 0 Then  'negra
+        If pieza = -1 Then  'negra
           'FIXMe: pieza -1
           score += Sgn(8 - x) / 8 * 2
           score += Sgn(4 - y) / 4
         Else
-          'blancas, cuantos mas cerca de las filas 1, y centrales mejor
-          score += (x) * 2 / 8
-          score += Sgn(4 - y) / 4
+          If pieza = 1 Then
+            'blancas, cuantos mas cerca de las filas 1, y centrales mejor
+            score += (x) * 2 / 8
+            score += Sgn(4 - y) / 4
+          Endif
         Endif
 
       Endif

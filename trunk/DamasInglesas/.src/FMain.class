@@ -127,6 +127,7 @@ End
 
 Public Sub RelojIA()
 
+  Dim profundidad As Integer
   Dim solucion As ClassRespuesta
   Dim jugada As New Classmovelist
 
@@ -139,6 +140,18 @@ Public Sub RelojIA()
     '[
     '  LabelMensajes.text = Replace(LabelMensajes.text, (". Pensando..."), "")
     Wait 0.01
+    '********************************************************
+    'aumenta la profundidad del analisis para pocas piezas...
+    '********************************************************
+    profundidad = 3
+
+    If tablero.piezasDisponibles(turno) < 8 Then
+      profundidad = 4
+    Endif
+    If tablero.piezasDisponibles(turno) < 6 Then
+      profundidad = 5
+    Endif
+
     Select constantes.PlayerStrategy[Str$(turno)]
         'NOTE: tipos de inteligencia artificial IA
         ' minimax(board As Classboard, side As Integer, Depth As Integer, DepthMax As Integer, Evaluator As Integer)
@@ -147,19 +160,17 @@ Public Sub RelojIA()
         ' Case 2      Return scoreSimple(tablero, side) 'cuenta piezas y reinas al centro.
         ' Case 3      Return scoreNat(tablero, side)
         ' Case 4      Return scoreSam(tablero, side)
-        '
-        '
-        '
       Case 1
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 3, 1) 'solo valores de piezas...
+
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad, 1) 'solo valores de piezas...
         jugada.movimiento = solucion.mov
 
       Case 2
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 4, 2) 'valoracion tablero Nat
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 1, 2) 'valoracion tablero Nat
         jugada.movimiento = solucion.mov
 
       Case 3
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 5, 2)
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 1, 2)
         jugada.movimiento = solucion.mov
 
     End Select
