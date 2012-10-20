@@ -84,9 +84,9 @@ Public Function escribeFC() As String
 
   Dim cadena As String
 
-  cadena = Choose(hx0, "A", "B", "C", "D", "E", "F", "G", "H")
+  cadena = Choose(hx0, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J")
   cadena &= Str$(hy0)
-  cadena &= " a " & Choose(hx1, "A", "B", "C", "D", "E", "F", "G", "H")
+  cadena &= " a " & Choose(hx1, "A", "B", "C", "D", "E", "F", "G", "H", "I", "J")
   cadena &= Str$(hy1)
 
   Return cadena

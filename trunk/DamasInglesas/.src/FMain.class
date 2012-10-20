@@ -1,13 +1,17 @@
 ' Gambas class file
 
-'url interesantes: http://thinks.com/java/checkers/checkers.htm
-'http://juegos.casualarena.com/games-checkers.php
+'Fuente original:  http://smallbasic.sourceforge.net/?q=node/72
+'Autor original: Ken Goldberg
+'url interesantes juego en java online: http://e6e6a5f4.linkbucks.com
+'url juego entre humanos: http://e2577960.linkbucks.com
+'*********************************************
 'comentarios especiales:
-'FIXME: comentario especial
-'NOTE: comentario especial
-'TODO: comentario especial
+'*********************************************
+'FIXME: comentario especial (color rojo)
+'NOTE: comentario especial (color negro)
+'TODO: comentario especial (colo verde)
 Public turno As Integer 'controla el turno del jugador que tiene que jugar ahora
-Public tablero As New ClassBoard(8)
+Public tablero As New ClassBoard(constantes.squares)
 Public casilla As Integer '1 es la primera casilla seleccionada (origen) , 2 es la casilla la 2º casilla (destino)
 Public finjuego As Boolean
 Public listamovimientos As New ClassMovimiento[] 'lista de movimientos a realizar..
@@ -26,6 +30,7 @@ End
 
 Public Sub Form_Open()
 
+  constantes.squares = 8
   GenerarGridJugadas()
   Me.Caption = ("Damas Inglesas")
   Constantes.iniciar
@@ -38,22 +43,31 @@ End
 Public Sub ToolButtonConfigurar_Click()
 
   FormConfigurar.ShowDialog
+  tablero.inicio(Constantes.squares)
   tablero.displayboard(DrawingArea1)
 
 End
 
 Public Sub ToolButtonJugar_Click()
 
+  Dim jugadorturno As String
+
   FormNueva.ShowDialog()
   GenerarGridJugadas()
-  LabelMensajes.text = "Turno del jugador Negro (" & Constantes.PlayerStrategy[Constantes.Colorblack] & ")"
+
+  jugadorturno = If(turno = Constantes.black, "Negro", "Blanco")
+  LabelMensajes.text = "Turno del jugador " & jugadorturno & " (" & Constantes.PlayerStrategy[Constantes.Colorblack] & ")"
   LabelMensajes.Refresh()
+
+  'para desactivar boton de posicion y boton de jugar posicion
+  ToolButtonCrearPosicion.Enabled = False
+  ButtonJugar.enabled = False
 
   FMain.finjuego = False
   Wait 0.01
-  tablero.inicio(8)
+  tablero.inicio(constantes.squares)
   tablero.displayboard(drawingarea1)
-  turno = constantes.black 'el primer jugador es el blanco (white)
+
   'compruebo que el jugador white es humano
   If constantes.PlayerStrategy[Str$(turno)] <> "0" Then
     'es el turno del ordenador
@@ -202,30 +216,32 @@ Public Sub escribeMovimientoyCambiaTurno(jugada As Classmovelist)
 
   Dim listamovArray As New ClassMoveListArray
 
-  tablero = ModuloCalculos.MakeMove(tablero, jugada, False)
-  tablero.displayboard(drawingarea1)
-  jugada.escribegrid(GridJugadas, turno)
-  comprobarVictoria()
-  'cambio turno
-  If turno = constantes.white Then
-    turno = constantes.black
-    LabelMensajes.text = "Turno del jugador Negro (" & Constantes.PlayerStrategy[Constantes.Colorblack] & ")"
-    'comprobar que hay movimientos posibles, si no lo hay gana el Blanco...
-    'FIXME: turnos...
-    listamovArray = ModuloCalculos.GenerateMoveList(tablero, turno)
-    If listamovArray.lista.count = 0 Then
-      message.info("Ganan las Blancas porque no puedes mover ninguna pieza")
-      finjuego = True
-    Endif
+  If finjuego <> True Then
+    tablero = ModuloCalculos.MakeMove(tablero, jugada, False)
+    tablero.displayboard(drawingarea1)
+    jugada.escribegrid(GridJugadas, turno)
+    comprobarVictoria()
+    'cambio turno
+    If turno = constantes.white Then
+      turno = constantes.black
+      LabelMensajes.text = "Turno del jugador Negro (" & Constantes.PlayerStrategy[Constantes.Colorblack] & ")"
+      'comprobar que hay movimientos posibles, si no lo hay gana el Blanco...
+      'FIXME: turnos...
+      listamovArray = ModuloCalculos.GenerateMoveList(tablero, turno)
+      If listamovArray.lista.count = 0 Then
+        message.info("Ganan las Blancas porque no puedes mover ninguna pieza")
+        finjuego = True
+      Endif
 
-  Else
-    turno = constantes.white
-    LabelMensajes.text = "Turno del jugador Blanco (" & Constantes.PlayerStrategy[Constantes.Colorwhite] & ")"
-    'comprobar que hay movimientos posibles, si no lo hay gana el Negro...
-    listamovArray = ModuloCalculos.GenerateMoveList(tablero, turno)
-    If listamovArray.lista.count = 0 Then
-      message.info("Ganan las Negras porque no puedes mover ninguna pieza")
-      finjuego = True
+    Else
+      turno = constantes.white
+      LabelMensajes.text = "Turno del jugador Blanco (" & Constantes.PlayerStrategy[Constantes.Colorwhite] & ")"
+      'comprobar que hay movimientos posibles, si no lo hay gana el Negro...
+      listamovArray = ModuloCalculos.GenerateMoveList(tablero, turno)
+      If listamovArray.lista.count = 0 Then
+        message.info("Ganan las Negras porque no puedes mover ninguna pieza")
+        finjuego = True
+      Endif
     Endif
   Endif
 
@@ -292,20 +308,29 @@ Public Sub comprobarVictoria()
   If tienen = "" Then
     Message.Info("Tablas!!!\nNo puedo hacer ningun movimiento")
     finjuego = True
+    'para desactivar boton de posicion y boton de jugar posicion
+    ToolButtonCrearPosicion.Enabled = True
+    ButtonJugar.visible = True
+
   Else
     If InStr(tienen, "blancas") <> 0 And InStr(tienen, "negras") = 0 Then
-      Message.Info("Blancas ganas!!!")
+      Message.Info("Blancas ganan!!!")
       finjuego = True
+      'para desactivar boton de posicion y boton de jugar posicion
+      ToolButtonCrearPosicion.Enabled = True
+      ButtonJugar.visible = True
+
     Else
       If InStr(tienen, "blancas") = 0 And InStr(tienen, "negras") <> 0 Then
-        Message.Info("Negras ganas!!!")
+        Message.Info("Negras ganan!!!")
         finjuego = True
+        'para desactivar boton de posicion y boton de jugar posicion
+        ToolButtonCrearPosicion.Enabled = True
+        ButtonJugar.visible = True
+
       Endif
     Endif
   Endif
-  'FIXME: VIENDO LA VICTORIA
-  'si solo hay negras-> vistorias negras
-  'si hay blancas y negras y no hay jugadas disponibles -> tablas
 
 End
 
@@ -321,8 +346,8 @@ Public Sub DrawingArea1_MouseDown()
   Dim x As Integer
   Dim y As Integer
 
-  x = Int(Mouse.x / (DrawingArea1.h / 8)) + 1
-  y = Int(Mouse.y / (DrawingArea1.h / 8)) + 1
+  x = Int(Mouse.x / (DrawingArea1.h / constantes.squares)) + 1
+  y = Int(Mouse.y / (DrawingArea1.h / constantes.squares)) + 1
   '  Print x, y
   'he pulsado click en el area de dibujo...
   'compruebo que el jugador del turno es "Humano"
@@ -334,18 +359,18 @@ Public Sub DrawingArea1_MouseDown()
 
       If tablero.tablero[x, y] = constantes.blank Then
         tablero.seleccionado[1, 0] = x
-        tablero.seleccionado[1, 1] = 8 - y + 1
+        tablero.seleccionado[1, 1] = constantes.squares - y + 1
 
         If editandotablero <> 1 Then
           ejecutajugada = False
-          mov = New ClassMovimiento(tablero.seleccionado[0, 0], 8 - tablero.seleccionado[0, 1] + 1, tablero.seleccionado[1, 0], 8 - tablero.seleccionado[1, 1] + 1)
+          mov = New ClassMovimiento(tablero.seleccionado[0, 0], constantes.squares - tablero.seleccionado[0, 1] + 1, tablero.seleccionado[1, 0], constantes.squares - tablero.seleccionado[1, 1] + 1)
           'comprobar movimiento valido...
           listamovArray = ModuloCalculos.GenerateMoveList(tablero, turno)
           'Print "Movimientos posibles..."
           'Print listamovArray.escribe()
 
-          mimovimientoinicial = "(" & Str$(tablero.seleccionado[0, 0]) & "," & Str(8 - tablero.seleccionado[0, 1] + 1) & ")"
-          mimovimientofinal = "(" & Str$(tablero.seleccionado[1, 0]) & "," & Str(8 - tablero.seleccionado[1, 1] + 1) & ")"
+          mimovimientoinicial = "(" & Str$(tablero.seleccionado[0, 0]) & "," & Str(constantes.squares - tablero.seleccionado[0, 1] + 1) & ")"
+          mimovimientofinal = "(" & Str$(tablero.seleccionado[1, 0]) & "," & Str(constantes.squares - tablero.seleccionado[1, 1] + 1) & ")"
           '  Print "Mi movimiento: "; mimovimientoinicial; " a "; mimovimientofinal
           'compruebo en la lista de movimiento si existe esa posibilidad
           For a = 0 To listamovArray.lista.count - 1
@@ -401,7 +426,7 @@ Public Sub DrawingArea1_MouseDown()
 
       If tablero.tablero[x, y] = turno Or tablero.tablero[x, y] = turno * constantes.king Then
         tablero.seleccionado[0, 0] = x
-        tablero.seleccionado[0, 1] = 8 - y + 1
+        tablero.seleccionado[0, 1] = constantes.squares - y + 1
         tablero.displayboard(DrawingArea1)
         casilla = 2
       Endif
@@ -443,8 +468,8 @@ Public Sub ToolButtonCrearPosicion_Click()
 
   drawingarea1.Tooltip = "Haga click en la celda para ir dibujando la pieza"
   editandotablero = 1
-  For a = 0 To 8
-    For b = 0 To 8
+  For a = 0 To constantes.squares
+    For b = 0 To constantes.squares
       tablero.tablero[a, b] = 0
 
     Next
@@ -458,11 +483,18 @@ End
 
 Public Sub ButtonJugar_Click()
 
+  Dim jugadorturno As String
+
   GenerarGridJugadas()
   ButtonJugar.enabled = False
   FormNueva.ShowDialog()
+  jugadorturno = If(turno = Constantes.black, "Negro", "Blanco")
+  LabelMensajes.text = "Turno del jugador " & jugadorturno & " (" & Constantes.PlayerStrategy[Constantes.Colorblack] & ")"
+  LabelMensajes.Refresh()
+
   editandotablero = 0
-  turno = constantes.black 'el primer jugador es el negro
+  FMain.finjuego = False
+
   'compruebo que el jugador white es humano
   If constantes.PlayerStrategy[Str$(turno)] <> "0" Then
     'es el turno del ordenador

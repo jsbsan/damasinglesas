@@ -2,7 +2,7 @@
 
 Property tamano As Integer
 Private htamano As Integer
-Public tablero As New Integer[9, 9] 'tablero maximo de 8x8
+Public tablero As New Integer[11, 11] 'tablero maximo de 8x8 y 10x10
 Public seleccionado As New Integer[2, 2] 'celda de tablero seleccionado
 
 Public Sub _new(squares As Integer)
