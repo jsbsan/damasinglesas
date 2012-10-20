@@ -3,11 +3,11 @@
 Title=DamasInglesas
 Startup=FMain
 Icon=reina_blanco.png
-Version=0.0.2
+Version=0.0.3
 Component=gb.image
 Component=gb.gui
 Component=gb.form
-Description="- Añadido comer con 2 saltos.\n\n- Elegir piezas (otras formas o desde un archivo de dibujo png)\nMejora: Añadir distintos tipos de movimientos... (horizontal-vertical), picture de Piezas opcionales"
+Description="Mejora en el analisis de la posicion del tablero"
 TabSize=2
 Translate=1
 Language=es
