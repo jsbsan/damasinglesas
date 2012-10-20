@@ -35,9 +35,13 @@ Public Function escribegrid(gridviewjugadas As GridView, turno As Integer)
     gridviewjugadas.rows.count += 1
     gridviewjugadas.column = 0
     gridviewjugadas[gridviewjugadas.rows.count - 1, 0].text = cadena
+
+    gridviewjugadas.MoveTo(gridviewjugadas.rows.count - 1, 0)
+
   Else
     gridviewjugadas[gridviewjugadas.rows.count - 1, 1].text = cadena
     gridviewjugadas.column = 1
+    gridviewjugadas.MoveTo(gridviewjugadas.rows.count - 1, 0)
 
   Endif
 

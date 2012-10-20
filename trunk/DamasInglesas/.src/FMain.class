@@ -45,9 +45,10 @@ End
 Public Sub ToolButtonJugar_Click()
 
   FormNueva.ShowDialog()
-
+  GenerarGridJugadas()
   LabelMensajes.text = "Turno del jugador Negro (" & Constantes.PlayerStrategy[Constantes.Colorblack] & ")"
   LabelMensajes.Refresh()
+
   FMain.finjuego = False
   Wait 0.01
   tablero.inicio(8)
@@ -150,15 +151,15 @@ Public Sub RelojIA()
         '
         '
       Case 1
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 2, 1) 'solo valores de piezas...
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 3, 1) 'solo valores de piezas...
         jugada.movimiento = solucion.mov
 
       Case 2
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 2, 3) 'valoracion tablero Nat
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 4, 2) 'valoracion tablero Nat
         jugada.movimiento = solucion.mov
 
       Case 3
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 5, 4)
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 5, 2)
         jugada.movimiento = solucion.mov
 
     End Select
@@ -224,7 +225,7 @@ Public Sub GenerarGridJugadas()
   With GridJugadas
     .mode = Select.Single 'para que aparezca el cursor
     .header = 3
-    '  .rows.count = 2
+    .rows.count = 0
     .columns.count = 2
     .Columns[0].title = "Negras"
     .Columns[1].title = "Blancas"
@@ -252,7 +253,7 @@ Public Sub GridJugadas_Select()
   Next
   '
   'marcar celda
-  GridJugadas[GridJugadas.row, GridJugadas.column].Background = Color.green
+  Try GridJugadas[GridJugadas.row, GridJugadas.column].Background = Color.green
   '
 
 End
@@ -417,7 +418,7 @@ Public Sub DrawingArea1_MouseDown()
         tablero.tablero[x, y] = Constantes.blank
     End Select
     tablero.displayboard(drawingarea1)
-    Print piezaAponer
+    'Print piezaAponer
     xant = x
     yant = y
   Endif
@@ -446,6 +447,7 @@ End
 
 Public Sub ButtonJugar_Click()
 
+  GenerarGridJugadas()
   ButtonJugar.enabled = False
   FormNueva.ShowDialog()
   editandotablero = 0
