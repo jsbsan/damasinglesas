@@ -290,6 +290,7 @@ Public Sub minimax(board As Classboard, side As Integer, Depth As Integer, Depth
   Dim score As Float
   Dim bestscore As Float
   Dim nextmini As ClassRespuesta
+  Dim boardtemp As Classboard
 
   Dim bestmovelistArray As New ClassMovelistArray
 
@@ -308,37 +309,48 @@ Public Sub minimax(board As Classboard, side As Integer, Depth As Integer, Depth
       solucion = New ClassRespuesta(evaluateBoard(board, side, evaluator), Null)
       Return solucion
     Else
-      'hallar el mejor movimiento....
-      '
-      bestscore = -999999
-      For a = 0 To movelistArray.lista.Max
 
-        nextmini = minimax(MakeMove(board, movelistArray.lista[a], False), - side, depth + 1, depthmax, evaluator)
-        score = - nextmini.valor
+      If JugadasInicialesIguales(movelistArray.lista).valor = 0 Then
+        'FIXME: Jugadas Iniciales
 
-        If score >= bestscore Then
-          If score = bestscore Then
-            'la añado a la lista de mejores...
+        boardtemp = MakeMove(board, movelistArray.lista[0], side)
+        solucion = New ClassRespuesta(evaluateBoard(boardtemp, side, evaluator), movelistArray.lista[0].movimiento)
+        Return solucion
 
-            bestmovelistArray.lista.Add(movelistArray.lista[a])
+      Else
 
-          Else
+        'hallar el mejor movimiento....
+        '
+        bestscore = -999999
+        For a = 0 To movelistArray.lista.Max
 
-            bestscore = score
-            bestmovelistArray.lista.Clear()
-            bestmovelistArray.lista.add(movelistArray.lista[a], 0)
+          nextmini = minimax(MakeMove(board, movelistArray.lista[a], False), - side, depth + 1, depthmax, evaluator)
+          score = - nextmini.valor
+
+          If score >= bestscore Then
+            If score = bestscore Then
+              'la añado a la lista de mejores...
+
+              bestmovelistArray.lista.Add(movelistArray.lista[a])
+
+            Else
+
+              bestscore = score
+              bestmovelistArray.lista.Clear()
+              bestmovelistArray.lista.add(movelistArray.lista[a], 0)
+
+            Endif
 
           Endif
 
-        Endif
-
-      Next
-      movimientoArray = bestmovelistArray.lista[Int(Rnd(0, bestmovelistArray.lista.count))].movimiento
-      '   Print "Solucion mejor: ";
-      ' For a = 0 To movimientoArray.Max
-      '   Print movimientoArray[a].escribe()
-      ' Next
-      solucion = New ClassRespuesta(bestscore, movimientoArray)
+        Next
+        movimientoArray = bestmovelistArray.lista[Int(Rnd(0, bestmovelistArray.lista.count))].movimiento
+        '   Print "Solucion mejor: ";
+        ' For a = 0 To movimientoArray.Max
+        '   Print movimientoArray[a].escribe()
+        ' Next
+        solucion = New ClassRespuesta(bestscore, movimientoArray)
+      Endif
     Endif
   Endif
   Return solucion
@@ -353,7 +365,6 @@ Public Function evaluateBoard(tablero As Classboard, side As Integer, evaluator 
   Select Evaluator
     Case 1
       Return scoreS(tablero, side) 'solo cuenta piezas
-
     Case 2
       Return scoreSimple(tablero, side) 'cuenta piezas y reinas al centro.
     Case 3
@@ -369,7 +380,7 @@ End
 '' Funciones de valoracion...
 ''**************************************************
 'funcion simple para retornar valor de las piezas en el tablero
-Public Function scores(tablero As Classboard, side As Integer) As Float
+Public Function scoreS(tablero As Classboard, side As Integer) As Float
 
   Dim x As Integer
   Dim y As Integer
@@ -381,13 +392,14 @@ Public Function scores(tablero As Classboard, side As Integer) As Float
 
   If comprobarfin(tablero, side) = True Then
     score = -99999 * side
-
     Return score
   Endif
   'valoracion de piezas
   For x = 1 To 8
     For y = 1 To 8
+
       pieza = tablero.tablero[x, y]
+      If pieza = 0 Then Continue
       score += pieza * 100
 
     Next
@@ -418,11 +430,23 @@ Public Function scoresimple(tablero As Classboard, side As Integer) As Float
   For x = 1 To 8
     For y = 1 To 8
       pieza = tablero.tablero[x, y]
+      If pieza = 0 Then Continue
       score += pieza * 100
       'valoracion de posicion reinas
       If Sgn(pieza) = Constantes.king Then
-        dist = (Abs(4.5 - x) + Abs(4.5 - y)) * pieza
+        dist = (Abs(4.5 - x) / 4.5 + Abs(4.5 - y) / 4.5) * pieza
         score += dist
+      Else
+        If pieza < 0 Then  'negra
+          'FIXMe: pieza -1
+          score += Sgn(8 - x) / 8 * 2
+          score += Sgn(4 - y) / 4
+        Else
+          'blancas, cuantos mas cerca de las filas 1, y centrales mejor
+          score += (x) * 2 / 8
+          score += Sgn(4 - y) / 4
+        Endif
+
       Endif
 
     Next
@@ -439,19 +463,27 @@ End
 
 Public Function scorenat(tablero As Classboard, side As Integer) As Float
 
+  Dim pieza As Integer
   Dim x As Integer
   Dim y As Integer
   Dim score As Float
+  '¿puedo mover? No--> he perdido, dar la minima puntuacion
+  '¿tengo piezas? No--> he perdido, dar la minima puntuacion
+  If comprobarfin(tablero, side) = True Then
+    score = -99999 * side
+  Endif
 
   For x = 1 To 8
     For y = 1 To 8
-      score += tablero.tablero[x, y]
+      pieza = tablero.tablero[x, y]
+      If pieza = 0 Then Continue
+      score += pieza
       If x = 1 Or x = 8 Then
-        score += 0.5 * tablero.tablero[x, y]
+        score += 0.5 * pieza
       Endif
 
       'bonus por abance al final
-      If Abs(tablero.tablero[x, y]) = constantes.piece Then
+      If Abs(pieza) = constantes.piece Then
         If side = 1 Then
           score += 0.125 * y
         Else
@@ -463,11 +495,6 @@ Public Function scorenat(tablero As Classboard, side As Integer) As Float
     Next
   Next
   score *= side
-  '¿puedo mover? No--> he perdido, dar la minima puntuacion
-  '¿tengo piezas? No--> he perdido, dar la minima puntuacion
-  If comprobarfin(tablero, side) = True Then
-    score = -99999 * side
-  Endif
 
   Return score
 
@@ -475,30 +502,34 @@ End
 
 Public Function scoreSam(tablero As Classboard, side As Integer) As Float
 
+  Dim pieza As Integer
   Dim x As Integer
   Dim y As Integer
   Dim score As Float
+  '¿puedo mover? No--> he perdido, dar la minima puntuacion
+  '¿tengo piezas? No--> he perdido, dar la minima puntuacion
+  If comprobarfin(tablero, side) = True Then
+    score = -99999 * side
+    Return score
+  Endif
 
   For x = 1 To 8
     For y = 1 To 8
-      score += tablero.tablero[x, y]
+      pieza = tablero.tablero[x, y]
+      score += pieza
+      If pieza = 0 Then Continue
       If (x = 1) Or (x = 8) Then
-        score += -0.5 * tablero.tablero[x, y]
+        score += -0.5 * pieza
       Endif
 
       If ((x = 1) Or (x = 8)) And (y = 1 Or y = 8) Then
-        score += -0.5 * tablero.tablero[x, y]
+        score += -0.5 * pieza
       Endif
 
     Next
   Next
 
   score *= side
-  '¿puedo mover? No--> he perdido, dar la minima puntuacion
-  '¿tengo piezas? No--> he perdido, dar la minima puntuacion
-  If comprobarfin(tablero, side) = True Then
-    score = -99999 * side
-  Endif
 
   Return score
 
@@ -577,5 +608,29 @@ Public Function comprobarfin(tablero As Classboard, side As Integer) As Boolean
 
   listamovArray = ModuloCalculos.GenerateMoveList(tablero, side)
   If listamovArray.lista.count = 0 Then Return True
+
+End
+
+'Comprobar que las jugadas iniciales son iguales
+Public Sub JugadasInicialesIguales(lista As ClassMoveList[]) As ClassRespuesta
+
+  Dim a As Integer
+  Dim movimiento As New ClassMovimiento(0, 0, 0, 0)
+  Dim sol As ClassRespuesta
+
+  movimiento = lista[0].movimiento[0]
+  sol = New ClassRespuesta(0, lista[0].movimiento)
+
+  If lista.max = 0 Then Return sol
+
+  For a = 1 To lista.Max
+    If lista[a].movimiento[0] <> movimiento Then
+      'he encontrado jugadas distintas
+      sol.valor = 1
+      Return sol
+    Endif
+  Next
+
+  Return sol
 
 End

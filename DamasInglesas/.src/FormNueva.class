@@ -21,13 +21,13 @@ End
 Public Sub ComboBoxWhite_Click()
 
   Constantes.PlayerStrategy[Constantes.Colorwhite] = Str$(comboboxWhite.text)
-  Print "Nivel:"; Str$(comboboxWhite.text)
+  '  Print "Nivel:"; Str$(comboboxWhite.text)
 
 End
 
 Public Sub ComboBoxBlack_Click()
 
   Constantes.PlayerStrategy[Constantes.ColorBlack] = Str$(comboboxblack.text)
-  Print "Nivel:"; Str$(comboboxblack.text)
+  '  Print "Nivel:"; Str$(comboboxblack.text)
 
 End
