@@ -3,11 +3,11 @@
 Title=DamasInglesas
 Startup=FMain
 Icon=reina_blanco.png
-Version=0.0.3
+Version=0.0.5
 Component=gb.image
 Component=gb.gui
 Component=gb.form
-Description="Mejora en el analisis de la posicion del tablero"
+Description="Variacion de la profundidad del analisis a menor numero de piezas"
 TabSize=2
 Translate=1
 Language=es
