@@ -2,6 +2,8 @@
 
 Public Sub Form_Open()
 
+  fmain.turno = constantes.black 'jugador negro empieza el juego
+
   comboboxblack.index = 0
   comboboxWhite.index = 0
   Me.center
@@ -29,5 +31,17 @@ Public Sub ComboBoxBlack_Click()
 
   Constantes.PlayerStrategy[Constantes.ColorBlack] = Str$(comboboxblack.text)
   '  Print "Nivel:"; Str$(comboboxblack.text)
+
+End
+
+Public Sub RadioButtonIniciaPartidaNegro_Click()
+
+  fmain.turno = constantes.black 'el primer jugador es el negro
+
+End
+
+Public Sub RadioButtonIniciaPartidaBlanco_Click()
+
+  fmain.turno = constantes.white 'el primer jugador es el blanco (white)
 
 End

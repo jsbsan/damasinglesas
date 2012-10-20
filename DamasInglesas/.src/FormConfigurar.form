@@ -8,12 +8,12 @@
     MoveScaled(2,3,28,17)
     Text = ("Colores Casillas")
     { LabelB3 Label
-      MoveScaled(7,10,9,3)
+      MoveScaled(6,5,9,3)
       Text = ("Negra:")
       Alignment = Align.Right
     }
     { LabelB4 Label
-      MoveScaled(7,5,9,3)
+      MoveScaled(6,10,9,3)
       Text = ("Blanca:")
       Alignment = Align.Right
     }
@@ -96,15 +96,14 @@
   }
   { Frame4 Frame
     MoveScaled(33,21,29,14)
-    Enabled = False
     Text = ("Tamaño Tablero")
     { RadioButton8 RadioButton
-      MoveScaled(3,4,16,3)
-      Text = ("8x8")
+      MoveScaled(3,4,24,3)
+      Text = ("8x8 (64 casillas)")
     }
     { RadioButton10 RadioButton
-      MoveScaled(3,8,16,3)
-      Text = ("10x10")
+      MoveScaled(3,8,24,3)
+      Text = ("10x10 (100 casillas)")
     }
   }
 }

@@ -12,8 +12,8 @@ Public Function GenerateMoveList(tablero As Classboard, side As Integer) As Clas
   Dim y As Integer
   Dim dx As Integer
   ' empieza pro ver si hay posibles saltos
-  For x = 1 To 8
-    For y = 1 To 8
+  For x = 1 To constantes.squares
+    For y = 1 To constantes.squares
       ' halla una pieza, entonces si puedo salto...
       If Sgn(tablero.tablero[x, y]) = side Then
         'empieza a añadir saltos legales estando en x,y
@@ -29,8 +29,8 @@ Public Function GenerateMoveList(tablero As Classboard, side As Integer) As Clas
 
   'Comprueba los otros movimientos
   If MastermovelistArray.lista.count = 0 Then
-    For x = 1 To 8
-      For y = 1 To 8
+    For x = 1 To constantes.squares
+      For y = 1 To constantes.squares
         If Sgn(tablero.tablero[x, y]) = side Then
           For dx = -1 To 1
             If dx = 0 Then Continue
@@ -81,7 +81,7 @@ Public Function validsinglemove(tablero As Classboard, x As Integer, y As Intege
   'El movimeinto en diagonal es posible (no se sale del tablero)
   'y la celda esta vacia.
 
-  If ((x + dx) >= 1) And ((x + dx) <= 8) And ((y + dy) >= 1) And ((y + dy) <= 8) Then
+  If ((x + dx) >= 1) And ((x + dx) <= constantes.squares) And ((y + dy) >= 1) And ((y + dy) <= constantes.squares) Then
     If tablero.tablero[x + dx, y + dy] = Constantes.blank Then
       Return True
     Endif
@@ -102,7 +102,7 @@ Public Function findjumps(tablero As Classboard, x As Integer, y As Integer, sid
     If dx = 0 Then Continue
     '' todas las piezas pueden saltar hacia delante...
     '' First, check that coordinates of destination square are legal
-    If ((x + dx * 2) >= 1) And ((x + dx * 2) <= 8) And ((y + 2 * Side) >= 1) And ((y + 2 * Side) <= 8) Then
+    If ((x + dx * 2) >= 1) And ((x + dx * 2) <= constantes.squares) And ((y + 2 * Side) >= 1) And ((y + 2 * Side) <= constantes.squares) Then
       '' Then, check if destination square is open and
       '' that intermediate square is enemy piece
       If (tablero.tablero[x + dx * 2, y + 2 * Side] = Constantes.Blank) And (Sgn(tablero.tablero[x + dx, y + side]) = - Side) Then
@@ -118,7 +118,7 @@ Public Function findjumps(tablero As Classboard, x As Integer, y As Integer, sid
 
     '' solamente las Reinas pueden saltar hacia atras
     If Abs(tablero.tablero[x, y]) = Constantes.king Then
-      If ((x + dx * 2) >= 1) And ((x + dx * 2) <= 8) And ((y - 2 * Side) >= 1) And ((y - 2 * Side) <= 8) Then
+      If ((x + dx * 2) >= 1) And ((x + dx * 2) <= constantes.squares) And ((y - 2 * Side) >= 1) And ((y - 2 * Side) <= constantes.squares) Then
         'comprueba que  la celda de destina esta vacia
         'y que la intermedia es una pieza enemiga
         If (Tablero.tablero[x + dx * 2, y - 2 * Side] = Constantes.Blank) And (Sgn(tablero.tablero[x + dx, y - side]) = - Side) Then
@@ -175,59 +175,60 @@ Public Function FindAllJumps(board As Classboard, x As Integer, y As Integer, si
     '  If constantes.prueba = "no" Then Goto finsaltos
 
     'para ver saltos multimpes
-    For a = 1 To 8
+    For a = 1 To constantes.squares
       analizalistaparaverSaltos(ByRef movelistArray, board, side)
     Next
 
     Goto finsaltos
 
-    counter = 0
-    While (movelistArray.lista[counter].movimiento.count <> 0)
+    ' counter = 0
+    ' While (movelistArray.lista[counter].movimiento.count <> 0)
 
-      If movelistArray.lista.count <> 0 Then
-        movelist = movelistArray.lista[counter].movimiento
+    '  If movelistArray.lista.count <> 0 Then
+    '   movelist = movelistArray.lista[counter].movimiento
 
-        board2 = MakeMove(board, movelistArray.lista[counter], False)
-        movimi = movelist[movelist.max]
+    '  board2 = MakeMove(board, movelistArray.lista[counter], False)
+    ' movimi = movelist[movelist.max]
 
-        movelistArray2.lista.add(findjumps(board2, movimi.x1, movimi.y1, side))
+    'movelistArray2.lista.add(findjumps(board2, movimi.x1, movimi.y1, side))
 
-        For A = 0 To movelistArray2.lista.count - 1
-          If Not (IsNull(movelistArray2.lista[a])) Then
-            movelist3 = New ClassMovimiento[]
-            movelist3 = movelist
+    'For A = 0 To movelistArray2.lista.count - 1
+    ' If Not (IsNull(movelistArray2.lista[a])) Then
+    '   movelist3 = New ClassMovimiento[]
+    '   movelist3 = movelist
 
-            For b = 0 To movelistArray2.lista[a].movimiento.count - 1
-              movelist3.Add(movelistArray2.lista[a].movimiento[b])
+    'For b = 0 To movelistArray2.lista[a].movimiento.count - 1
+    '  movelist3.Add(movelistArray2.lista[a].movimiento[b])
 
-            Next
+    ' Next
 
-            lista.movimiento = movelist3
+    ' lista.movimiento = movelist3
 
-            movelistArray.lista.Add(lista)
-            borrarlinea = True
-          Endif
+    ' movelistArray.lista.Add(lista)
+    ' borrarlinea = True
+    ' Endif
 
-        Next
-        ' Get rid of the current MoveList from MoveListArray
-        ' Back counter by one because the initiating sequence
-        ' was deleted
+    ' Next
+    ' Get rid of the current MoveList from MoveListArray
+    ' Back counter by one because the initiating sequence
+    ' was deleted
 
-        If borrarlinea = True Then
-          movelistArray.lista.Delete(counter)
+    ' If borrarlinea = True Then
+    '
+    '      movelistArray.lista.Delete(counter)
 
-        Endif
+    ' Endif
 
-      Endif
+    'Endif
 
-      counter = counter + 1
+    'counter = counter + 1
 
-      If counter > movelistArray.lista.max Then
+    'If counter > movelistArray.lista.max Then
 
-        Break 'salimos del bucle
-      Endif
+    ' Break 'salimos del bucle
+    'Endif
 
-    Wend
+    'Wend
 
   Endif
 
@@ -253,10 +254,10 @@ Public Sub MakeMove(board As Classboard, movelist As Classmovelist, valor As Boo
   'NOTE: MakeMove: hacer movimiento
   Dim pieza As Integer
 
-  Dim boarModificado As New Classboard(8)
+  Dim boarModificado As New Classboard(constantes.squares)
 
-  For a = 0 To 8
-    For b = 0 To 8
+  For a = 0 To constantes.squares
+    For b = 0 To constantes.squares
       boarModificado.tablero[a, b] = board.tablero[a, b]
     Next
   Next
@@ -268,7 +269,7 @@ Public Sub MakeMove(board As Classboard, movelist As Classmovelist, valor As Boo
 
     boarModificado.tablero[movelist.movimiento[a].x1, movelist.movimiento[a].y1] = pieza
 
-    If movelist.movimiento[a].y1 = 8 Or movelist.movimiento[a].y1 = 1 Then
+    If movelist.movimiento[a].y1 = constantes.squares Or movelist.movimiento[a].y1 = 1 Then
       'se consique reina
       boarModificado.tablero[movelist.movimiento[a].x1, movelist.movimiento[a].y1] = constantes.king * Sgn(pieza)
     Endif
@@ -395,8 +396,8 @@ Public Function scoreS(tablero As Classboard, side As Integer) As Float
     Return score
   Endif
   'valoracion de piezas
-  For x = 1 To 8
-    For y = 1 To 8
+  For x = 1 To constantes.squares
+    For y = 1 To constantes.squares
 
       pieza = tablero.tablero[x, y]
       If pieza = 0 Then Continue
@@ -427,25 +428,25 @@ Public Function scoresimple(tablero As Classboard, side As Integer) As Float
     Return score
   Endif
   'valoracion de piezas
-  For x = 1 To 8
-    For y = 1 To 8
+  For x = 1 To constantes.squares
+    For y = 1 To constantes.squares
       pieza = tablero.tablero[x, y]
       If pieza = 0 Then Continue
       score += pieza * 100
       'valoracion de posicion reinas
       If Sgn(pieza) = Constantes.king Then
-        dist = (Abs(4.5 - x) / 4.5 + Abs(4.5 - y) / 4.5) * pieza
+        dist = (Abs(constantes.squares / 2 - x) / 4.5 + Abs(constantes.squares / 2 - y) / constantes.squares / 2) * pieza
         score += dist
       Else
         If pieza = -1 Then  'negra
           'FIXMe: pieza -1
-          score += Sgn(8 - x) / 8 * 2
-          score += Sgn(4 - y) / 4
+          score += Sgn(constantes.squares - x) / constantes.squares * 2
+          score += Sgn(constantes.squares / 2 - y) / constantes.squares / 2
         Else
           If pieza = 1 Then
             'blancas, cuantos mas cerca de las filas 1, y centrales mejor
-            score += (x) * 2 / 8
-            score += Sgn(4 - y) / 4
+            score += (x) * 2 / constantes.squares / 2
+            score += Sgn(constantes.squares / 2 - y) / constantes.squares / 2
           Endif
         Endif
 
@@ -475,12 +476,12 @@ Public Function scorenat(tablero As Classboard, side As Integer) As Float
     score = -99999 * side
   Endif
 
-  For x = 1 To 8
-    For y = 1 To 8
+  For x = 1 To constantes.squares
+    For y = 1 To constantes.squares
       pieza = tablero.tablero[x, y]
       If pieza = 0 Then Continue
       score += pieza
-      If x = 1 Or x = 8 Then
+      If x = 1 Or x = constantes.squares Then
         score += 0.5 * pieza
       Endif
 
@@ -489,7 +490,7 @@ Public Function scorenat(tablero As Classboard, side As Integer) As Float
         If side = 1 Then
           score += 0.125 * y
         Else
-          score += -0.125 * (8 + 1 - y)
+          score += -0.125 * (constantes.squares + 1 - y)
 
         Endif
       Endif
@@ -515,16 +516,16 @@ Public Function scoreSam(tablero As Classboard, side As Integer) As Float
     Return score
   Endif
 
-  For x = 1 To 8
-    For y = 1 To 8
+  For x = 1 To constantes.squares
+    For y = 1 To constantes.squares
       pieza = tablero.tablero[x, y]
       score += pieza
       If pieza = 0 Then Continue
-      If (x = 1) Or (x = 8) Then
+      If (x = 1) Or (x = constantes.squares) Then
         score += -0.5 * pieza
       Endif
 
-      If ((x = 1) Or (x = 8)) And (y = 1 Or y = 8) Then
+      If ((x = 1) Or (x = constantes.squares)) And (y = 1 Or y = constantes.squares) Then
         score += -0.5 * pieza
       Endif
 
