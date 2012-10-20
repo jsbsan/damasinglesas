@@ -143,13 +143,13 @@ Public Sub RelojIA()
     '********************************************************
     'aumenta la profundidad del analisis para pocas piezas...
     '********************************************************
-    profundidad = 3
+    profundidad = 2
 
-    If tablero.piezasDisponibles(turno) < 8 Then
-      profundidad = 4
+    If tablero.piezasDisponibles(- turno) < 8 Then
+      profundidad = 3
     Endif
-    If tablero.piezasDisponibles(turno) < 6 Then
-      profundidad = 5
+    If tablero.piezasDisponibles(- turno) < 6 Then
+      profundidad = 4
     Endif
 
     Select constantes.PlayerStrategy[Str$(turno)]
