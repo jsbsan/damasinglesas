@@ -40,12 +40,35 @@ Public Sub escribe() As String
 
 End
 
-Public Sub add(listaEntrada As ClassMoveList[])
+Public Sub escribeFC() As String
+
+  Dim valor As ClassMoveList
+  Dim a As Integer
+  Dim cadena As String
+
+  cadena = "Jugadas en el array de jugadas\n"
+  For Each valor In hlista
+    a += 1
+    cadena &= Str$(a) & " " & valor.escribeFC() & "\n"
+  Next
+  Return cadena
+
+End
+
+Public Sub add(listaEntrada As ClassMoveList)
+
+  hlista.Add(listaEntrada)
+
+End
+
+Public Sub copia(listArray As ClassMoveListArray)
 
   Dim a As Integer
 
-  For a = 0 To listaEntrada.Max
-    hlista.Add(listaEntrada[a])
+  hlista = New ClassMoveList[]
+
+  For a = 0 To listArray.lista.Max
+    hlista.Add(listArray.lista[a])
   Next
 
 End

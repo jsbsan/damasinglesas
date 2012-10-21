@@ -176,7 +176,7 @@ Public Sub RelojIA()
         ' Case 4      Return scoreSam(tablero, side)
       Case 1
 
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 2, 1) 'solo valores de piezas...
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad, 1) 'solo valores de piezas...
         jugada.movimiento = solucion.mov
 
       Case 2
