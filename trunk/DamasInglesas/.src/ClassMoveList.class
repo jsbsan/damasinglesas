@@ -15,6 +15,18 @@ Public Function escribe() As String
 
 End
 
+Public Function escribeFC() As String
+
+  Dim a As Integer
+  Dim cadena As String
+
+  For a = 0 To hmovimiento.Max
+    cadena &= " | " & hmovimiento[a].escribeFC()
+  Next
+  Return cadena
+
+End
+
 Public Function escribegrid(gridviewjugadas As GridView, turno As Integer)
 
   Dim a As Integer

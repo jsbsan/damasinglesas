@@ -39,9 +39,7 @@ Public Function GenerateMoveList(tablero As Classboard, side As Integer) As Clas
               If Not IsNull(movelist) Then
                 movelist = New ClassMoveList
                 movelist.movimiento.Add(mov)
-
               Else
-
                 movelist.movimiento.Add(mov) 'añado a la lista de movimiento un movimiento
               Endif
 
@@ -59,7 +57,6 @@ Public Function GenerateMoveList(tablero As Classboard, side As Integer) As Clas
                   movelist.movimiento.Add(mov)
 
                 Else
-
                   movelist.movimiento.Add(mov) 'añado a la lista de movimiento un movimiento
                 Endif
                 MastermovelistArray.lista.Add(movelist) 'añado la lista de listas de movimiento
@@ -72,6 +69,13 @@ Public Function GenerateMoveList(tablero As Classboard, side As Integer) As Clas
       Next
     Next
   Endif
+
+  'mostrar jugadas...
+  'TODO: IMPRIMIR JUGADAS POSIBLES DE UNA POSICION DE UN TURNO CONCRETO
+  'Escribe todas los movimientos posibles...
+  Print ".------------------"
+  Print MastermovelistArray.escribeFC()
+  Print ".------------------"
 
   Return MastermovelistArray
 
@@ -107,13 +111,17 @@ Public Function findjumps(tablero As Classboard, x As Integer, y As Integer, sid
       '' Then, check if destination square is open and
       '' that intermediate square is enemy piece
       If (tablero.tablero[x + dx * 2, y + 2 * Side] = Constantes.Blank) And (Sgn(tablero.tablero[x + dx, y + side]) = - Side) Then
+        'limpio la lista de movimientos...
+        movelist = New ClassMoveList
         'añado salto
         movimiento = New ClassMovimiento(x, y, x + dx, y + Side)
         MoveList.movimiento.add(movimiento)
 
         movimiento = New ClassMovimiento(x + dx, y + Side, x + dx * 2, y + Side * 2)
         'alado lista de movimiento de saltos de peones
+
         MoveList.movimiento.add(movimiento)
+        listaDeSaltos.Resize(listaDeSaltos.count)
         listaDeSaltos.Add(movelist)
 
         anade = 1
@@ -171,7 +179,12 @@ Public Function FindAllJumps(board As Classboard, x As Integer, y As Integer, si
   devuelve = findjumps(board, x, y, side)
   '  Print devuelve; " ";
 
-  If devuelve <> Null Then movelistArray.Add(devuelve)
+  If devuelve <> Null Then
+    For a = 0 To devuelve.count - 1
+
+      movelistArray.Add(devuelve[a])
+    Next
+  Endif
 
   If devuelve <> Null And If movelistArray.lista.count <> 0 Then
     ' En cada salto, "hacer" el salto en un tablero temporal y
@@ -181,8 +194,8 @@ Public Function FindAllJumps(board As Classboard, x As Integer, y As Integer, si
     '  If constantes.prueba = "no" Then Goto finsaltos
 
     'para ver saltos multimpes
-    For a = 1 To 3 ' miro solo 3 saltos...constantes.squares
-      analizalistaparaverSaltos(ByRef movelistArray, board, side)
+    For a = 1 To 5 ' miro solo 3 saltos...constantes.squares
+      movelistArray = analizalistaparaverSaltos(movelistArray, board, side)
     Next
 
     Goto finsaltos
@@ -317,48 +330,48 @@ Public Sub minimax(board As Classboard, side As Integer, Depth As Integer, Depth
       Return solucion
     Else
 
-      If JugadasInicialesIguales(movelistArray.lista).valor = 0 Then
-        'FIXME: Jugadas Iniciales
+      ' If JugadasInicialesIguales(movelistArray.lista).valor = 0 Then
+      'FIXME: Jugadas Iniciales
 
-        boardtemp = MakeMove(board, movelistArray.lista[0], side)
-        solucion = New ClassRespuesta(evaluateBoard(boardtemp, side, evaluator), movelistArray.lista[0].movimiento)
-        Return solucion
+      '  boardtemp = MakeMove(board, movelistArray.lista[0], side)
+      ' solucion = New ClassRespuesta(evaluateBoard(boardtemp, side, evaluator), movelistArray.lista[0].movimiento)
+      '  Return solucion
 
-      Else
+      '  Else
 
-        'hallar el mejor movimiento....
-        '
-        bestscore = -999999
-        For a = 0 To movelistArray.lista.Max
+      'hallar el mejor movimiento....
+      '
+      bestscore = -999999
+      For a = 0 To movelistArray.lista.Max
 
-          nextmini = minimax(MakeMove(board, movelistArray.lista[a], False), - side, depth + 1, depthmax, evaluator)
-          score = - nextmini.valor
+        nextmini = minimax(MakeMove(board, movelistArray.lista[a], False), - side, depth + 1, depthmax, evaluator)
+        score = - nextmini.valor
 
-          If score >= bestscore Then
-            If score = bestscore Then
-              'la añado a la lista de mejores...
+        If score >= bestscore Then
+          If score = bestscore Then
+            'la añado a la lista de mejores...
 
-              bestmovelistArray.lista.Add(movelistArray.lista[a])
+            bestmovelistArray.lista.Add(movelistArray.lista[a])
 
-            Else
+          Else
 
-              bestscore = score
-              bestmovelistArray.lista.Clear()
-              bestmovelistArray.lista.add(movelistArray.lista[a], 0)
-
-            Endif
+            bestscore = score
+            bestmovelistArray.lista.Clear()
+            bestmovelistArray.lista.add(movelistArray.lista[a], 0)
 
           Endif
 
-        Next
-        movimientoArray = bestmovelistArray.lista[Int(Rnd(0, bestmovelistArray.lista.count))].movimiento
-        '   Print "Solucion mejor: ";
-        ' For a = 0 To movimientoArray.Max
-        '   Print movimientoArray[a].escribe()
-        ' Next
-        solucion = New ClassRespuesta(bestscore, movimientoArray)
-      Endif
+        Endif
+
+      Next
+      movimientoArray = bestmovelistArray.lista[Int(Rnd(0, bestmovelistArray.lista.count))].movimiento
+      '   Print "Solucion mejor: ";
+      ' For a = 0 To movimientoArray.Max
+      '   Print movimientoArray[a].escribe()
+      ' Next
+      solucion = New ClassRespuesta(bestscore, movimientoArray)
     Endif
+    '  Endif
   Endif
   Return solucion
 
@@ -544,7 +557,7 @@ Public Function scoreSam(tablero As Classboard, side As Integer) As Float
 
 End
 
-Public Sub analizalistaparaverSaltos(ByRef movelistArray As ClassMoveListArray, board As Classboard, side As Integer)
+Public Sub analizalistaparaverSaltos(movelistArray As ClassMoveListArray, board As Classboard, side As Integer) As ClassMoveListArray
 
   Dim counter As Integer
   Dim a As Integer
@@ -556,9 +569,15 @@ Public Sub analizalistaparaverSaltos(ByRef movelistArray As ClassMoveListArray, 
   Dim movelist3 As New ClassMovimiento[]
   Dim borrarlinea As Boolean
   Dim lista As New ClassMoveList
+  Dim Arraylista As ClassMoveList[]
+
+  Dim movelistArrayFinal As New ClassmovelistArray
+  'Dim longitudinicial As String
+  movelistArrayFinal.copia(movelistArray)
 
   counter = 0
   While (movelistArray.lista[counter].movimiento.count <> 0)
+    'longitudinicial = movelistArray.lista[counter].movimiento.Max
 
     If movelistArray.lista.count <> 0 Then
       movelist = movelistArray.lista[counter].movimiento
@@ -568,22 +587,32 @@ Public Sub analizalistaparaverSaltos(ByRef movelistArray As ClassMoveListArray, 
       'FIXME: error alañadir nuevos saltos
 
       movelistArray2 = findjumps(board2, movimi.x1, movimi.y1, side)
-      If movelistArray2 <> Null Then
-        For A = 0 To movelistArray2.count - 1
-          If Not (IsNull(movelistArray2[a])) Then
-            movelist3 = New ClassMovimiento[]
-            movelist3 = movelist
 
+      If movelistArray2 <> Null Then
+        'añadir las movelistArra2 al movelistArray
+
+        For A = 0 To movelistArray2.count - 1
+
+          If Not (IsNull(movelistArray2[a])) Then
+            'FIXMEX: comprobar borrado de salto anteiro en una posicion de doble salto
+            'añade los momivientos ...
+            movelist3 = New ClassMovimiento[]
+            movelist3.Insert(movelist) 'copia de la jugada actual,
+            'añado la jugada
             For b = 0 To movelistArray2[a].movimiento.count - 1
               movelist3.Add(movelistArray2[a].movimiento[b])
-
             Next
 
-            lista.movimiento = movelist3
-
-            movelistArray.lista.Add(lista)
-            borrarlinea = True
           Endif
+
+          lista = New ClassMoveList
+          lista.movimiento.Insert(movelist3)
+
+          movelistArrayFinal.add(lista)
+          borrarlinea = True
+          lista = Null
+          movelist3 = Null
+          '   Endif
 
         Next
         ' Get rid of the current MoveList from MoveListArray
@@ -591,8 +620,7 @@ Public Sub analizalistaparaverSaltos(ByRef movelistArray As ClassMoveListArray, 
         ' was deleted
 
         If borrarlinea = True Then
-          movelistArray.lista.Delete(counter)
-
+          movelistArrayFinal.lista.Delete(counter)
         Endif
 
       Endif
@@ -605,6 +633,9 @@ Public Sub analizalistaparaverSaltos(ByRef movelistArray As ClassMoveListArray, 
     Endif
 
   Wend
+
+  movelistArray = movelistArrayFinal
+  Return movelistArray
 
 End
 
@@ -622,25 +653,25 @@ Public Function comprobarfin(tablero As Classboard, side As Integer) As Boolean
 End
 
 'Comprobar que las jugadas iniciales son iguales
-Public Sub JugadasInicialesIguales(lista As ClassMoveList[]) As ClassRespuesta
+'Public Sub JugadasInicialesIguales(lista As ClassMoveList[]) As ClassRespuesta
 
-  Dim a As Integer
-  Dim movimiento As New ClassMovimiento(0, 0, 0, 0)
-  Dim sol As ClassRespuesta
+' Dim a As Integer
+' Dim movimiento As New ClassMovimiento(0, 0, 0, 0)
+' Dim sol As ClassRespuesta
 
-  movimiento = lista[0].movimiento[0]
-  sol = New ClassRespuesta(0, lista[0].movimiento)
+' movimiento = lista[0].movimiento[0]
+' sol = New ClassRespuesta(0, lista[0].movimiento)
 
-  If lista.max = 0 Then Return sol
+' If lista.max = 0 Then Return sol
 
-  For a = 1 To lista.Max
-    If lista[a].movimiento[0] <> movimiento Then
-      'he encontrado jugadas distintas
-      sol.valor = 1
-      Return sol
-    Endif
-  Next
+' For a = 1 To lista.Max
+'   If lista[a].movimiento[0] <> movimiento Then
+'     'he encontrado jugadas distintas
+'     sol.valor = 1
+'     Return sol
+'   Endif
+' Next
 
-  Return sol
+' Return sol
 
-End
+'End

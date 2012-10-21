@@ -65,7 +65,7 @@
   }
   { ToolButton1 ToolButton
     MoveScaled(58,21,25,4)
-    Text = ("Acerca de...")
+    Text = ("Reglas y Acerca de...")
     Picture = Picture["icon:/16/help"]
     Border = True
   }
