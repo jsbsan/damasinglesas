@@ -39,3 +39,13 @@ Public Sub escribe() As String
   Return cadena
 
 End
+
+Public Sub add(listaEntrada As ClassMoveList[])
+
+  Dim a As Integer
+
+  For a = 0 To listaEntrada.Max
+    hlista.Add(listaEntrada[a])
+  Next
+
+End
