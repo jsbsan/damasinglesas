@@ -7,6 +7,7 @@ Version=0.0.6
 Component=gb.image
 Component=gb.gui
 Component=gb.form
+Component=gb.desktop
 Description="Variacion de la profundidad del analisis a menor numero de piezas"
 TabSize=2
 Translate=1

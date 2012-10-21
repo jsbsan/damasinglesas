@@ -176,7 +176,7 @@ Public Sub RelojIA()
         ' Case 4      Return scoreSam(tablero, side)
       Case 1
 
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad, 1) 'solo valores de piezas...
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 2, 1) 'solo valores de piezas...
         jugada.movimiento = solucion.mov
 
       Case 2
@@ -465,6 +465,8 @@ Public Sub ToolButtonCrearPosicion_Click()
 
   Dim a As Integer
   Dim b As Integer
+  'iniciar gridview
+  GenerarGridJugadas()
 
   drawingarea1.Tooltip = "Haga click en la celda para ir dibujando la pieza"
   editandotablero = 1
@@ -502,5 +504,17 @@ Public Sub ButtonJugar_Click()
     RelojIA()
 
   Endif
+
+End
+
+Public Sub LabelEnlace_MouseDown()
+
+  Desktop.Open("http://e6e6a5f4.linkbucks.com")
+
+End
+
+Public Sub LabelEnlace2_MouseDown()
+
+  Desktop.Open("http://e2577960.linkbucks.com")
 
 End

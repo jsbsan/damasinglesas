@@ -90,8 +90,9 @@ Public Function validsinglemove(tablero As Classboard, x As Integer, y As Intege
 
 End
 
-Public Function findjumps(tablero As Classboard, x As Integer, y As Integer, side As Integer) As ClassMoveList
+Public Function findjumps(tablero As Classboard, x As Integer, y As Integer, side As Integer) As ClassMovelist[]
 
+  Dim listaDeSaltos As New ClassMovelist[]
   Dim movimiento As ClassMovimiento
   Dim MoveList As New ClassMovelist
   Dim dx As Integer
@@ -111,7 +112,10 @@ Public Function findjumps(tablero As Classboard, x As Integer, y As Integer, sid
         MoveList.movimiento.add(movimiento)
 
         movimiento = New ClassMovimiento(x + dx, y + Side, x + dx * 2, y + Side * 2)
+        'alado lista de movimiento de saltos de peones
         MoveList.movimiento.add(movimiento)
+        listaDeSaltos.Add(movelist)
+
         anade = 1
       Endif
     Endif
@@ -129,13 +133,15 @@ Public Function findjumps(tablero As Classboard, x As Integer, y As Integer, sid
 
           movimiento = New ClassMovimiento(x + dx, y - Side, x + dx * 2, y - Side * 2)
           MoveList.movimiento.Add(movimiento)
+
+          listaDeSaltos.Add(movelist)
           anade = 1
         Endif
       Endif
     Endif
   Next
   If anade = 1 Then
-    Return movelist 'retorno los movimientos calculados
+    Return listaDeSaltos 'retorno los movimientos calculados
   Else
     Return Null
   Endif
@@ -156,7 +162,7 @@ Public Function FindAllJumps(board As Classboard, x As Integer, y As Integer, si
   Dim movelistArray2 As New ClassMoveListArray
   Dim movelist3 As New ClassMovimiento[]
   Dim counter As Integer
-  Dim devuelve As ClassMoveList
+  Dim devuelve As ClassMoveList[]
   Dim repite As Integer = 0
   Dim borrarlinea As Boolean
   'Rellenar lista de movimientos con primer grado de saltos disponiblesevi
@@ -165,7 +171,7 @@ Public Function FindAllJumps(board As Classboard, x As Integer, y As Integer, si
   devuelve = findjumps(board, x, y, side)
   '  Print devuelve; " ";
 
-  If devuelve <> Null Then movelistArray.lista.Add(devuelve)
+  If devuelve <> Null Then movelistArray.Add(devuelve)
 
   If devuelve <> Null And If movelistArray.lista.count <> 0 Then
     ' En cada salto, "hacer" el salto en un tablero temporal y
@@ -175,7 +181,7 @@ Public Function FindAllJumps(board As Classboard, x As Integer, y As Integer, si
     '  If constantes.prueba = "no" Then Goto finsaltos
 
     'para ver saltos multimpes
-    For a = 1 To constantes.squares
+    For a = 1 To 3 ' miro solo 3 saltos...constantes.squares
       analizalistaparaverSaltos(ByRef movelistArray, board, side)
     Next
 
@@ -543,7 +549,7 @@ Public Sub analizalistaparaverSaltos(ByRef movelistArray As ClassMoveListArray, 
   Dim counter As Integer
   Dim a As Integer
   Dim b As Integer
-  Dim movelistArray2 As New ClassMoveListArray
+  Dim movelistArray2 As ClassMoveList[]
   Dim board2 As Classboard
   Dim movimi As ClassMovimiento
   Dim movelist As ClassMovimiento[]
@@ -559,37 +565,38 @@ Public Sub analizalistaparaverSaltos(ByRef movelistArray As ClassMoveListArray, 
 
       board2 = MakeMove(board, movelistArray.lista[counter], False)
       movimi = movelist[movelist.max]
+      'FIXME: error alañadir nuevos saltos
 
-      movelistArray2.lista.add(findjumps(board2, movimi.x1, movimi.y1, side))
+      movelistArray2 = findjumps(board2, movimi.x1, movimi.y1, side)
+      If movelistArray2 <> Null Then
+        For A = 0 To movelistArray2.count - 1
+          If Not (IsNull(movelistArray2[a])) Then
+            movelist3 = New ClassMovimiento[]
+            movelist3 = movelist
 
-      For A = 0 To movelistArray2.lista.count - 1
-        If Not (IsNull(movelistArray2.lista[a])) Then
-          movelist3 = New ClassMovimiento[]
-          movelist3 = movelist
+            For b = 0 To movelistArray2[a].movimiento.count - 1
+              movelist3.Add(movelistArray2[a].movimiento[b])
 
-          For b = 0 To movelistArray2.lista[a].movimiento.count - 1
-            movelist3.Add(movelistArray2.lista[a].movimiento[b])
+            Next
 
-          Next
+            lista.movimiento = movelist3
 
-          lista.movimiento = movelist3
+            movelistArray.lista.Add(lista)
+            borrarlinea = True
+          Endif
 
-          movelistArray.lista.Add(lista)
-          borrarlinea = True
+        Next
+        ' Get rid of the current MoveList from MoveListArray
+        ' Back counter by one because the initiating sequence
+        ' was deleted
+
+        If borrarlinea = True Then
+          movelistArray.lista.Delete(counter)
+
         Endif
 
-      Next
-      ' Get rid of the current MoveList from MoveListArray
-      ' Back counter by one because the initiating sequence
-      ' was deleted
-
-      If borrarlinea = True Then
-        movelistArray.lista.Delete(counter)
-
       Endif
-
     Endif
-
     counter = counter + 1
 
     If counter > movelistArray.lista.max Then
