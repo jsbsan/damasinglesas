@@ -128,7 +128,6 @@ Public Sub displayboard(area As DrawingArea)
   Draw.End
 
 End
-'FIXME: revisar si hay piezas de un color en el tablero
 
 Public Sub piezasDisponibles(turno As Integer) As Boolean
 

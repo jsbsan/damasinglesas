@@ -31,25 +31,25 @@
     Cached = True
   }
   { TextLabelTitulo TextLabel
-    MoveScaled(15,1,25,5)
+    MoveScaled(15,1,25,4)
     Text = ("<b><h2>Damas Inglesas</h2></b>")
     Alignment = Align.Center
     Border = Border.Raised
   }
   { PictureBox1 PictureBox
-    MoveScaled(2,1,5,5)
+    MoveScaled(41,1,5,5)
     Picture = Picture["reina_blanco.png"]
   }
   { PictureBox2 PictureBox
-    MoveScaled(9,1,5,5)
+    MoveScaled(3,1,5,5)
     Picture = Picture["reina_negro.png"]
   }
   { PictureBox3 PictureBox
-    MoveScaled(40,0,5,6)
+    MoveScaled(46,0,5,6)
     Picture = Picture["peon_blanco.png"]
   }
   { PictureBox4 PictureBox
-    MoveScaled(46,0,5,6)
+    MoveScaled(9,0,5,6)
     Picture = Picture["peon_negro.png"]
   }
   { ToolButtonConfigurar ToolButton
@@ -84,13 +84,13 @@
     MoveScaled(57,30,27,27)
   }
   { ToolButtonCrearPosicion ToolButton
-    MoveScaled(58,17,19,4)
-    Text = ("Crear Posicion")
+    MoveScaled(58,17,14,4)
+    Text = ("Crear Pos")
     Picture = Picture["tablero-damas.png"]
     Border = True
   }
   { ButtonJugar Button
-    MoveScaled(77,17,6,4)
+    MoveScaled(72,17,6,4)
     Text = ("Jugar")
   }
   { LabelEnlace Label
@@ -108,5 +108,18 @@
     Mouse = Mouse.Pointing
     Text = ("web para jugar contra otros jugadores")
     Alignment = Align.Center
+  }
+  { Slider1 Slider
+    MoveScaled(15,5,25,2)
+    MinValue = -1100
+    MaxValue = 1100
+  }
+  { Separator1 Separator
+    MoveScaled(26,4,3,4)
+  }
+  { ToggleButtonEvaluar ToggleButton
+    MoveScaled(78,17,5,4)
+    ToolTip = ("Evaluar Posicion")
+    Text = ("Eva")
   }
 }

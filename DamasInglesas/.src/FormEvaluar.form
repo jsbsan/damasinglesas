@@ -1,0 +1,46 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,64,46)
+  { RadioButtonBlanco RadioButton
+    MoveScaled(12,5,21,4)
+    Text = ("Blanco")
+    Value = True
+  }
+  { RadioButtonNegro RadioButton
+    MoveScaled(12,10,17,4)
+    Text = ("Negro")
+  }
+  { SpinBox1 SpinBox
+    MoveScaled(25,15,8,4)
+    MinValue = 1
+    MaxValue = 4
+  }
+  { Label1 Label
+    MoveScaled(3,1,17,5)
+    Text = ("Turno....")
+  }
+  { Label2 Label
+    MoveScaled(3,15,21,4)
+    Text = ("Funcion evaluadora:")
+  }
+  { TextArea1 TextArea
+    MoveScaled(1,19,60,25)
+    Font = Font["-2"]
+    Text = (" Case 1\n      Return scoreS(tablero, side) 'solo cuenta piezas\n    Case 2\n      Return scoreSimple(tablero, side) 'cuenta piezas y reinas al centro.\n    Case 3\n      Return scoreNat(tablero, side)\n    Case 4\n      Return scoreSam(tablero, side)\n")
+  }
+  { ToolButton1 ToolButton
+    MoveScaled(37,1,16,6)
+    Text = ("Aceptar")
+    Picture = Picture["icon:/16/apply"]
+    Border = True
+  }
+  { LabelVal Label
+    MoveScaled(38,9,15,2)
+    Text = ("Valoracion:")
+  }
+  { ValueBox1 ValueBox
+    MoveScaled(51,8,12,3)
+    Text = ("ValueBox1")
+  }
+}
