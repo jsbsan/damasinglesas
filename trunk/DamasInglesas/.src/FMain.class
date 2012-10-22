@@ -176,7 +176,7 @@ Public Sub RelojIA()
         ' Case 4      Return scoreSam(tablero, side)
       Case 1
 
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad, 1) 'solo valores de piezas...
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 1, 1) 'solo valores de piezas...
         jugada.movimiento = solucion.mov
 
       Case 2
@@ -188,7 +188,11 @@ Public Sub RelojIA()
         jugada.movimiento = solucion.mov
 
     End Select
-    Print "Valoracion.."; solucion.valor
+    Print "Valoracion posicion actual...."; solucion.valor
+    'para presentar como va la partida en el slider...
+    If solucion.valor > 2000 Then solucion.valor = 1100
+    If solucion.valor < -2000 Then solucion.valor = -1100
+    Slider1.Value = solucion.valor
     If jugada.movimiento <> Null Then
       escribeMovimientoyCambiaTurno(jugada)
       tablero.displayboard(drawingarea1)
@@ -226,7 +230,7 @@ Public Sub escribeMovimientoyCambiaTurno(jugada As Classmovelist)
       turno = constantes.black
       LabelMensajes.text = "Turno del jugador Negro (" & Constantes.PlayerStrategy[Constantes.Colorblack] & ")"
       'comprobar que hay movimientos posibles, si no lo hay gana el Blanco...
-      'FIXME: turnos...
+
       listamovArray = ModuloCalculos.GenerateMoveList(tablero, turno)
       If listamovArray.lista.count = 0 Then
         message.info("Ganan las Blancas porque no puedes mover ninguna pieza")
@@ -438,8 +442,14 @@ Public Sub DrawingArea1_MouseDown()
     If xant = x And yant = y Then
       piezaAponer += 1
     Else
-      piezaAponer = 1
+      If tablero.tablero[x, y] = constantes.blank Then piezaAponer = 1
+      If tablero.tablero[x, y] = constantes.black Then piezaAponer = 2
+      If tablero.tablero[x, y] = - constantes.king Then piezaAponer = 3
+      If tablero.tablero[x, y] = constantes.white Then piezaAponer = 4
+      If tablero.tablero[x, y] = constantes.king Then piezaAponer = 0
+
     Endif
+
     Select piezaAponer
       Case 1
         tablero.tablero[x, y] = constantes.black
@@ -516,5 +526,11 @@ End
 Public Sub LabelEnlace2_MouseDown()
 
   Desktop.Open("http://e2577960.linkbucks.com")
+
+End
+
+Public Sub ToggleButtonEvaluar_Click()
+
+  FormEvaluar.Show()
 
 End

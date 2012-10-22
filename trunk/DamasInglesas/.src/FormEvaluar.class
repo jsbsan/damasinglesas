@@ -1,0 +1,43 @@
+' Gambas class file
+
+Private evaluate As Integer
+Private side As Integer
+
+Public Sub ToolButton1_Click()
+
+  ValueBox1.value = ModuloCalculos.evaluateBoard(FMain.tablero, side, Evaluate)
+
+End
+
+Public Sub SpinBox1_Change()
+
+  evaluate = SpinBox1.Value
+
+End
+
+Public Sub RadioButtonBlanco_Click()
+
+  If RadioButtonBlanco.Value = True Then
+    side = Constantes.black
+  Else
+    side = Constantes.white
+  Endif
+
+End
+
+Public Sub RadioButtonNegro_Click()
+
+  If RadioButtonNegro.Value = False Then
+    side = Constantes.black
+  Else
+    side = Constantes.white
+  Endif
+
+End
+
+Public Sub Form_Open()
+
+  side = Constantes.black
+  evaluate = SpinBox1.Value
+
+End
