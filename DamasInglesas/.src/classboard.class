@@ -86,6 +86,7 @@ Public Sub displayboard(area As DrawingArea)
 
   'fichas
   For x = 1 To htamano
+
     For y = 1 To htamano
 
       If tablero[x, y] <> Constantes.blank Then
@@ -122,7 +123,20 @@ Public Sub displayboard(area As DrawingArea)
         Endif
 
       Endif
+
+      If x = 1 Then Draw.Text(Str$(9 - y), (x - 1) * boxsize, (y - 1) * boxsize)
+      If x = 8 Then Draw.Text(Str$(9 - y), (x - 0.25) * boxsize, (y - 1) * boxsize)
+
     Next
+
+    If x = 1 Then Draw.Text(Choose(y, "A", "B", "C", "D", "E", "F", "G", "H"), (x - 1) * boxsize, (0.25) * boxsize)
+    ' If x = 8 Then Draw.Text(Choose(y, "A", "B", "C", "D", "E", "F", "G", "H"), (x - 0.25) * boxsize, (7.75) * boxsize)
+  Next
+
+  For x = 1 To htamano
+    Draw.Text(Choose(x, "A", "B", "C", "D", "E", "F", "G", "H"), (x - 0.25) * boxsize, (0.5) * boxsize)
+    Draw.Text(Choose(x, "A", "B", "C", "D", "E", "F", "G", "H"), (x - 0.25) * boxsize, (7.5) * boxsize)
+
   Next
 
   Draw.End
@@ -144,3 +158,15 @@ Public Sub piezasDisponibles(turno As Integer) As Boolean
   Return False 'no hay piezas de ese turno
 
 End
+
+Public Sub copia(board As Classboard)
+
+  Dim x As Integer, y As Integer
+  For x = 0 To 10
+    For y = 0 To 10
+      tablero[x, y] = board.tablero[x, y]
+    Next
+  Next
+
+End
+

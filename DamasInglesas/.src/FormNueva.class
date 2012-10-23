@@ -16,6 +16,8 @@ Public Sub ButtonOK_Click()
   Constantes.PlayerStrategy[Str$(Constantes.black)] = Str$(comboboxblack.index) '0 ("Humano"), 1 ("Ordenador Fácil"),2 ("Ordenador Medio"), 3 ("Ordenador Difícil"))
   Constantes.PlayerStrategy[Str$(Constantes.white)] = Str$(comboboxWhite.index) '0 ("Humano"), 1 ("Ordenador Fácil"), 2 ("Ordenador Medio"), 3 ("Ordenador Difícil"))
   fmain.finjuego = False
+  fmain.turnoInicial = fmain.turno
+  fmain.tableroInicio.copia(fmain.tablero)
   Me.Close
 
 End
@@ -43,5 +45,9 @@ End
 Public Sub RadioButtonIniciaPartidaBlanco_Click()
 
   fmain.turno = constantes.white 'el primer jugador es el blanco (white)
+
+End
+
+Public Sub Label1_MouseDown()
 
 End

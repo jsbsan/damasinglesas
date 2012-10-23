@@ -12,20 +12,18 @@
   }
   { ToolButtonGuardarPartida ToolButton
     MoveScaled(58,5,25,4)
-    Enabled = False
     Text = ("Guardar Partida")
     Picture = Picture["icon:/16/save"]
     Border = True
   }
   { ToolButtonPartidaAnterior ToolButton
     MoveScaled(58,9,25,4)
-    Enabled = False
     Text = ("Cargar Partida Anterior")
     Picture = Picture["icon:/16/open"]
     Border = True
   }
   { DrawingArea1 DrawingArea
-    MoveScaled(2,7,50,50)
+    MoveScaled(1,7,50,50)
     Mouse = Mouse.Cross
     Border = Border.Plain
     Cached = True
@@ -59,8 +57,8 @@
     Border = True
   }
   { LabelMensajes Label
-    MoveScaled(1,58,57,4)
-    Font = Font["DejaVu Sans,Italic,-2"]
+    MoveScaled(2,59,57,4)
+    Font = Font["Ubuntu,Italic,-3"]
     Text = ("Hola ¡¡Bienvenido!!... en esta linea verá mensajes del programa...")
   }
   { ToolButton1 ToolButton
@@ -74,11 +72,6 @@
     Enabled = False
     Text = ("Instrucciones: Como Jugar")
     Border = True
-  }
-  { ButtonCancela Button
-    MoveScaled(59,58,23,3)
-    Text = ("Cancelar movimiento")
-    Picture = Picture["icon:/16/cancel"]
   }
   { GridJugadas GridView
     MoveScaled(57,30,27,27)
@@ -121,5 +114,36 @@
     MoveScaled(78,17,5,4)
     ToolTip = ("Evaluar Posicion")
     Text = ("Eva")
+  }
+  { ToolButtonAtras ToolButton
+    MoveScaled(66,58,4,4)
+    Enabled = False
+    Picture = Picture["icon:/16/left"]
+    Border = True
+  }
+  { ToolButtonInicio ToolButton
+    MoveScaled(62,58,4,4)
+    Enabled = False
+    Picture = Picture["icon:/16/first"]
+    Border = True
+  }
+  { ToolButtonInicio2 ToolButton
+    MoveScaled(75,58,4,4)
+    Enabled = False
+    Picture = Picture["icon:/16/last"]
+    Border = True
+  }
+  { ToolButtonInicio3 ToolButton
+    MoveScaled(71,58,4,4)
+    Enabled = False
+    Picture = Picture["icon:/16/right"]
+    Border = True
+  }
+  { ButtonCancela Button
+    MoveScaled(8,57,28,3)
+    Font = Font["-2"]
+    ToolTip = ("Cancelar Movimiento")
+    Text = ("Cancela ficha elegida")
+    Picture = Picture["icon:/16/cancel"]
   }
 }
