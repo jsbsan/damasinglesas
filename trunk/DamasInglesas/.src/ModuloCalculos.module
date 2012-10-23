@@ -449,7 +449,7 @@ Public Function scoresimple(tablero As Classboard, side As Integer) As Float
     For y = 1 To constantes.squares
       pieza = tablero.tablero[x, y]
       If pieza = 0 Then Continue
-      score += pieza * 100
+      score += Sgn(pieza) * 200
       'valoracion de posicion reinas
       If Sgn(pieza) = Constantes.king Then
         dist = (Abs(constantes.squares / 2 - x) / 4.5 + Abs(constantes.squares / 2 - y) / constantes.squares / 2) * pieza
@@ -472,7 +472,7 @@ Public Function scoresimple(tablero As Classboard, side As Integer) As Float
     Next
   Next
 
-  score *= side
+  'score *= side
 
   Return score
 
@@ -514,7 +514,7 @@ Public Function scorenat(tablero As Classboard, side As Integer) As Float
 
     Next
   Next
-  score *= side
+  ' score *= side
 
   Return score
 
@@ -549,7 +549,7 @@ Public Function scoreSam(tablero As Classboard, side As Integer) As Float
     Next
   Next
 
-  score *= side
+  '  score *= side
 
   Return score
 

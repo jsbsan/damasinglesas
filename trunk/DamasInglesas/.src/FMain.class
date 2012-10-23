@@ -24,11 +24,16 @@ Public piezaAponer As Integer
 Public xant As Integer
 Public yant As Integer
 
+Public turnoInicial As Integer
+Public tableroInicio As New Classboard(8)
+Public CreandoPosicion As Boolean
+
 Public Sub _new()
 
 End
 
 Public Sub Form_Open()
+  'copio sonidos...
 
   constantes.squares = 8
   GenerarGridJugadas()
@@ -51,6 +56,8 @@ End
 Public Sub ToolButtonJugar_Click()
 
   Dim jugadorturno As String
+
+  Slider1.value = 0
 
   FormNueva.ShowDialog()
   GenerarGridJugadas()
@@ -176,11 +183,11 @@ Public Sub RelojIA()
         ' Case 4      Return scoreSam(tablero, side)
       Case 1
 
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 1, 1) 'solo valores de piezas...
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 2, 1) 'solo valores de piezas...
         jugada.movimiento = solucion.mov
 
       Case 2
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 1, 2) 'valoracion tablero Nat
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad, 1) 'valoracion tablero Nat
         jugada.movimiento = solucion.mov
 
       Case 3
@@ -189,10 +196,12 @@ Public Sub RelojIA()
 
     End Select
     Print "Valoracion posicion actual...."; solucion.valor
+
     'para presentar como va la partida en el slider...
     If solucion.valor > 2000 Then solucion.valor = 1100
     If solucion.valor < -2000 Then solucion.valor = -1100
-    Slider1.Value = solucion.valor
+    Slider1.Value = If(turno = 1, solucion.valor, - solucion.valor)
+    Slider1.Tooltip = "valoracion del tablero: " & Str$(If(turno = 1, solucion.valor, - solucion.valor))
     If jugada.movimiento <> Null Then
       escribeMovimientoyCambiaTurno(jugada)
       tablero.displayboard(drawingarea1)
@@ -490,6 +499,7 @@ Public Sub ToolButtonCrearPosicion_Click()
   tablero.displayboard(DrawingArea1)
   ToolButtonJugar.Enabled = False
   ButtonJugar.Enabled = True
+  CreandoPosicion = True
 
 End
 
@@ -532,5 +542,115 @@ End
 Public Sub ToggleButtonEvaluar_Click()
 
   FormEvaluar.Show()
+
+End
+
+Public Sub ToolButtonGuardarPartida_Click()
+
+  Dim destino As String
+  Dim a As Integer, b As Integer
+  Dim lineas As String
+
+  If CreandoPosicion = True Then fmain.tableroInicio.copia(fmain.tablero)
+  'abro cuadro de dialogo para que eliga el nombre de la partida a guardar
+
+  Dialog.title = "Escriba el nombre de la partida a guardar"
+  Dialog.Filter = ["*.DamasInglesas", "Datos de Partidas"]
+  If Not Dialog.SaveFile() Then
+    If Right$(Dialog.path, Len(".DamasInglesas")) <> ".DamasInglesas" Then
+      destino = Dialog.path & ".DamasInglesas"
+    Else
+      destino = Dialog.path
+    Endif
+
+    lineas = "Partida de Damas Inglesas\n"
+    lineas &= "version 0.0.8\n"
+    'guardo los siguientes datos:
+    'posicion inicial
+    lineas &= "***************** Posicion Inicial ***************** \n"
+    For a = 1 To 8
+      For b = 1 To 8
+        lineas &= Str$(tableroInicio.tablero[a, b]) & "\n"
+      Next
+    Next
+
+    'jugadas del gridview...
+    'habria que guardar las jugadas tal como las entiende el ordenador..
+    lineas &= "*****************  Jugadas ***************** \n"
+    lineas &= Str$(GridJugadas.rows.count) & "\n" ' numero de filas
+    For a = 0 To GridJugadas.rows.count - 1
+      lineas &= GridJugadas[a, 0].text & "\n"
+      Try lineas &= GridJugadas[a, 1].text & "\n" 'aqui se puede producir un error
+    Next
+    'turno inicio
+    lineas &= "***************** Turno Inicio ***************** \n"
+    lineas &= Str$(fmain.turnoInicial) & "\n"
+    lineas &= "***************** IA/humano *************** \n"
+    lineas &= "Blancas \n"
+    lineas &= Str$(Constantes.PlayerStrategy[Str$(Constantes.white)]) & "\n"
+    lineas &= "Negras \n"
+    lineas &= Str$(Constantes.PlayerStrategy[Str$(Constantes.black)]) & "\n"
+
+    File.Save(destino, lineas)
+
+  Endif
+
+End
+
+Public Sub ToolButtonPartidaAnterior_Click()
+
+  Dim contador As Integer, a As Integer, b As Integer, contadorjugadas As Integer
+  Dim cadena As New String[]
+
+  Dialog.title = "Escriba el nombre de la partida a leer"
+  Dialog.Filter = ["*.DamasInglesas", "Datos de Partidas"]
+  If Not Dialog.OpenFile() Then
+    cadena = Split(File.Load(Dialog.path), "\n")
+
+    'las dos primeras lineas es para ver si es el programa, y la verico
+    'lineas = "Partida de Damas Inglesas\n" 'linea 0
+    ' lineas &= "version 0.0.8\n" 'linea 1
+    'guardo los siguientes datos:
+    'posicion inicial
+    'lineas &= "***************** Posicion Inicial ***************** \n" 'linea 3
+    contador = 3
+    For a = 1 To 8
+      For b = 1 To 8
+        tablero.tablero[a, b] = Val(cadena[contador])
+        contador += 1
+      Next
+    Next
+
+    'jugadas del gridview...
+    'habria que guardar las jugadas tal como las entiende el ordenador..
+    '  contador += 1
+    '  lineas &= "*****************  Jugadas ***************** \n"
+    contador += 1
+    contadorjugadas = Val(cadena[contador])
+
+    For a = 0 To contadorjugadas - 1
+      contador += 1
+      GridJugadas[a, 0].text = cadena[contador]
+      contador += 1
+      GridJugadas[a, 1].text = cadena[contador]
+    Next
+    'turno inicio
+    contador += 1
+    '    lineas &= "***************** Turno Inicio ***************** \n"
+    contador += 1
+    fmain.turnoInicial = Val(cadena[contador])
+    contador += 1
+    '   lineas &= "***************** IA/humano *************** \n"
+    contador += 1
+    '  lineas &= "Blancas \n"
+    contador += 1
+
+    Constantes.PlayerStrategy[Str$(Constantes.white)] = Val(cadena[contador])
+    contador += 1
+    ' lineas &= "Negras \n"
+    contador += 1
+    Constantes.PlayerStrategy[Str$(Constantes.black)] = Val(cadena[contador])
+    tablero.displayboard(drawingarea1)
+  Endif
 
 End
