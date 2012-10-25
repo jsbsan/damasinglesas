@@ -111,7 +111,7 @@ Public Sub PictureBoxNegraPeon_mousedown()
     Case "pn"
       PictureBoxNegraPeon.Picture = Picture["n1_negro.png"]
       PictureBoxNegraPeon.tag = "n2"
-      Constantes.dibujoPeon = "n2"
+      Constantes.dibujoPeon = "n1"
 
     Case "n1"
       PictureBoxNegraPeon.Picture = Picture["peon_negro.png"]

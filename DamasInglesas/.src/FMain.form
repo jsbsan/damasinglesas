@@ -4,20 +4,20 @@
   MoveScaled(0,0,88,65)
   Icon = Picture["reina_blanco.png"]
   Resizable = False
-  { ToolButtonJugar ToolButton
-    MoveScaled(58,1,25,4)
+  { NuevoJuego ToolButton
+    MoveScaled(54,1,16,4)
     Text = ("Nuevo Juego")
     Picture = Picture["icon:/16/new"]
     Border = True
   }
   { ToolButtonGuardarPartida ToolButton
-    MoveScaled(58,5,25,4)
+    MoveScaled(54,5,32,4)
     Text = ("Guardar Partida")
     Picture = Picture["icon:/16/save"]
     Border = True
   }
   { ToolButtonPartidaAnterior ToolButton
-    MoveScaled(58,9,25,4)
+    MoveScaled(54,9,32,4)
     Text = ("Cargar Partida Anterior")
     Picture = Picture["icon:/16/open"]
     Border = True
@@ -51,7 +51,7 @@
     Picture = Picture["peon_negro.png"]
   }
   { ToolButtonConfigurar ToolButton
-    MoveScaled(58,13,25,4)
+    MoveScaled(54,13,32,4)
     Text = ("Configurar")
     Picture = Picture["icon:/16/options"]
     Border = True
@@ -62,13 +62,13 @@
     Text = ("Hola ¡¡Bienvenido!!... en esta linea verá mensajes del programa...")
   }
   { ToolButton1 ToolButton
-    MoveScaled(58,21,25,4)
+    MoveScaled(54,21,32,4)
     Text = ("Reglas y Acerca de...")
     Picture = Picture["icon:/16/help"]
     Border = True
   }
   { ToolButton2 ToolButton
-    MoveScaled(58,25,25,4)
+    MoveScaled(54,25,32,4)
     Enabled = False
     Text = ("Instrucciones: Como Jugar")
     Border = True
@@ -77,13 +77,13 @@
     MoveScaled(57,30,27,27)
   }
   { ToolButtonCrearPosicion ToolButton
-    MoveScaled(58,17,14,4)
+    MoveScaled(54,17,17,4)
     Text = ("Crear Pos")
     Picture = Picture["tablero-damas.png"]
     Border = True
   }
   { ButtonJugar Button
-    MoveScaled(72,17,6,4)
+    MoveScaled(71,17,8,4)
     Text = ("Jugar")
   }
   { LabelEnlace Label
@@ -111,31 +111,22 @@
     MoveScaled(26,4,3,4)
   }
   { ToggleButtonEvaluar ToggleButton
-    MoveScaled(78,17,5,4)
+    MoveScaled(79,17,7,4)
     ToolTip = ("Evaluar Posicion")
     Text = ("Eva")
   }
   { ToolButtonAtras ToolButton
     MoveScaled(66,58,4,4)
-    Enabled = False
     Picture = Picture["icon:/16/left"]
     Border = True
   }
   { ToolButtonInicio ToolButton
     MoveScaled(62,58,4,4)
-    Enabled = False
     Picture = Picture["icon:/16/first"]
     Border = True
   }
-  { ToolButtonInicio2 ToolButton
-    MoveScaled(75,58,4,4)
-    Enabled = False
-    Picture = Picture["icon:/16/last"]
-    Border = True
-  }
-  { ToolButtonInicio3 ToolButton
+  { ToolButtonInicioAdelante ToolButton
     MoveScaled(71,58,4,4)
-    Enabled = False
     Picture = Picture["icon:/16/right"]
     Border = True
   }
@@ -145,5 +136,11 @@
     ToolTip = ("Cancelar Movimiento")
     Text = ("Cancela ficha elegida")
     Picture = Picture["icon:/16/cancel"]
+  }
+  { ToolButtonFinJugar ToolButton
+    MoveScaled(70,1,16,4)
+    Text = ("Fin Jugar")
+    Picture = Picture["icon:/16/stop"]
+    Border = True
   }
 }
