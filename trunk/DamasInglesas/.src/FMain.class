@@ -15,7 +15,7 @@ Public tablero As New ClassBoard(constantes.squares)
 Public casilla As Integer '1 es la primera casilla seleccionada (origen) , 2 es la casilla la 2º casilla (destino)
 Public finjuego As Boolean
 Public listamovimientos As New ClassMovimiento[] 'lista de movimientos a realizar..
-
+Public tableroTemporal As New Classboard(8)
 Public ejecutajugada As Boolean 'revisa si la jugada introducida por un humano se puede hacer
 
 'editar un tablero...
@@ -27,6 +27,7 @@ Public yant As Integer
 Public turnoInicial As Integer
 Public tableroInicio As New Classboard(8)
 Public CreandoPosicion As Boolean
+Public contadorboton As Integer
 
 Public Sub _new()
 
@@ -48,12 +49,12 @@ End
 Public Sub ToolButtonConfigurar_Click()
 
   FormConfigurar.ShowDialog
-  tablero.inicio(Constantes.squares)
+  ' tablero.inicio(Constantes.squares)
   tablero.displayboard(DrawingArea1)
 
 End
 
-Public Sub ToolButtonJugar_Click()
+Public Sub NuevoJuego_Click()
 
   Dim jugadorturno As String
 
@@ -191,7 +192,7 @@ Public Sub RelojIA()
         jugada.movimiento = solucion.mov
 
       Case 3
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 1, 2)
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad, 2)
         jugada.movimiento = solucion.mov
 
     End Select
@@ -266,11 +267,13 @@ Public Sub GenerarGridJugadas()
     .mode = Select.Single 'para que aparezca el cursor
     .header = 3
     .rows.count = 0
-    .columns.count = 2
+    .columns.count = 4
     .Columns[0].title = "Negras"
     .Columns[1].title = "Blancas"
     .Columns[0].width = 100
     .Columns[1].width = 100
+    .Columns[2].width = 0
+    .Columns[3].width = 0
     .font.name = "Bitstream Charter"
     .font.size = 8
     .Background = 16777215
@@ -497,7 +500,7 @@ Public Sub ToolButtonCrearPosicion_Click()
   Next
 
   tablero.displayboard(DrawingArea1)
-  ToolButtonJugar.Enabled = False
+  NuevoJuego.Enabled = False
   ButtonJugar.Enabled = True
   CreandoPosicion = True
 
@@ -580,8 +583,11 @@ Public Sub ToolButtonGuardarPartida_Click()
     lineas &= Str$(GridJugadas.rows.count) & "\n" ' numero de filas
     For a = 0 To GridJugadas.rows.count - 1
       lineas &= GridJugadas[a, 0].text & "\n"
-      Try lineas &= GridJugadas[a, 1].text & "\n" 'aqui se puede producir un error
+      lineas &= GridJugadas[a, 1].text & "\n"
+      lineas &= GridJugadas[a, 2].text & "\n"
+      lineas &= GridJugadas[a, 3].text & "\n"
     Next
+
     'turno inicio
     lineas &= "***************** Turno Inicio ***************** \n"
     lineas &= Str$(fmain.turnoInicial) & "\n"
@@ -628,11 +634,18 @@ Public Sub ToolButtonPartidaAnterior_Click()
     contador += 1
     contadorjugadas = Val(cadena[contador])
 
+    GridJugadas.columns.count = 4
+    GridJugadas.rows.count = contadorjugadas
+
     For a = 0 To contadorjugadas - 1
       contador += 1
       GridJugadas[a, 0].text = cadena[contador]
       contador += 1
       GridJugadas[a, 1].text = cadena[contador]
+      contador += 1
+      GridJugadas[a, 2].text = cadena[contador]
+      contador += 1
+      GridJugadas[a, 3].text = cadena[contador]
     Next
     'turno inicio
     contador += 1
@@ -652,5 +665,121 @@ Public Sub ToolButtonPartidaAnterior_Click()
     Constantes.PlayerStrategy[Str$(Constantes.black)] = Val(cadena[contador])
     tablero.displayboard(drawingarea1)
   Endif
+
+End
+
+Public Sub ToolButtonInicioAdelante_Click()
+
+  Dim a As Integer, jugada As New String[]
+  Dim movelist As New Classmovelist
+  Dim filas As Integer, mostrar As Integer
+
+  tableroTemporal = New Classboard(8)
+
+  If contadorboton < ((GridJugadas.Rows.count * 2) - 1) Then
+    contadorboton += 1
+    'recorro todos las jugadas...
+    For a = 0 To contadorboton
+      filas = Int(a / 2) 'fila hasta llegar a mostrar
+      mostrar = If(espar(a), 2, 3) 'columna a mostrar 2 es negras, 3 es blanca
+
+      jugada = Split(GridJugadas[filas, mostrar].text, "\n")
+
+      movelist = convierteJugada(jugada)
+
+      tableroTemporal = ModuloCalculos.MakeMove(tableroTemporal, movelist, True)
+    Next
+
+    tableroTemporal.displayboard(DrawingArea1)
+    GridJugadas.row = Int(contadorboton / 2)
+    GridJugadas.column = If(espar(contadorboton), 0, 1)
+    GridJugadas_Select()
+  Endif
+
+End
+
+Public Sub ToolButtonInicio_Click()
+
+  'mostrar el tablero inicial....
+  '
+  tableroInicio.displayboard(DrawingArea1)
+
+  contadorboton = -1
+  tableroTemporal.copia(tableroInicio)
+
+End
+
+Public Function espar(a As Integer) As Boolean
+
+  If (Int(a / 2) * 2) = a Then Return True
+
+  Return False
+
+End
+
+Public Function convierteJugada(jugada As String[]) As ClassMoveList
+
+  Dim a As Integer, b As Integer
+  Dim movelist As New ClassMoveList
+  Dim cadenaarray As New String[] 'cadena de movimientos
+  Dim cadenaarray2 As New String[]
+  Dim movimiento As New String[]
+  Dim movimi As ClassMovimiento
+
+  For a = 0 To jugada.count - 1
+    'split de  jugadas con saltos "|"
+    cadenaarray = Split(jugada[a], "|")
+    'obtengo los mivimientos intermedio
+    For b = 0 To cadenaarray.count - 1
+      'veo los movimientos de uno en uno
+      cadenaarray2 = Split(cadenaarray[b], "-")
+      movimi = New ClassMovimiento(Val(cadenaarray2[0]), Val(cadenaarray2[1]), Val(cadenaarray2[2]), Val(cadenaarray2[3]))
+      movelist.movimiento.add(movimi)
+
+    Next
+
+  Next
+  '  Print movelist.escribe()
+  Return movelist
+
+End
+
+Public Sub ToolButtonAtras_Click()
+
+  Dim a As Integer, jugada As New String[]
+  Dim movelist As New Classmovelist
+  Dim filas As Integer, mostrar As Integer
+
+  tableroTemporal = New Classboard(8)
+
+  If contadorboton > 0 Then
+    contadorboton -= 1
+    'recorro todos las jugadas...
+    For a = 0 To contadorboton
+      filas = Int(a / 2) 'fila hasta llegar a mostrar
+      mostrar = If(espar(a), 2, 3) 'columna a mostrar 2 es negras, 3 es blanca
+
+      jugada = Split(GridJugadas[filas, mostrar].text, "\n")
+
+      movelist = convierteJugada(jugada)
+
+      tableroTemporal = ModuloCalculos.MakeMove(tableroTemporal, movelist, True)
+    Next
+
+    tableroTemporal.displayboard(DrawingArea1)
+    GridJugadas.row = Int(contadorboton / 2)
+    GridJugadas.column = If(espar(contadorboton), 0, 1)
+    GridJugadas_Select()
+  Endif
+
+End
+
+Public Sub ToolButtonFinJugar_Click()
+
+  finjuego = True
+  'para activar boton de posicion y boton de jugar posicion
+  ToolButtonCrearPosicion.Enabled = True
+  ButtonJugar.enabled = True
+  NuevoJuego.enabled = True
 
 End

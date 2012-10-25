@@ -309,7 +309,7 @@ Public Sub minimax(board As Classboard, side As Integer, Depth As Integer, Depth
   Dim score As Float
   Dim bestscore As Float
   Dim nextmini As ClassRespuesta
-  Dim boardtemp As Classboard
+  Dim boardtemp As New Classboard(8)
 
   Dim bestmovelistArray As New ClassMovelistArray
 
@@ -318,7 +318,17 @@ Public Sub minimax(board As Classboard, side As Integer, Depth As Integer, Depth
     solucion = New ClassRespuesta(evaluateBoard(board, side, evaluator), Null)
     Return solucion
   Else
+
     movelistArray = GenerateMoveList(board, side)
+
+    'evaluar si solo existe en el tablero actual una sola jugada a ejecutar...
+    If movelistArray.lista.count = 1 And depth = 0 Then
+      'solo un movimiento posible...
+      boardtemp = MakeMove(board, movelistArray.lista[0], side)
+      solucion = New ClassRespuesta(evaluateBoard(boardtemp, side, evaluator), movelistArray.lista[0].movimiento)
+      Return solucion
+    Endif
+
     'TODO: *** Escribo los movimientos posibles... ***
     '  Print "Movimientos posibles...Turno "; side; " Profundidad: "; depth
     '  Print movelistArray.escribe()
@@ -405,14 +415,7 @@ Public Function scoreS(tablero As Classboard, side As Integer) As Float
   Dim score As Float
   Dim pieza As Integer
   Dim dist As Float
-  '¿puedo mover? No--> he perdido, dar la minima puntuacion
-  '¿tengo piezas? No--> he perdido, dar la minima puntuacion
 
-  If comprobarfin(tablero, side) = True Then
-    score = -99999
-    Return score
-  Endif
-  'valoracion de piezas
   For x = 1 To constantes.squares
     For y = 1 To constantes.squares
 
@@ -436,43 +439,39 @@ Public Function scoresimple(tablero As Classboard, side As Integer) As Float
   Dim score As Float
   Dim pieza As Integer
   Dim dist As Float
-  '¿puedo mover? No--> he perdido, dar la minima puntuacion
-  '¿tengo piezas? No--> he perdido, dar la minima puntuacion
 
-  If comprobarfin(tablero, side) = True Then
-    score = -99999
-
-    Return score
-  Endif
   'valoracion de piezas
   For x = 1 To constantes.squares
     For y = 1 To constantes.squares
       pieza = tablero.tablero[x, y]
       If pieza = 0 Then Continue
-      score += Sgn(pieza) * 200
+      'piezas en posiciones iniciales:
+      If x = 1 Or x = constantes.squares Then
+        score += 0.5 * pieza
+      Endif
+
+      score += pieza * 200
       'valoracion de posicion reinas
       If Sgn(pieza) = Constantes.king Then
-        dist = (Abs(constantes.squares / 2 - x) / 4.5 + Abs(constantes.squares / 2 - y) / constantes.squares / 2) * pieza
-        score += dist
+        dist = (Abs(x - constantes.squares / 2 - x) + Abs(y - constantes.squares / 2)) / 4.5
+        score += dist * pieza * 4
       Else
-        If pieza = -1 Then  'negra
-          'FIXMe: pieza -1
-          score += Sgn(constantes.squares - x) / constantes.squares * 2
-          score += Sgn(constantes.squares / 2 - y) / constantes.squares / 2
-        Else
-          If pieza = 1 Then
-            'blancas, cuantos mas cerca de las filas 1, y centrales mejor
-            score += (x) * 2 / constantes.squares / 2
-            score += Sgn(constantes.squares / 2 - y) / constantes.squares / 2
+
+        'bonus por abance al final
+        If Abs(pieza) = constantes.piece Then
+          If side = 1 Then
+            score += 0.125 * x * pieza
+          Else
+            score += 0.125 * (constantes.squares + 1 - x) * pieza
+
           Endif
         Endif
-
       Endif
 
     Next
   Next
 
-  'score *= side
+  score *= side
 
   Return score
 
