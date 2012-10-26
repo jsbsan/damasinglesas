@@ -185,11 +185,11 @@ Public Sub RelojIA()
         ' Case 4      Return scoreSam(tablero, side)
       Case 1
 
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, 2, 1) 'solo valores de piezas...
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad, 1) 'solo valores de piezas...
         jugada.movimiento = solucion.mov
 
       Case 2
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 1, 1) 'valoracion tablero Nat
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 1, 2) 'solo valores de piezas...+ posicion
         jugada.movimiento = solucion.mov
 
       Case 3
@@ -201,7 +201,7 @@ Public Sub RelojIA()
         '    jugada.movimiento = solucion.mov
 
     End Select
-    Print "Valoracion posicion actual...."; solucion.valor
+    'Print "Valoracion posicion actual...."; solucion.valor
 
     'para presentar como va la partida en el slider...
     If solucion.valor > 2000 Then solucion.valor = 1100
@@ -731,7 +731,7 @@ Public Function convierteJugada(jugada As String[]) As ClassMoveList
   Dim movelist As New ClassMoveList
   Dim cadenaarray As New String[] 'cadena de movimientos
   Dim cadenaarray2 As New String[]
-  Dim movimiento As New String[]
+  ' Dim movimiento As New String[]
   Dim movimi As ClassMovimiento
 
   For a = 0 To jugada.count - 1

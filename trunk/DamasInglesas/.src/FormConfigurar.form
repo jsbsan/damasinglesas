@@ -31,13 +31,13 @@
   { Frame2 Frame
     MoveScaled(2,21,28,14)
     Text = ("Inteligencia Artificial")
-    { ComboBox2 ComboBox
+    { ComboBoxWhite ComboBox
       MoveScaled(5,4,21,3)
       ReadOnly = True
       List = [("Humano"), ("Ordenador Fácil"), ("Ordenador Medio"), ("Ordenador Difícil")]
       Text = ("Humano")
     }
-    { ComboBox1 ComboBox
+    { ComboBoxBlack ComboBox
       MoveScaled(5,9,21,3)
       ReadOnly = True
       List = [("Humano"), ("Ordenador Fácil"), ("Ordenador Medio"), ("Ordenador Difícil")]
