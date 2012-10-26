@@ -8,7 +8,7 @@ Public Function GenerateMoveList(tablero As Classboard, side As Integer) As Clas
   Dim movelist As New ClassMovelist 'contiene una lista de movimientos
   Dim movelistArray As New ClassMoveListArray 'contiene un array de listas de movimientos (lista de lista)
   Dim MastermovelistArray As New ClassMoveListArray 'contiene un array de listas de movimientos (lista de lista)
-  Dim tempmovelistarray As New ClassMoveListArray
+  ' Dim tempmovelistarray As New ClassMoveListArray
   Dim x As Integer
   Dim y As Integer
   Dim dx As Integer
@@ -165,14 +165,14 @@ End
 Public Function FindAllJumps(board As Classboard, x As Integer, y As Integer, side As Integer) As ClassMoveListarray
 
   Dim a As Integer
-  Dim b As Integer
-  Dim movelist As New ClassMovimiento[]
+  '  Dim b As Integer
+  'Dim movelist As New ClassMovimiento[]
   Dim movelistArray As New ClassMoveListArray
   Dim lista As New ClassMoveList
   Dim movimi As ClassMovimiento
-  Dim board2 As Classboard
-  Dim movelist2 As New ClassMovimiento[]
-  Dim movelistArray2 As New ClassMoveListArray
+  ' Dim board2 As Classboard
+  'Dim movelist2 As New ClassMovimiento[]
+  ' Dim movelistArray2 As New ClassMoveListArray
   Dim movelist3 As New ClassMovimiento[]
   Dim counter As Integer
   Dim devuelve As ClassMoveList[]
@@ -567,7 +567,7 @@ Public Sub analizalistaparaverSaltos(movelistArray As ClassMoveListArray, board 
   Dim movelist3 As New ClassMovimiento[]
   Dim borrarlinea As Boolean
   Dim lista As New ClassMoveList
-  Dim Arraylista As ClassMoveList[]
+  'Dim Arraylista As ClassMoveList[]
 
   Dim movelistArrayFinal As New ClassmovelistArray
   'Dim longitudinicial As String
@@ -681,13 +681,13 @@ Public Function AlphaBeta(board As Classboard, side As Integer, depth As Integer
   Dim intermediasolucion As ClassRespuesta
   Dim movimientoArray As New ClassMovimiento[]
   Dim movelistArray As New ClassMoveListArray
-  Dim movimi As ClassMovimiento
-  Dim score As Float
-  Dim bestscore As Float
-  Dim nextmini As ClassRespuesta
+  ' Dim movimi As ClassMovimiento
+  'Dim score As Float
+  ' Dim bestscore As Float
+  ' Dim nextmini As ClassRespuesta
   Dim boardtemp As New Classboard(8)
 
-  Dim bestmovelistArray As New ClassMovelistArray
+  'Dim bestmovelistArray As New ClassMovelistArray
 
   If Depth > depthmax Then
     'hemos accedido a la profundidad de busqueda, retorna el valor del tablero y lista nula de movimientos

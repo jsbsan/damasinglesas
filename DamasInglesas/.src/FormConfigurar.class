@@ -6,6 +6,8 @@ Public Sub Form_Open()
   Me.Caption = "Configuración..."
   ToggleButtonBlanca.background = Constantes.ColorDarkSquare
   ToggleButtonNegra.background = Constantes.ColorLightSquare
+  ComboBoxWhite.index = constantes.PlayerStrategy[constantes.white]
+  ComboBoxBlack.index = constantes.PlayerStrategy[constantes.black]
   Me.center
 
 End
@@ -138,5 +140,17 @@ Public Sub RadioButton10_Click()
 
   constantes.squares = 10
   Constantes.initialrows = 4
+
+End
+
+Public Sub ComboBoxBlack_Click()
+
+  constantes.PlayerStrategy[constantes.black] = ComboBoxBlack.index
+
+End
+
+Public Sub ComboBoxWhite_Click()
+
+  constantes.PlayerStrategy[constantes.white] = ComboBoxWhite.index
 
 End

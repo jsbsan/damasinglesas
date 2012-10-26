@@ -62,7 +62,7 @@ Public Sub displayboard(area As DrawingArea)
   Dim colorpieza As String
   Dim x As Integer
   Dim y As Integer
-  Dim fillcolor As Integer
+  '  Dim fillcolor As Integer
   Dim boxsize As Float
   ''note: hola
   boxsize = area.h / htamano
@@ -162,6 +162,7 @@ End
 Public Sub copia(board As Classboard)
 
   Dim x As Integer, y As Integer
+
   For x = 0 To 10
     For y = 0 To 10
       tablero[x, y] = board.tablero[x, y]
@@ -169,4 +170,3 @@ Public Sub copia(board As Classboard)
   Next
 
 End
-

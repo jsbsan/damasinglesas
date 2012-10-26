@@ -1,7 +1,7 @@
 ' Gambas class file
 
 Property valor As Integer
-
+Private hvalor As Integer
 Property lista As ClassMoveList[]
 Private hlista As New ClassMoveList[]
 
@@ -19,9 +19,13 @@ End
 
 Private Function valor_Read() As Integer
 
+  Return hvalor
+
 End
 
 Private Sub valor_Write(Value As Integer)
+
+  hvalor = value
 
 End
 
