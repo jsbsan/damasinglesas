@@ -3,6 +3,7 @@
 Public Function GenerateMoveList(tablero As Classboard, side As Integer) As ClassMoveListArray
 
   'generando movimiento
+
   Dim mov As ClassMovimiento
   Dim movelist As New ClassMovelist 'contiene una lista de movimientos
   Dim movelistArray As New ClassMoveListArray 'contiene un array de listas de movimientos (lista de lista)
@@ -454,15 +455,15 @@ Public Function scoresimple(tablero As Classboard, side As Integer) As Float
       'valoracion de posicion reinas
       If Sgn(pieza) = Constantes.king Then
         dist = (Abs(x - constantes.squares / 2 - x) + Abs(y - constantes.squares / 2)) / 4.5
-        score += dist * pieza * 4
+        score += dist * pieza
       Else
 
         'bonus por abance al final
         If Abs(pieza) = constantes.piece Then
           If side = 1 Then
-            score += 0.125 * x * pieza
+            score += x * pieza
           Else
-            score += 0.125 * (constantes.squares + 1 - x) * pieza
+            score += (constantes.squares + 1 - x) * pieza
 
           Endif
         Endif
@@ -671,3 +672,64 @@ End
 ' Return sol
 
 'End
+
+'Public Sub minimax(board As Classboard, side As Integer, Depth As Integer, DepthMax As Integer, Evaluator As Integer) As ClassRespuesta
+Public Function AlphaBeta(board As Classboard, side As Integer, depth As Integer, DepthMax As Integer, alfa As Integer, beta As Integer, Evaluator As Integer) As Classrespuesta
+
+  Dim a As Integer
+  Dim solucion As ClassRespuesta
+  Dim intermediasolucion As ClassRespuesta
+  Dim movimientoArray As New ClassMovimiento[]
+  Dim movelistArray As New ClassMoveListArray
+  Dim movimi As ClassMovimiento
+  Dim score As Float
+  Dim bestscore As Float
+  Dim nextmini As ClassRespuesta
+  Dim boardtemp As New Classboard(8)
+
+  Dim bestmovelistArray As New ClassMovelistArray
+
+  If Depth > depthmax Then
+    'hemos accedido a la profundidad de busqueda, retorna el valor del tablero y lista nula de movimientos
+    solucion = New ClassRespuesta(evaluateBoard(board, side, evaluator), Null)
+    Return solucion
+  Else
+
+    movelistArray = GenerateMoveList(board, side)
+
+    'evaluar si solo existe en el tablero actual una sola jugada a ejecutar...
+    If movelistArray.lista.count = 1 And depth = 0 Then
+      'solo un movimiento posible...
+      boardtemp = MakeMove(board, movelistArray.lista[0], side)
+      solucion = New ClassRespuesta(evaluateBoard(boardtemp, side, evaluator), movelistArray.lista[0].movimiento)
+      Return solucion
+    Endif
+
+    If movelistArray.lista.count = 0 Then
+      'lista vacia
+      solucion = New ClassRespuesta(evaluateBoard(board, side, evaluator), Null)
+      Return solucion
+    Else
+
+      'por cada hijo del nodo
+      For a = 0 To movelistArray.lista.Max
+        If intermediasolucion <> Null Then
+
+          If beta > alfa Then alfa = beta
+          intermediasolucion = AlphaBeta(MakeMove(board, movelistArray.lista[a], False), - side, depth + 1, depthmax, - beta, - alfa, Evaluator)
+
+          If (- intermediasolucion.valor) > beta Then
+            beta = - intermediasolucion.valor
+            solucion = New ClassRespuesta(alfa, movelistArray.lista[a].movimiento)
+          Else
+            Break
+
+          Endif
+        Endif
+      Next
+      Return solucion
+
+    Endif
+  Endif
+
+End

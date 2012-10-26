@@ -6,18 +6,21 @@
   Resizable = False
   { NuevoJuego ToolButton
     MoveScaled(54,1,16,4)
+    ToolTip = ("jugar una nueva partida")
     Text = ("Nuevo Juego")
     Picture = Picture["icon:/16/new"]
     Border = True
   }
   { ToolButtonGuardarPartida ToolButton
     MoveScaled(54,5,32,4)
+    ToolTip = ("guarda partida actual en el disco duro")
     Text = ("Guardar Partida")
     Picture = Picture["icon:/16/save"]
     Border = True
   }
   { ToolButtonPartidaAnterior ToolButton
     MoveScaled(54,9,32,4)
+    ToolTip = ("cargar partida anteriormente guardada")
     Text = ("Cargar Partida Anterior")
     Picture = Picture["icon:/16/open"]
     Border = True
@@ -52,6 +55,7 @@
   }
   { ToolButtonConfigurar ToolButton
     MoveScaled(54,13,32,4)
+    ToolTip = ("configurar: colores, piezas, inteligencia")
     Text = ("Configurar")
     Picture = Picture["icon:/16/options"]
     Border = True
@@ -63,14 +67,16 @@
   }
   { ToolButton1 ToolButton
     MoveScaled(54,21,32,4)
-    Text = ("Reglas y Acerca de...")
+    ToolTip = ("informacion sobre la aplicación")
+    Text = ("Acerca de...")
     Picture = Picture["icon:/16/help"]
     Border = True
   }
   { ToolButton2 ToolButton
     MoveScaled(54,25,32,4)
-    Enabled = False
+    ToolTip = ("¿como jugar a las damas inglesas?")
     Text = ("Instrucciones: Como Jugar")
+    Picture = Picture["icon:/16/internet"]
     Border = True
   }
   { GridJugadas GridView
@@ -78,12 +84,14 @@
   }
   { ToolButtonCrearPosicion ToolButton
     MoveScaled(54,17,17,4)
+    ToolTip = ("definir piezas en el tablero")
     Text = ("Crear Pos")
     Picture = Picture["tablero-damas.png"]
     Border = True
   }
   { ButtonJugar Button
     MoveScaled(71,17,8,4)
+    ToolTip = ("jugar posicion")
     Text = ("Jugar")
   }
   { LabelEnlace Label
@@ -117,16 +125,19 @@
   }
   { ToolButtonAtras ToolButton
     MoveScaled(66,58,4,4)
+    ToolTip = ("Retroceder una jugada")
     Picture = Picture["icon:/16/left"]
     Border = True
   }
   { ToolButtonInicio ToolButton
     MoveScaled(62,58,4,4)
+    ToolTip = ("Ir al principio del juego")
     Picture = Picture["icon:/16/first"]
     Border = True
   }
   { ToolButtonInicioAdelante ToolButton
     MoveScaled(71,58,4,4)
+    ToolTip = ("Siguiente jugada")
     Picture = Picture["icon:/16/right"]
     Border = True
   }
@@ -139,6 +150,7 @@
   }
   { ToolButtonFinJugar ToolButton
     MoveScaled(70,1,16,4)
+    ToolTip = ("Finalizar partida actual")
     Text = ("Fin Jugar")
     Picture = Picture["icon:/16/stop"]
     Border = True
