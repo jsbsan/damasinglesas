@@ -36,6 +36,7 @@ End
 Public Sub Form_Open()
   'copio sonidos...
 
+  Try Copy "bit.ogg" To "/tmp/bit.ogg"
   constantes.squares = 8
   GenerarGridJugadas()
   Me.Caption = ("Damas Inglesas")
@@ -112,7 +113,7 @@ Public Sub jugar()
     '' aplicar movimiento
     tablero = ModuloCalculos.makemove(tablero, listamovimientos, True)
     '' mostrar tablero
-    tablero.displayboard(DrawingArea1)
+    tablero.displayboard(DrawingArea1, listamovimientos)
   Endif
 
   movimientos = ModuloCalculos.generateMove(tablero, Constantes.black)
@@ -126,7 +127,7 @@ Public Sub jugar()
     '' aplicar movimiento
     tablero = ModuloCalculos.makemove(tablero, listamovimientos, True)
     '' mostrar tablero
-    tablero.displayboard(DrawingArea1)
+    tablero.displayboard(DrawingArea1, listamovimientos)
   Endif
 
 End
@@ -210,14 +211,14 @@ Public Sub RelojIA()
     Slider1.Tooltip = "valoracion del tablero: " & Str$(If(turno = 1, solucion.valor, - solucion.valor))
     If jugada.movimiento <> Null Then
       escribeMovimientoyCambiaTurno(jugada)
-      tablero.displayboard(drawingarea1)
-      Wait 0.5
+      tablero.displayboard(drawingarea1, jugada.movimiento)
+      'Wait 0.5
       '  Print jugada.escribe()
       ']
       If constantes.PlayerStrategy[Str$(turno)] <> "0" Then
         'es el turno del ordenador
         comprobarVictoria()
-        '  Wait 1000 'espero 0.5 segundo para recibir ordenes del GUI
+
         RelojIA()
         comprobarVictoria()
       Endif
@@ -237,11 +238,15 @@ Public Sub escribeMovimientoyCambiaTurno(jugada As Classmovelist)
 
   If finjuego <> True Then
     tablero = ModuloCalculos.MakeMove(tablero, jugada, False)
-    tablero.displayboard(drawingarea1)
+    tablero.displayboard(drawingarea1, jugada.movimiento)
     jugada.escribegrid(GridJugadas, turno)
     comprobarVictoria()
     'cambio turno
+    'TODO: espera 0.75 segundos para jugar de nuevo
+    Exec ["play", "/tmp/bit.ogg"]
+    Wait 0.75 'espero medio segundo para ver bien la jugada
     If turno = constantes.white Then
+
       turno = constantes.black
       LabelMensajes.text = "Turno del jugador Negro (" & Constantes.PlayerStrategy[Constantes.Colorblack] & ")"
       'comprobar que hay movimientos posibles, si no lo hay gana el Blanco...
@@ -432,7 +437,7 @@ Public Sub DrawingArea1_MouseDown()
 
             If constantes.PlayerStrategy[Str$(turno)] <> "0" Then
               'el siguiente jugador es el ordenador
-              Wait 0.5
+              ' Wait 0.5
               RelojIA()
             Endif
             ButtonCancela_Click()

@@ -3,9 +3,9 @@
 Public Sub Form_Open()
 
   fmain.turno = constantes.black 'jugador negro empieza el juego
+  ComboBoxWhite.index = constantes.PlayerStrategy[constantes.white]
+  ComboBoxBlack.index = constantes.PlayerStrategy[constantes.black]
 
-  comboboxblack.index = 0
-  comboboxWhite.index = 0
   Me.center
 
 End
