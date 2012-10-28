@@ -1,0 +1,296 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2002-11-01 04:27+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .project:1
+msgid "DamasInglesas"
+msgstr "Checkers"
+
+#: .project:2
+msgid "Juego de damas inglesas"
+msgstr "checkers game"
+
+#: FMain.class:42
+msgid "Damas Inglesas"
+msgstr "Checkers"
+
+#: FMain.class:107
+msgid "Ganador es el jugador Negro"
+msgstr "winner is the player black"
+
+#: FMain.class:122
+msgid "Ganador es el jugador Blanco"
+msgstr "Winner is the player white"
+
+#: FMain.class:162
+msgid ". Pensando..."
+msgstr ". Thinking ..."
+
+#: FMain.form:38
+msgid "jugar una nueva partida"
+msgstr "Play new game"
+
+#: FMain.form:39
+msgid "Nuevo Juego"
+msgstr "game game"
+
+#: FMain.form:46
+msgid "guarda partida actual en el disco duro"
+msgstr "current game saves on the hard drive"
+
+#: FMain.form:47
+msgid "Guardar Partida"
+msgstr "save game"
+
+#: FMain.form:54
+msgid "cargar partida anteriormente guardada"
+msgstr "load previously saved game"
+
+#: FMain.form:55
+msgid "Cargar Partida Anterior"
+msgstr "Open previous game"
+
+#: FMain.form:69
+msgid "<b><h2>Damas Inglesas</h2></b>"
+msgstr "<b><h2>Checkers</h2></b>"
+
+#: FMain.form:96
+msgid "configurar: colores, piezas, inteligencia"
+msgstr "configure: colors, pieces, intelligence"
+
+#: FMain.form:97
+msgid "Configurar"
+msgstr "configure"
+
+#: FMain.form:105
+msgid "Hola ¡¡Bienvenido!!... en esta linea verá mensajes del programa..."
+msgstr "Hello welcome ... vera line in this program messages"
+
+#: FMain.form:110
+msgid "informacion sobre la aplicación"
+msgstr "Application Information"
+
+#: FMain.form:111
+msgid "Acerca de..."
+msgstr "About.."
+
+#: FMain.form:118
+msgid "¿como jugar a las damas inglesas?"
+msgstr "How to play checkers?"
+
+#: FMain.form:119
+msgid "Instrucciones: Como Jugar"
+msgstr "Instructions: how to play"
+
+#: FMain.form:130
+msgid "definir piezas en el tablero"
+msgstr "set pieces on the board"
+
+#: FMain.form:131
+msgid "Crear Pos"
+msgstr "position"
+
+#: FMain.form:138
+msgid "jugar posicion"
+msgstr "play position"
+
+#: FMain.form:139
+msgid "Jugar"
+msgstr "play"
+
+#: FMain.form:147
+msgid "web para jugar contra otra máquina"
+msgstr "web to play against another machine"
+
+#: FMain.form:156
+msgid "web para jugar contra otros jugadores"
+msgstr "web to play against other players"
+
+#: FMain.form:172
+msgid "Evaluar Posicion"
+msgstr "Evaluate position"
+
+#: FMain.form:173
+msgid "Eva"
+msgstr "Eva"
+
+#: FMain.form:178
+msgid "Retroceder una jugada"
+msgstr "play back a"
+
+#: FMain.form:185
+msgid "Ir al principio del juego"
+msgstr "go to the top of the game"
+
+#: FMain.form:192
+msgid "Siguiente jugada"
+msgstr "next move"
+
+#: FMain.form:200
+msgid "Cancelar Movimiento"
+msgstr "cancels Movement"
+
+#: FMain.form:201
+msgid "Cancela ficha elegida"
+msgstr "Cancels chosen piece"
+
+#: FMain.form:207
+msgid "Finalizar partida actual"
+msgstr "Finish current game"
+
+#: FMain.form:208
+msgid "Fin Jugar"
+msgstr "End game"
+
+#: FormAcercaDe.form:21
+msgid ""
+"<h2>Damas Inglesas</h2><br>\n"
+"Programado en Gambas3<br>\n"
+"Realizado por Julio Sanchez Berro<br>\n"
+"<br>\n"
+"Basado en el programa realizado en SmallBasic<br>\n"
+"por KC Goldberg e Hijos<br>\n"
+msgstr ""
+"<h2>Checkers</h2><br>\n"
+"Programmed Gambas3\n"
+"Made by Julio Sanchez\n"
+"<br>\n"
+"Based on the program in SmallBASIC<br>\n"
+"by KC Goldberg and children\n"
+
+#: FormAcercaDe.form:34 FormEvaluar.form:52 FormNueva.form:48
+msgid "Aceptar"
+msgstr "Ok"
+
+#: FormConfigurar.form:35
+msgid "Colores Casillas"
+msgstr "Colours boxes"
+
+#: FormConfigurar.form:39
+msgid "Negra:"
+msgstr "black:"
+
+#: FormConfigurar.form:45
+msgid "Blanca:"
+msgstr "White"
+
+#: FormConfigurar.form:60
+msgid "OK"
+msgstr "OK"
+
+#: FormConfigurar.form:65
+msgid "Inteligencia Artificial"
+msgstr "artificial intelligence"
+
+#: FormConfigurar.form:70 FormNueva.form:42
+msgid "Humano"
+msgstr "human"
+
+#: FormConfigurar.form:70 FormNueva.form:42
+msgid "Negamax Dificil"
+msgstr "negamax difficult"
+
+#: FormConfigurar.form:70
+msgid "Ordenador Difícil"
+msgstr "I.A. difficult"
+
+#: FormConfigurar.form:70
+msgid "Ordenador Fácil"
+msgstr "I.A. easy"
+
+#: FormConfigurar.form:70
+msgid "Ordenador Medio"
+msgstr "I.A. middle"
+
+#: FormConfigurar.form:77 FormNueva.form:54
+msgid "AlphaBeta (en pruebas)"
+msgstr ""
+
+#: FormConfigurar.form:94
+msgid "Piezas "
+msgstr "Pieces"
+
+#: FormConfigurar.form:110
+msgid "Dama"
+msgstr "King"
+
+#: FormConfigurar.form:115
+msgid "Peon"
+msgstr "Peon"
+
+#: FormConfigurar.form:146
+msgid "Tamaño Tablero"
+msgstr "board size"
+
+#: FormConfigurar.form:150
+msgid "8x8 (64 casillas)"
+msgstr ""
+
+#: FormConfigurar.form:155
+msgid "10x10 (100 casillas)"
+msgstr ""
+
+#: FormEvaluar.form:19
+msgid "Blanco"
+msgstr "White"
+
+#: FormEvaluar.form:25
+msgid "Negro"
+msgstr "black"
+
+#: FormEvaluar.form:36
+msgid "Turno...."
+msgstr "turn ..."
+
+#: FormEvaluar.form:41
+msgid "Funcion evaluadora:"
+msgstr "evaluation function"
+
+#: FormEvaluar.form:47
+msgid ""
+" Case 1\n"
+"      Return scoreS(tablero, side) 'solo cuenta piezas\n"
+"    Case 2\n"
+"      Return scoreSimple(tablero, side) 'cuenta piezas y reinas al centro.\n"
+"    Case 3\n"
+"      Return scoreNat(tablero, side)\n"
+"    Case 4\n"
+"      Return scoreSam(tablero, side)\n"
+msgstr ""
+
+#: FormEvaluar.form:59
+msgid "Valoracion:"
+msgstr "Rating:"
+
+#: FormEvaluar.form:64
+msgid "ValueBox1"
+msgstr ""
+
+#: FormNueva.form:21
+msgid "Jugador:"
+msgstr "player:"
+
+#: FormNueva.form:42
+msgid "IA Difícil"
+msgstr "I.A. difficult"
+
+#: FormNueva.form:42
+msgid "IA Fácil"
+msgstr "I.A. easy"
+
+#: FormNueva.form:42
+msgid "IA Medio"
+msgstr "I.A. Middle"
+
+#: FormNueva.form:60
+msgid "Inicia Partida"
+msgstr "Game starts"

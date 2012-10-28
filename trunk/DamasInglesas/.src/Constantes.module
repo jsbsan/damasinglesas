@@ -28,6 +28,8 @@ Public PlayerStrategy As New Collection 'estrategia de los jugadores black y whi
 Public dibujoPeon As String = "peon"
 Public dibujoReina As String = "reina"
 
+Public jugadoractual As Integer
+
 Public Sub iniciar()
 
   FMain.finjuego = False

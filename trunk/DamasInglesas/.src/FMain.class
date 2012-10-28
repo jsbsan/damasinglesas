@@ -196,11 +196,15 @@ Public Sub RelojIA()
       Case 3
         solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 2, 2)
         jugada.movimiento = solucion.mov
-        '   Case 4
-        'ModuloCalculos.AlphaBeta(tablero, turno, prof, promaxima, alfa, beta, evaluator,turno inicial)
-        '     solucion = ModuloCalculos.AlphaBeta(tablero, turno, 0, profundidad, -9999, +9999, 2)
-        '    jugada.movimiento = solucion.mov
-
+      Case 4
+        constantes.jugadoractual = turno
+        'ModuloCalculos.AlphaBeta(tablero, turno, 0, promaxima, alfa, beta, evaluator)
+        solucion = ModuloCalculos.negamax(tablero, turno, 0, profundidad + 3, -9999, +9999, 2)
+        jugada.movimiento = solucion.mov
+      Case 5
+        constantes.jugadoractual = turno
+        solucion = ModuloCalculos.alfabeta(tablero, turno, 0, profundidad + 1, -9999, +9999, 2)
+        jugada.movimiento = solucion.mov
     End Select
     'Print "Valoracion posicion actual...."; solucion.valor
 
