@@ -673,11 +673,17 @@ End
 
 'End
 
-'Public Sub minimax(board As Classboard, side As Integer, Depth As Integer, DepthMax As Integer, Evaluator As Integer) As ClassRespuesta
-Public Function AlphaBeta(board As Classboard, side As Integer, depth As Integer, DepthMax As Integer, alfa As Integer, beta As Integer, Evaluator As Integer) As Classrespuesta
+''**********************************************************************
+''**********************************************************************
+''probando otros algoritmos de calculo de mejor jugada
+''**********************************************************************
+''**********************************************************************
+'url de referencia: http://en.wikipedia.org/wiki/Negamax
+Public Function negamax(board As Classboard, side As Integer, depth As Integer, DepthMax As Integer, alfa As Float, beta As Float, Evaluator As Integer) As Classrespuesta
 
   Dim a As Integer
   Dim solucion As ClassRespuesta
+  Dim alfasolucion As New ClassRespuesta(alfa, Null)
   Dim intermediasolucion As ClassRespuesta
   Dim movimientoArray As New ClassMovimiento[]
   Dim movelistArray As New ClassMoveListArray
@@ -689,15 +695,70 @@ Public Function AlphaBeta(board As Classboard, side As Integer, depth As Integer
 
   'Dim bestmovelistArray As New ClassMovelistArray
 
-  If Depth > depthmax Then
+  If Depth = depthmax Then
     'hemos accedido a la profundidad de busqueda, retorna el valor del tablero y lista nula de movimientos
     solucion = New ClassRespuesta(evaluateBoard(board, side, evaluator), Null)
     Return solucion
   Else
-
     movelistArray = GenerateMoveList(board, side)
 
-    'evaluar si solo existe en el tablero actual una sola jugada a ejecutar...
+    For a = 0 To movelistArray.lista.Max
+      intermediasolucion = negamax(MakeMove(board, movelistArray.lista[a], False), - side, depth + 1, depthmax, - beta, - alfa, Evaluator)
+      If intermediasolucion = Null Then
+        Print "producido un null"
+      Endif
+      If (- intermediasolucion.valor) >= beta Then
+        alfasolucion.valor = - intermediasolucion.valor
+        alfasolucion.mov = intermediasolucion.mov
+        Return alfasolucion
+
+      Endif
+      If (- intermediasolucion.valor) >= alfasolucion.valor Then
+        alfasolucion.valor = - intermediasolucion.valor
+        alfasolucion.mov = movelistArray.lista[a].movimiento
+      Endif
+
+    Next
+
+    Return alfasolucion
+
+  Endif
+
+End
+
+'--------------------------------------------------------------------
+'alfabeta
+'--------------------------------------------------------------------
+'http://es.wikipedia.org/wiki/Poda_alfa-beta
+'
+Public Function alfabeta(board As Classboard, side As Integer, depth As Integer, DepthMax As Integer, alfa As Float, beta As Float, Evaluator As Integer) As Classrespuesta
+
+  Dim bestscore As Float
+
+  Dim boardtemp As New Classboard(8)
+
+  Dim bestmovelistArray As New ClassMovelistArray
+  Dim a As Integer, b As Float, aa As Float
+
+  Dim solucion As ClassRespuesta
+  Dim alfasolucion As New ClassRespuesta(alfa, Null)
+  Dim intermediasolucion As ClassRespuesta, prov As ClassRespuesta
+  Dim movimientoArray As New ClassMovimiento[]
+  Dim movelistArray As New ClassMoveListArray
+  ' Dim movimi As ClassMovimiento
+  'Dim score As Float
+  ' Dim bestscore As Float
+
+  'Dim bestmovelistArray As New ClassMovelistArray
+
+  If Depth = depthmax Then
+    'hemos accedido a la profundidad de busqueda, retorna el valor del tablero y lista nula de movimientos
+    solucion = New ClassRespuesta(evaluateBoard(board, side, evaluator), Null)
+    Return solucion
+  Else
+    'calcula movimientos posibles
+    movelistArray = GenerateMoveList(board, side)
+
     If movelistArray.lista.count = 1 And depth = 0 Then
       'solo un movimiento posible...
       boardtemp = MakeMove(board, movelistArray.lista[0], side)
@@ -705,29 +766,52 @@ Public Function AlphaBeta(board As Classboard, side As Integer, depth As Integer
       Return solucion
     Endif
 
+    'TODO: *** Escribo los movimientos posibles... ***
+    '  Print "Movimientos posibles...Turno "; side; " Profundidad: "; depth
+    '  Print movelistArray.escribe()
+
     If movelistArray.lista.count = 0 Then
       'lista vacia
       solucion = New ClassRespuesta(evaluateBoard(board, side, evaluator), Null)
       Return solucion
     Else
 
-      'por cada hijo del nodo
+      'varias jugadas a elegir...
+      bestmovelistArray.lista.Add(movelistArray.lista[0])
+
       For a = 0 To movelistArray.lista.Max
-        If intermediasolucion <> Null Then
 
-          If beta > alfa Then alfa = beta
-          intermediasolucion = AlphaBeta(MakeMove(board, movelistArray.lista[a], False), - side, depth + 1, depthmax, - beta, - alfa, Evaluator)
+        intermediasolucion = alfabeta(MakeMove(board, movelistArray.lista[a], False), - side, depth + 1, depthmax, - beta, - alfa, Evaluator)
 
-          If (- intermediasolucion.valor) > beta Then
-            beta = - intermediasolucion.valor
-            solucion = New ClassRespuesta(alfa, movelistArray.lista[a].movimiento)
+        aa = - intermediasolucion.valor
+        alfa = Max(alfa, aa)
+
+        If beta < alfa Then
+          Break
+        Else
+
+          If beta = alfa Then
+            'la añado a la lista de mejores...
+
+            bestmovelistArray.lista.Add(movelistArray.lista[a])
+
           Else
-            Break
+
+            bestscore = alfa
+            bestmovelistArray.lista.Clear()
+            bestmovelistArray.lista.add(movelistArray.lista[a], 0)
 
           Endif
+
         Endif
+
       Next
-      Return solucion
+
+      movimientoArray = bestmovelistArray.lista[Int(Rnd(0, bestmovelistArray.lista.count))].movimiento
+
+      alfasolucion = New ClassRespuesta(bestscore, movimientoArray)
+
+      Return alfasolucion
 
     Endif
   Endif
