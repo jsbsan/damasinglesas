@@ -3,7 +3,7 @@
 Title=DamasInglesas
 Startup=FMain
 Icon=tablero-damas.png
-Version=0.0.15
+Version=0.0.18
 Component=gb.image
 Component=gb.gui
 Component=gb.form
