@@ -154,6 +154,7 @@ Public Sub RelojIA()
   Dim profundidad As Integer
   Dim solucion As ClassRespuesta
   Dim jugada As New Classmovelist
+  Dim evaluafinal As Integer
 
   If finjuego = True Then Return
 
@@ -175,6 +176,13 @@ Public Sub RelojIA()
     If tablero.piezasDisponibles(- turno) < 6 Then
       profundidad = 4
     Endif
+    'modificar funcion evaluacion para finales...
+    'si supera los 30 movimientos, el centtro adquire mucha mas importancia...
+    If GridJugadas.Rows.count > 19 Then
+      'he elegido 19 movimento de una manera aleatoria... podia ser 20 o 30 movientos... lo mejor seria contar las
+      'piezas que hubiera y decidir cuando estamos pasando del medio juego al final de partida...
+      evaluafinal = 10
+    Endif
 
     Select constantes.PlayerStrategy[Str$(turno)]
         'NOTE: tipos de inteligencia artificial IA
@@ -194,16 +202,16 @@ Public Sub RelojIA()
         jugada.movimiento = solucion.mov
 
       Case 3
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 2, 2)
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 2, 2 + evaluafinal)
         jugada.movimiento = solucion.mov
       Case 4
         constantes.jugadoractual = turno
         'ModuloCalculos.AlphaBeta(tablero, turno, 0, promaxima, alfa, beta, evaluator)
-        solucion = ModuloCalculos.negamax(tablero, turno, 0, profundidad + 3, -9999, +9999, 2)
+        solucion = ModuloCalculos.negamax(tablero, turno, 0, profundidad + 2, -9999, +9999, 2 + evaluafinal)
         jugada.movimiento = solucion.mov
       Case 5
         constantes.jugadoractual = turno
-        solucion = ModuloCalculos.alfabeta(tablero, turno, 0, profundidad + 1, -9999, +9999, 2)
+        solucion = ModuloCalculos.MinimaxAlfaBeta2(tablero, turno, 0, profundidad + 3, 2 + evaluafinal) 'en pruebas...
         jugada.movimiento = solucion.mov
     End Select
     'Print "Valoracion posicion actual...."; solucion.valor
@@ -282,8 +290,8 @@ Public Sub GenerarGridJugadas()
     .header = 3
     .rows.count = 0
     .columns.count = 4
-    .Columns[0].title = "Negras"
-    .Columns[1].title = "Blancas"
+    .Columns[0].title = ("Negras")
+    .Columns[1].title = ("Blancas")
     .Columns[0].width = 100
     .Columns[1].width = 100
     .Columns[2].width = 0

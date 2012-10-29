@@ -35,6 +35,14 @@ msgstr "Winner is the player white"
 msgid ". Pensando..."
 msgstr ". Thinking ..."
 
+#: FMain.class:285
+msgid "Negras"
+msgstr "Black"
+
+#: FMain.class:286
+msgid "Blancas"
+msgstr "White"
+
 #: FMain.form:38
 msgid "jugar una nueva partida"
 msgstr "Play new game"

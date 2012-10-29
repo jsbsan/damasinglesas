@@ -168,16 +168,13 @@ Public Function FindAllJumps(board As Classboard, x As Integer, y As Integer, si
   '  Dim b As Integer
   'Dim movelist As New ClassMovimiento[]
   Dim movelistArray As New ClassMoveListArray
-  Dim lista As New ClassMoveList
-  Dim movimi As ClassMovimiento
+
   ' Dim board2 As Classboard
   'Dim movelist2 As New ClassMovimiento[]
   ' Dim movelistArray2 As New ClassMoveListArray
-  Dim movelist3 As New ClassMovimiento[]
-  Dim counter As Integer
+
   Dim devuelve As ClassMoveList[]
-  Dim repite As Integer = 0
-  Dim borrarlinea As Boolean
+
   'Rellenar lista de movimientos con primer grado de saltos disponiblesevi
 
   devuelve = findjumps(board, x, y, side)
@@ -306,7 +303,7 @@ Public Sub minimax(board As Classboard, side As Integer, Depth As Integer, Depth
   Dim solucion As ClassRespuesta
   Dim movimientoArray As New ClassMovimiento[]
   Dim movelistArray As New ClassMoveListArray
-  Dim movimi As ClassMovimiento
+
   Dim score As Float
   Dim bestscore As Float
   Dim nextmini As ClassRespuesta
@@ -400,7 +397,9 @@ Public Function evaluateBoard(tablero As Classboard, side As Integer, evaluator 
       Return scoreNat(tablero, side)
     Case 4
       Return scoreSam(tablero, side)
-
+    Case 12
+      'evaluacion de final del partida... valora mejor,colocar damas en el centro.
+      Return scoreFinal(tablero, side)
   End Select
 
 End
@@ -415,7 +414,6 @@ Public Function scoreS(tablero As Classboard, side As Integer) As Float
   Dim y As Integer
   Dim score As Float
   Dim pieza As Integer
-  Dim dist As Float
 
   For x = 1 To constantes.squares
     For y = 1 To constantes.squares
@@ -555,6 +553,49 @@ Public Function scoreSam(tablero As Classboard, side As Integer) As Float
 
 End
 
+Public Function scoreFinal(tablero As Classboard, side As Integer) As Float
+
+  Dim x As Integer
+  Dim y As Integer
+  Dim score As Float
+  Dim pieza As Integer
+  Dim dist As Float
+
+  'valoracion de piezas
+  For x = 1 To constantes.squares
+    For y = 1 To constantes.squares
+      pieza = tablero.tablero[x, y]
+      If pieza = 0 Then Continue
+      'piezas en posiciones iniciales:
+
+      score += pieza * 200
+      'valoracion de posicion reinas
+      If Sgn(pieza) = Constantes.king Then
+        dist = (Abs(x - constantes.squares / 2 - x) + Abs(y - constantes.squares / 2)) / 4.5 * 3
+        score += dist * pieza
+      Else
+
+        'bonus por abance al final
+        If Abs(pieza) = constantes.piece Then
+          If side = 1 Then
+            score += x * pieza
+          Else
+            score += (constantes.squares + 1 - x) * pieza
+
+          Endif
+        Endif
+      Endif
+
+    Next
+  Next
+
+  score *= side
+
+  Return score
+
+End
+
+'-------------------------------------------------------------------------------------------------------------------------------------------
 Public Sub analizalistaparaverSaltos(movelistArray As ClassMoveListArray, board As Classboard, side As Integer) As ClassMoveListArray
 
   Dim counter As Integer
@@ -685,13 +726,12 @@ Public Function negamax(board As Classboard, side As Integer, depth As Integer, 
   Dim solucion As ClassRespuesta
   Dim alfasolucion As New ClassRespuesta(alfa, Null)
   Dim intermediasolucion As ClassRespuesta
-  Dim movimientoArray As New ClassMovimiento[]
+
   Dim movelistArray As New ClassMoveListArray
   ' Dim movimi As ClassMovimiento
   'Dim score As Float
   ' Dim bestscore As Float
   ' Dim nextmini As ClassRespuesta
-  Dim boardtemp As New Classboard(8)
 
   'Dim bestmovelistArray As New ClassMovelistArray
 
@@ -730,35 +770,35 @@ End
 'alfabeta
 '--------------------------------------------------------------------
 'http://es.wikipedia.org/wiki/Poda_alfa-beta
-'
-Public Function alfabeta(board As Classboard, side As Integer, depth As Integer, DepthMax As Integer, alfa As Float, beta As Float, Evaluator As Integer) As Classrespuesta
+'http://foro.elhacker.net/java/src_ia_juego_3_en_raya_con_poda_alfabeta-t361567.0.html
 
+'' *****************************
+'' otra forma de implementarlo....
+'' url: http://code.google.com/p/intart/source/browse/trunk/juegos/base/_AgenteHeuristico.java?r=35
+'' *****************************
+Public Function MinimaxAlfaBeta2(board As Classboard, side As Integer, Depth As Integer, DepthMax As Integer, Evaluator As Integer) As ClassRespuesta
+
+  Dim a As Integer
+  Dim solucion As ClassRespuesta
+  Dim movimientoArray As New ClassMovimiento[]
+  Dim movelistArray As New ClassMoveListArray
+  '  Dim movimi As ClassMovimiento
+  Dim score As Float
   Dim bestscore As Float
-
+  '  Dim nextmini As ClassRespuesta
   Dim boardtemp As New Classboard(8)
 
   Dim bestmovelistArray As New ClassMovelistArray
-  Dim a As Integer, b As Float, aa As Float
 
-  Dim solucion As ClassRespuesta
-  Dim alfasolucion As New ClassRespuesta(alfa, Null)
-  Dim intermediasolucion As ClassRespuesta, prov As ClassRespuesta
-  Dim movimientoArray As New ClassMovimiento[]
-  Dim movelistArray As New ClassMoveListArray
-  ' Dim movimi As ClassMovimiento
-  'Dim score As Float
-  ' Dim bestscore As Float
-
-  'Dim bestmovelistArray As New ClassMovelistArray
-
-  If Depth = depthmax Then
+  If Depth > depthmax Then
     'hemos accedido a la profundidad de busqueda, retorna el valor del tablero y lista nula de movimientos
     solucion = New ClassRespuesta(evaluateBoard(board, side, evaluator), Null)
     Return solucion
   Else
-    'calcula movimientos posibles
+
     movelistArray = GenerateMoveList(board, side)
 
+    'evaluar si solo existe en el tablero actual una sola jugada a ejecutar...
     If movelistArray.lista.count = 1 And depth = 0 Then
       'solo un movimiento posible...
       boardtemp = MakeMove(board, movelistArray.lista[0], side)
@@ -766,54 +806,109 @@ Public Function alfabeta(board As Classboard, side As Integer, depth As Integer,
       Return solucion
     Endif
 
-    'TODO: *** Escribo los movimientos posibles... ***
-    '  Print "Movimientos posibles...Turno "; side; " Profundidad: "; depth
-    '  Print movelistArray.escribe()
-
     If movelistArray.lista.count = 0 Then
       'lista vacia
       solucion = New ClassRespuesta(evaluateBoard(board, side, evaluator), Null)
       Return solucion
     Else
-
-      'varias jugadas a elegir...
-      bestmovelistArray.lista.Add(movelistArray.lista[0])
-
+      bestscore = -999999
       For a = 0 To movelistArray.lista.Max
+        '[
 
-        intermediasolucion = alfabeta(MakeMove(board, movelistArray.lista[a], False), - side, depth + 1, depthmax, - beta, - alfa, Evaluator)
+        score = alfabeta2(MakeMove(board, movelistArray.lista[a], False), -99999, +99999, depth, depthmax, - side, side, evaluator)
+        If score = bestscore Then
+          'la añado a la lista de mejores...
 
-        aa = - intermediasolucion.valor
-        alfa = Max(alfa, aa)
-
-        If beta < alfa Then
-          Break
+          bestmovelistArray.lista.Add(movelistArray.lista[a])
         Else
 
-          If beta = alfa Then
-            'la añado a la lista de mejores...
+          If score > bestscore Then
 
-            bestmovelistArray.lista.Add(movelistArray.lista[a])
-
-          Else
-
-            bestscore = alfa
+            bestscore = score
             bestmovelistArray.lista.Clear()
             bestmovelistArray.lista.add(movelistArray.lista[a], 0)
 
           Endif
 
         Endif
-
+        ']
       Next
 
       movimientoArray = bestmovelistArray.lista[Int(Rnd(0, bestmovelistArray.lista.count))].movimiento
 
-      alfasolucion = New ClassRespuesta(bestscore, movimientoArray)
-
-      Return alfasolucion
-
+      solucion = New ClassRespuesta(bestscore, movimientoArray)
     Endif
+
+  Endif
+  Return solucion
+
+End
+
+Public Function alfabeta2(board As Classboard, alfa As Float, beta As Float, depth As Integer, DepthMax As Integer, side As Integer, jugadorMaximiza As Integer, Evaluator As Integer) As Float
+
+  '  Dim solucion As ClassRespuesta
+  Dim movelistArray As ClassMoveListArray
+  ' Dim boardtemp As Classboard
+  Dim a As Integer, valor As Float
+
+  If Depth = depthmax Then
+    'hemos accedido a la profundidad de busqueda, retorna el valor del tablero y lista nula de movimientos
+    Return (evaluateBoard(board, side, evaluator))
+  Else
+
+    ' estado es final.... devolver el maximo valor heuristica
+    '   If movelistArray.lista.count = 0 Then
+    'es un estado final del juego
+    ' Si es un estado final se devuelve el mayor valor para esta heur ística posible
+
+    '  Return 9999
+    '  Endif
+  Endif
+
+  'calcula movimientos posibles
+  movelistArray = GenerateMoveList(board, side)
+
+  '' El jugador actual es el que maximiza...
+  If side = jugadorMaximiza Then
+    If movelistArray <> Null Then
+      '  If movelistArray.lista.count = 1 And depth = 0 Then
+      'solo un movimiento posible...
+      '    boardtemp = MakeMove(board, movelistArray.lista[0], side)
+      '    Return (evaluateBoard(boardtemp, side, evaluator)
+      '   Endif
+
+      'varias jugadas a elegir...
+      For a = 0 To movelistArray.lista.Max
+        valor = alfabeta2(MakeMove(board, movelistArray.lista[a], False), alfa, beta, depth + 1, depthmax, - side, jugadorMaximiza, Evaluator)
+        If valor > alfa Then
+          alfa = valor ' se encuentra un nuevo mejor movimiento para el jugador actual
+        Endif
+        If alfa >= beta Then
+          Return alfa 'se hace poda
+        Endif
+      Next
+
+      Return alfa 'mejor movimiento para el jugador actual
+    Endif
+    Return alfabeta2(board, alfa, beta, depth, depthmax, - side, jugadorMaximiza, Evaluator)
+
+  Else
+    '' el jugador actual es el minimiza
+    If movelistArray <> Null Then
+      For a = 0 To movelistArray.lista.Max
+        valor = alfabeta2(MakeMove(board, movelistArray.lista[a], False), alfa, beta, depth + 1, depthmax, - side, jugadorMaximiza, Evaluator)
+        If valor < beta Then
+          beta = valor 'El oponente encontr ó un nuevo mejor movimiento para él (peor para el jugador actual)
+
+        Endif
+        If alfa >= beta Then
+          Return beta 'se hace poda
+        Endif
+      Next
+
+      Return beta 'mejor movimiento para el jugador actual
+    Endif
+    Return alfabeta2(board, alfa, beta, depth, depthmax, - side, jugadorMaximiza, Evaluator)
   Endif
 
 End
