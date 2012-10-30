@@ -1,0 +1,284 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2002-11-01 04:27+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: FormEvaluar.form:47
+msgid " Case 1\n      Return scoreS(tablero, side) 'solo cuenta piezas\n    Case 2\n      Return scoreSimple(tablero, side) 'cuenta piezas y reinas al centro.\n    Case 3\n      Return scoreNat(tablero, side)\n    Case 4\n      Return scoreSam(tablero, side)\n"
+msgstr ""
+
+#: FMain.form:118
+msgid "¿como jugar a las damas inglesas?"
+msgstr "Come si gioca a dama inglese?"
+
+#: FMain.class:163
+msgid ". Pensando..."
+msgstr ". Pensiero...."
+
+#: FMain.form:69
+msgid "<b><h2>Damas Inglesas</h2></b>"
+msgstr ""
+
+#: FormAcercaDe.form:21
+msgid "<h2>Damas Inglesas</h2><br>\nProgramado en Gambas3<br>\nRealizado por Julio Sanchez Berro<br>\n<br>\nBasado en el programa realizado en SmallBasic<br>\npor KC Goldberg e Hijos<br>\n"
+msgstr "<h2>Dama Inglese</h2><br>\nProgrammato in Gambas3<br>\nRealizzato da Julio Sanchez  Berro<br>\n<br>\nSulla base del programma KC SmallBASIC <br>da Goldberg e Figli\n"
+
+#: FormConfigurar.form:155
+msgid "10x10 (100 casillas)"
+msgstr ""
+
+#: FormConfigurar.form:150
+msgid "8x8 (64 casillas)"
+msgstr ""
+
+#: FormAcercaDe.form:34 FormEvaluar.form:52 FormNueva.form:48
+msgid "Aceptar"
+msgstr "accettare"
+
+#: FMain.form:111
+msgid "Acerca de..."
+msgstr "Informazioni su ..."
+
+#: FormConfigurar.form:77 FormNueva.form:42
+msgid "AlphaBeta (en pruebas)"
+msgstr "AlphaBeta"
+
+#: FormConfigurar.form:45
+msgid "Blanca:"
+msgstr "bianco"
+
+#: FMain.class:294
+msgid "Blancas"
+msgstr "bianco"
+
+#: FormEvaluar.form:19
+msgid "Blanco"
+msgstr "bianco"
+
+#: FMain.form:201
+msgid "Cancela ficha elegida"
+msgstr "Annulla scheda selezionata"
+
+#: FMain.form:200
+msgid "Cancelar Movimiento"
+msgstr "Annulla Movimento"
+
+#: FMain.form:55
+msgid "Cargar Partida Anterior"
+msgstr "Carica partita precedente"
+
+#: FMain.form:54
+msgid "cargar partida anteriormente guardada"
+msgstr "legge precedentemente partita salvata"
+
+#: FormConfigurar.form:35
+msgid "Colores Casillas"
+msgstr "Colori Box"
+
+#: FMain.form:97
+msgid "Configurar"
+msgstr "set"
+
+#: FMain.form:96
+msgid "configurar: colores, piezas, inteligencia"
+msgstr "Set: colori, pezzi, l'intelligenza"
+
+#: FMain.form:131
+msgid "Crear Pos"
+msgstr "Crea Pos"
+
+#: FormConfigurar.form:110
+msgid "Dama"
+msgstr "Dama"
+
+#: FMain.class:42
+msgid "Damas Inglesas"
+msgstr "Dama Inglese"
+
+#: .project:1
+msgid "DamasInglesas"
+msgstr "DamasInglese"
+
+#: FMain.form:130
+msgid "definir piezas en el tablero"
+msgstr "Impostare pezzi sulla scacchiera"
+
+#: FMain.form:173
+msgid "Eva"
+msgstr "Val."
+
+#: FMain.form:172
+msgid "Evaluar Posicion"
+msgstr "Valutare la posizione"
+
+#: FMain.form:208
+msgid "Fin Jugar"
+msgstr "fine giocare"
+
+#: FMain.form:207
+msgid "Finalizar partida actual"
+msgstr "Fine partita in corso"
+
+#: FormEvaluar.form:41
+msgid "Funcion evaluadora:"
+msgstr "valutazione della funzione"
+
+#: FMain.class:122
+msgid "Ganador es el jugador Blanco"
+msgstr "Il vincitore è il giocatore bianco"
+
+#: FMain.class:107
+msgid "Ganador es el jugador Negro"
+msgstr "Il vincitore è il giocatore nero"
+
+#: FMain.form:46
+msgid "guarda partida actual en el disco duro"
+msgstr "Salva partita in corso sul disco rigido"
+
+#: FMain.form:47
+msgid "Guardar Partida"
+msgstr "Salva partita"
+
+#: FMain.form:105
+msgid "Hola ¡¡Bienvenido!!... en esta linea verá mensajes del programa..."
+msgstr "Ciao Benvenuto! ... in questa linea programmare i messaggi ...."
+
+#: FormConfigurar.form:70 FormNueva.form:42
+msgid "Humano"
+msgstr "¡Nuevo! Haz clic en las palabras anteriores para editar y ver traducciones alternativas. Descartar"
+
+#: FormNueva.form:42
+msgid "IA Difícil"
+msgstr "I.A. Difficile "
+
+#: FormNueva.form:42
+msgid "IA Fácil"
+msgstr "I.A. Facile"
+
+#: FormNueva.form:42
+msgid "IA Medio"
+msgstr "I.A.Medio "
+
+#: FMain.form:110
+msgid "informacion sobre la aplicación"
+msgstr "Informazioni sull'applicazione"
+
+#: FormNueva.form:60
+msgid "Inicia Partida"
+msgstr "Farnell Inizia"
+
+#: FMain.form:119
+msgid "Instrucciones: Como Jugar"
+msgstr "Istruzioni: come giocare ..?"
+
+#: FormConfigurar.form:65
+msgid "Inteligencia Artificial"
+msgstr "Intelligenza Artificiale"
+
+#: FMain.form:185
+msgid "Ir al principio del juego"
+msgstr "Vai all'inizio del gioco"
+
+#: .project:2
+msgid "Juego de damas inglesas"
+msgstr "Checkers gioco"
+
+#: FormNueva.form:21
+msgid "Jugador:"
+msgstr "giocatore"
+
+#: FMain.form:139
+msgid "Jugar"
+msgstr "giocare"
+
+#: FMain.form:138
+msgid "jugar posicion"
+msgstr "gioco della posizione"
+
+#: FMain.form:38
+msgid "jugar una nueva partida"
+msgstr "Gioca un nuovo gioco"
+
+#: FormConfigurar.form:70 FormNueva.form:42
+msgid "Negamax Dificil"
+msgstr "Difficile Negamax"
+
+#: FormConfigurar.form:39
+msgid "Negra:"
+msgstr "nero"
+
+#: FMain.class:293
+msgid "Negras"
+msgstr "nero"
+
+#: FormEvaluar.form:25
+msgid "Negro"
+msgstr "nero"
+
+#: FMain.form:39
+msgid "Nuevo Juego"
+msgstr "nuovo gioco"
+
+#: FormConfigurar.form:60
+msgid "OK"
+msgstr "bene"
+
+#: FormConfigurar.form:70
+msgid "Ordenador Difícil"
+msgstr "difficile"
+
+#: FormConfigurar.form:70
+msgid "Ordenador Fácil"
+msgstr "facile"
+
+#: FormConfigurar.form:70
+msgid "Ordenador Medio"
+msgstr "medio"
+
+#: FormConfigurar.form:115
+msgid "Peon"
+msgstr "fattorino"
+
+#: FormConfigurar.form:94
+msgid "Piezas "
+msgstr "Pezzi"
+
+#: FMain.form:178
+msgid "Retroceder una jugada"
+msgstr "Eseguire un gioco"
+
+#: FMain.form:192
+msgid "Siguiente jugada"
+msgstr "gioco Avanti"
+
+#: FormConfigurar.form:146
+msgid "Tamaño Tablero"
+msgstr "Dimensioni scheda"
+
+#: FormEvaluar.form:36
+msgid "Turno...."
+msgstr "Girare"
+
+#: FormEvaluar.form:59
+msgid "Valoracion:"
+msgstr "valutazione"
+
+#: FormEvaluar.form:64
+msgid "ValueBox1"
+msgstr ""
+
+#: FMain.form:147
+msgid "web para jugar contra otra máquina"
+msgstr "web di giocare contro un'altra macchina"
+
+#: FMain.form:156
+msgid "web para jugar contra otros jugadores"
+msgstr "web, per giocare contro altri giocatori"
+

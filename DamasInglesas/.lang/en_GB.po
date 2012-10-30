@@ -31,15 +31,15 @@ msgstr "winner is the player black"
 msgid "Ganador es el jugador Blanco"
 msgstr "Winner is the player white"
 
-#: FMain.class:162
+#: FMain.class:163
 msgid ". Pensando..."
 msgstr ". Thinking ..."
 
-#: FMain.class:285
+#: FMain.class:293
 msgid "Negras"
 msgstr "Black"
 
-#: FMain.class:286
+#: FMain.class:294
 msgid "Blancas"
 msgstr "White"
 
@@ -219,7 +219,7 @@ msgstr "I.A. easy"
 msgid "Ordenador Medio"
 msgstr "I.A. middle"
 
-#: FormConfigurar.form:77 FormNueva.form:54
+#: FormConfigurar.form:77 FormNueva.form:42
 msgid "AlphaBeta (en pruebas)"
 msgstr ""
 
