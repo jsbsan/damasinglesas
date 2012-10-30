@@ -55,7 +55,7 @@ Private Sub tamano_Write(Value As Integer)
 
 End
 
-Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMovimiento[])
+Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMovimiento[], Optional PiezaX As Integer, Optional PiezaY As Integer, Optional ValorAnimadoX As Float, Optional ValorAnimadoY As Float)
 
   Dim a As Integer
   Dim pieza As Picture
@@ -113,22 +113,44 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
 
         Endif
 
-        'damas...
-        If Abs(tablero[x, y]) = Constantes.king Then
+        '-------------------
+        'dibujando piezas
+        If x = PiezaX And y = PiezaY And ValorAnimadoX <> 0 Then
+          'dibuja la pieza trasladada....
+          'damas...
+          If Abs(tablero[x, y]) = Constantes.king Then
 
-          colorpieza = Constantes.dibujoReina & colorpieza
-          pieza = Picture[colorpieza]
-          Draw.Picture(pieza, (x - 1) * boxsize + 5, (y - 1) * boxsize)
+            colorpieza = Constantes.dibujoReina & colorpieza
+            pieza = Picture[colorpieza]
+            Draw.Picture(pieza, (x - 1 + ValorAnimadoX) * boxsize + 5, (y - 1 + ValorAnimadoY) * boxsize)
+          Else
+            'peones
+            colorpieza = Constantes.dibujoPeon & colorpieza
+            pieza = Picture[colorpieza]
+            Draw.Picture(pieza, (x - 1 + ValorAnimadoX) * boxsize + 5, (y - 1 + ValorAnimadoY) * boxsize)
+
+          Endif
+          '
+          '
+          '
+          '
         Else
+          'damas...
+          If Abs(tablero[x, y]) = Constantes.king Then
 
-          'Draw.FillStyle = fill.solid
-          'Draw.Circle((x - 0.5) * boxsize, (y - 0.5) * boxsize, boxsize * 0.375)
-          colorpieza = Constantes.dibujoPeon & colorpieza
-          pieza = Picture[colorpieza]
-          Draw.Picture(pieza, (x - 1) * boxsize + 5, (y - 1) * boxsize)
+            colorpieza = Constantes.dibujoReina & colorpieza
+            pieza = Picture[colorpieza]
+            Draw.Picture(pieza, (x - 1) * boxsize + 5, (y - 1) * boxsize)
+          Else
+            'peones
+            colorpieza = Constantes.dibujoPeon & colorpieza
+            pieza = Picture[colorpieza]
+            Draw.Picture(pieza, (x - 1) * boxsize + 5, (y - 1) * boxsize)
+
+          Endif
 
         Endif
-
+        '-------------------
       Endif
       'pongo la numeracion de las filas, en la primera columna x=1
       If x = 1 Then Draw.Text(Str$(9 - y), (x - 1) * boxsize, (y - 1) * boxsize)

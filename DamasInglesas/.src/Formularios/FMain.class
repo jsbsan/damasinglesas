@@ -249,13 +249,16 @@ Public Sub escribeMovimientoyCambiaTurno(jugada As Classmovelist)
   Dim listamovArray As New ClassMoveListArray
 
   If finjuego <> True Then
+    'animacion de la jugada....
+    ModuloAnimacion.animacion(drawingarea1, tablero, jugada.movimiento)
+    'Obtener tablero una vez ejecutado el movimiento....
     tablero = ModuloCalculos.MakeMove(tablero, jugada, False)
-    tablero.displayboard(drawingarea1, jugada.movimiento)
-    jugada.escribegrid(GridJugadas, turno)
+    tablero.displayboard(drawingarea1, jugada.movimiento) 'escribe el movimiento (circulos rayados en verde)
+    jugada.escribegrid(GridJugadas, turno) 'rellena el grid con la jugada que se ha realizado
     comprobarVictoria()
     'cambio turno
     'TODO: espera 0.75 segundos para jugar de nuevo
-    Exec ["play", "/tmp/bit.ogg"]
+    Exec ["play", "/tmp/bit.ogg"] 'hace ruido de colocar pieza...
     Wait 0.75 'espero medio segundo para ver bien la jugada
     If turno = constantes.white Then
 
