@@ -57,6 +57,7 @@ End
 
 Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMovimiento[], Optional PiezaX As Integer, Optional PiezaY As Integer, Optional ValorAnimadoX As Float, Optional ValorAnimadoY As Float)
 
+  Dim exptemp As ClassExplosion
   Dim a As Integer
   Dim pieza As Picture
   Dim colorpieza As String
@@ -84,7 +85,7 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
     Draw.FillRect((seleccionado[a, 0] - 1) * boxsize, (htamano - seleccionado[a, 1]) * boxsize, boxsize, boxsize)
   Next
 
-  'si hay datos de la lista de movimiento los escribo en cyan
+  'si hay datos de la lista de movimiento...
   If listamovimiento <> Null Then
     For a = 0 To listamovimiento.count - 1
       '   Draw.fillcolor = color.cyan
@@ -113,8 +114,18 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
 
         Endif
 
+        'dibujo explosicones
+        For Each exptemp In FMain.ArrayExplosiones
+          If exptemp.contador <> -1 Then
+            Draw.Picture(FMain.recorridoExplosion[exptemp.contador], (exptemp.coorX - 1) * boxsize, (exptemp.coorY - 1) * boxsize) 'dibujo array de explosion
+          Endif
+
+        Next
+
         '-------------------
         'dibujando piezas
+        'animacion....
+        '-------------------
         If x = PiezaX And y = PiezaY And ValorAnimadoX <> 0 Then
           'dibuja la pieza trasladada....
           'damas...

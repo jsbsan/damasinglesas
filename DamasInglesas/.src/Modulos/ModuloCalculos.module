@@ -261,7 +261,7 @@ finsaltos:
 
 End
 
-Public Sub MakeMove(board As Classboard, movelist As Classmovelist, valor As Boolean) As Classboard
+Public Sub MakeMove(board As Classboard, movelist As Classmovelist, Optional valor As Boolean) As Classboard
 
   Dim b As Integer
   Dim a As Integer

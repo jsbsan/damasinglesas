@@ -155,4 +155,9 @@
     Picture = Picture["icon:/16/stop"]
     Border = True
   }
+  { TimerExplosiones #Timer
+    #MoveScaled(51,57)
+    Enabled = True
+    Delay = 37
+  }
 }

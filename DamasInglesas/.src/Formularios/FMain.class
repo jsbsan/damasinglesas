@@ -29,14 +29,22 @@ Public tableroInicio As New Classboard(8)
 Public CreandoPosicion As Boolean
 Public contadorboton As Integer
 
+Public recorridoExplosion As New Picture[] 'para el desarrollo de las explosiones
+Public ArrayExplosiones As New ClassExplosion[] ' array de todas las explosiones
+
 Public Sub _new()
 
 End
 
 Public Sub Form_Open()
+  'imagen de explosion
+
+  Try Copy "explosion.png" To "/tmp/explosion.png"
   'copio sonidos...
 
+  Try Copy "explosion.wav" To "/tmp/explosion.wav"
   Try Copy "bit.ogg" To "/tmp/bit.ogg"
+  recorridoExplosion = ModuleExplosiones.divideImagen("/tmp/explosion.png", 5, 5)
   constantes.squares = 8
   GenerarGridJugadas()
   Me.Caption = ("Damas Inglesas")
@@ -817,5 +825,22 @@ End
 Public Sub ToolButton2_Click()
 
   Desktop.Open("http://d2f4c4a8.linkbucks.com")
+
+End
+
+Public Sub TimerExplosiones_Timer()
+
+  Dim exptemp As ClassExplosion
+
+  For Each exptemp In ArrayExplosiones
+
+    exptemp.cuenta()
+
+    If exptemp.contador = -1 Then
+      'elimina la explosion que se ha producido
+
+      ArrayExplosiones.Remove(ArrayExplosiones.Find(exptemp))
+    Endif
+  Next
 
 End

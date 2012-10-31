@@ -6,7 +6,8 @@
 Public Sub animacion(area As DrawingArea, tablero As Classboard, listaMovimientos As ClassMovimiento[])
   'por cada movimimiento hacer con un retardo de 20 milesegundo traslado de la pieza...
 
-  Dim contador As Integer
+  ' Dim contador As Integer
+  Dim nuevaexplosion As ClassExplosion
   Dim movimiento As ClassMovimiento
   Dim copiatablero As New Classboard(8)
   Dim jugadaUnica As New Classmovelist
@@ -16,8 +17,15 @@ Public Sub animacion(area As DrawingArea, tablero As Classboard, listaMovimiento
     traslada(area, copiatablero, movimiento)
     jugadaUnica = New Classmovelist
     jugadaUnica.movimiento.Add(movimiento)
-
+    If copiatablero.tablero[movimiento.x1, Movimiento.y1] <> 0 Then
+      'crear una explosion
+      nuevaexplosion = New ClassExplosion
+      nuevaexplosion.nueva(movimiento.x1, Movimiento.y1, FMain.recorridoExplosion.count)
+      FMain.ArrayExplosiones.Add(nuevaexplosion)
+      Exec ["play", "/tmp/explosion.wav"] 'hace ruido de colocar pieza...
+    Endif
     copiatablero = ModuloCalculos.MakeMove(copiatablero, jugadaUnica, False)
+
     area.Refresh
 
   Next
@@ -49,7 +57,7 @@ Private Sub traslada(area As DrawingArea, tablero As Classboard, Movimiento As C
 
     tablero.displayboard(area,, movimiento.x0, movimiento.y0, ax, ay)
     area.Refresh
-    Wait 0.05
+    Wait 0.02
 
   Next
 
