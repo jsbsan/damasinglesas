@@ -88,11 +88,11 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
   If listamovimiento <> Null Then
     For a = 0 To listamovimiento.count - 1
       '   Draw.fillcolor = color.cyan
-      Draw.FillStyle = fill.CrossDiagonal
+      Draw.FillStyle = fill.Dense94 'fill.CrossDiagonal <-marca la jugada con un pequeño circulo denso
       ' Draw.FillRect((listamovimiento[a].x0 - 1) * boxsize, (listamovimiento[a].y0 - 1) * boxsize, boxsize, boxsize, color.cyan)
       '   Draw.FillRect((listamovimiento[a].x1 - 1) * boxsize, (listamovimiento[a].y1 - 1) * boxsize, boxsize, boxsize, color.cyan)
-      Draw.Circle((listamovimiento[a].x0 - 0.5) * boxsize, (listamovimiento[a].y0 - 0.5) * boxsize, boxsize * 0.375)
-      Draw.Circle((listamovimiento[a].x1 - 0.5) * boxsize, (listamovimiento[a].y1 - 0.5) * boxsize, boxsize * 0.375)
+      Draw.Circle((listamovimiento[a].x0 - 0.25) * boxsize, (listamovimiento[a].y0 - 0.25) * boxsize, boxsize * 0.13)
+      Draw.Circle((listamovimiento[a].x1 - 0.25) * boxsize, (listamovimiento[a].y1 - 0.25) * boxsize, boxsize * 0.13)
     Next
   Endif
 

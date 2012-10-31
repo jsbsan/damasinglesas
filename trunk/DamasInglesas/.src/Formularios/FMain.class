@@ -689,6 +689,8 @@ Public Sub ToolButtonPartidaAnterior_Click()
     contador += 1
     Constantes.PlayerStrategy[Str$(Constantes.black)] = Val(cadena[contador])
     tablero.displayboard(drawingarea1)
+    'reinicio el tableroInicio para que se puedan ver las jugadas hacia adelante y hacia atras...
+    tableroInicio.copia(tablero)
   Endif
 
 End
@@ -700,7 +702,7 @@ Public Sub ToolButtonInicioAdelante_Click()
   Dim filas As Integer, mostrar As Integer
 
   tableroTemporal = New Classboard(8)
-
+  tableroTemporal.copia(tableroInicio)
   If contadorboton < ((GridJugadas.Rows.count * 2) - 1) Then
     contadorboton += 1
     'recorro todos las jugadas...
@@ -779,7 +781,7 @@ Public Sub ToolButtonAtras_Click()
   Dim filas As Integer, mostrar As Integer
 
   tableroTemporal = New Classboard(8)
-
+  tableroTemporal.copia(tableroInicio)
   If contadorboton > 0 Then
     contadorboton -= 1
     'recorro todos las jugadas...
