@@ -219,8 +219,14 @@ Public Sub RelojIA()
         jugada.movimiento = solucion.mov
       Case 5
         constantes.jugadoractual = turno
-        solucion = ModuloCalculos.MinimaxAlfaBeta2(tablero, turno, 0, profundidad + 3, 2 + evaluafinal) 'en pruebas...
+        solucion = ModuloCalculos.MinimaxAlfaBeta2(tablero, turno, 0, profundidad + 3, 2 + evaluafinal)
         jugada.movimiento = solucion.mov
+      Case 6
+        'multiproceso...
+        constantes.jugadoractual = turno
+        solucion = ModuleMultiProceso.MultiMinimax(tablero, turno, 0, profundidad + 3, 2 + evaluafinal) 'en pruebas...
+        jugada.movimiento = solucion.mov
+
     End Select
     'Print "Valoracion posicion actual...."; solucion.valor
 

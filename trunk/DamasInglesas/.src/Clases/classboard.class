@@ -209,3 +209,19 @@ Public Sub copia(board As Classboard)
   Next
 
 End
+
+Public Function escribe() As String
+
+  Dim x As Integer, y As Integer
+  Dim cadena As String
+
+  cadena = "tablero\n"
+  For x = 0 To 10
+    For y = 0 To 10
+      cadena &= Str$(tablero[x, y]) & "\n"
+    Next
+  Next
+
+  Return cadena
+
+End

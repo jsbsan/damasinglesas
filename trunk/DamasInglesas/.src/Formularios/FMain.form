@@ -158,6 +158,6 @@
   { TimerExplosiones #Timer
     #MoveScaled(51,57)
     Enabled = True
-    Delay = 37
+    Delay = 20
   }
 }
