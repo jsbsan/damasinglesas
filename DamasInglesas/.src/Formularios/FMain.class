@@ -39,6 +39,8 @@ End
 Public Sub Form_Open()
   'imagen de explosion
 
+  Try Copy "calculoDI.gambas" To "/tmp/calculoDI.gambas"
+  Chmod "/tmp/calculoDI.gambas" To "rwxrwxrwx" 'doy permisos de ejecucion
   Try Copy "explosion.png" To "/tmp/explosion.png"
   'copio sonidos...
 
