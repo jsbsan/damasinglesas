@@ -816,6 +816,7 @@ Public Function MinimaxAlfaBeta2(board As Classboard, side As Integer, Depth As 
         '[
 
         score = alfabeta2(MakeMove(board, movelistArray.lista[a], False), -99999, +99999, depth, depthmax, - side, side, evaluator)
+        '    Print score, movelistArray.lista[a].escribe()
         If score = bestscore Then
           'la añado a la lista de mejores...
 
