@@ -487,9 +487,9 @@ Public Function scorenat(tablero As Classboard, side As Integer) As Float
   Dim score As Float
   '¿puedo mover? No--> he perdido, dar la minima puntuacion
   '¿tengo piezas? No--> he perdido, dar la minima puntuacion
-  If comprobarfin(tablero, side) = True Then
-    score = -99999 * side
-  Endif
+  'If comprobarfin(tablero, side) = True Then
+  '   score = -99999 * side
+  '  Endif
 
   For x = 1 To constantes.squares
     For y = 1 To constantes.squares
@@ -526,10 +526,10 @@ Public Function scoreSam(tablero As Classboard, side As Integer) As Float
   Dim score As Float
   '¿puedo mover? No--> he perdido, dar la minima puntuacion
   '¿tengo piezas? No--> he perdido, dar la minima puntuacion
-  If comprobarfin(tablero, side) = True Then
-    score = -99999 * side
-    Return score
-  Endif
+  'If comprobarfin(tablero, side) = True Then
+  '   score = -99999 * side
+  '   Return score
+  '  Endif
 
   For x = 1 To constantes.squares
     For y = 1 To constantes.squares
@@ -552,6 +552,7 @@ Public Function scoreSam(tablero As Classboard, side As Integer) As Float
   Return score
 
 End
+'NOTE: probando distintas formas de valorar
 
 Public Function scoreFinal(tablero As Classboard, side As Integer) As Float
 
@@ -560,27 +561,36 @@ Public Function scoreFinal(tablero As Classboard, side As Integer) As Float
   Dim score As Float
   Dim pieza As Integer
   Dim dist As Float
-
+  Dim movelistArray As New ClassMoveListArray
+  Dim posiblesmovimientosBlancos As Integer
+  Dim posiblesmovimientosNegros As Integer
   'valoracion de piezas
+  '
+  'si no hay movimientos posible, pierdo...
+  '  If comprobarfin(tablero, side) = True Then
+  '    score = -99999 * side
+  ' Endif
+
   For x = 1 To constantes.squares
     For y = 1 To constantes.squares
       pieza = tablero.tablero[x, y]
       If pieza = 0 Then Continue
       'piezas en posiciones iniciales:
 
-      score += pieza * 200
+      score += pieza * 300
       'valoracion de posicion reinas
-      If Sgn(pieza) = Constantes.king Then
-        dist = (Abs(x - constantes.squares / 2 - x) + Abs(y - constantes.squares / 2)) / 4.5 * 3
+
+      If pieza = Constantes.king Or pieza = - constantes.king Then
+        dist = 4 - Round((Abs(x - constantes.squares / 2 - x) + Abs(y - constantes.squares / 2)) / 4, -2)
         score += dist * pieza
       Else
 
-        'bonus por abance al final
-        If Abs(pieza) = constantes.piece Then
-          If side = 1 Then
-            score += x * pieza
+        'bonus por avance al final
+        If Abs(pieza) = - constantes.piece Then
+          If pieza = 1 Then
+            score += (x / 10) * pieza
           Else
-            score += (constantes.squares + 1 - x) * pieza
+            score += ((constantes.squares + 1 - x) / 10) * pieza
 
           Endif
         Endif
@@ -589,9 +599,19 @@ Public Function scoreFinal(tablero As Classboard, side As Integer) As Float
     Next
   Next
 
+  'numero de jugadas disponibles...
+  'FIXME: numero de jugadas disponibles...
+
+  '  movelistArray = GenerateMoveList(tablero, Constantes.white)
+  '  posiblesmovimientosBlancos = movelistArray.lista.count
+  '  movelistArray = GenerateMoveList(tablero, constantes.black)
+  '  posiblesmovimientosNegros = movelistArray.lista.count
+
+  '  score += (posiblesmovimientosBlancos - posiblesmovimientosNegros) / ((posiblesmovimientosBlancos + posiblesmovimientosNegros)) * 5 * side
+
   score *= side
 
-  Return score
+  Return (Int(score / 100) * 100)
 
 End
 
@@ -891,7 +911,7 @@ Public Function alfabeta2(board As Classboard, alfa As Float, beta As Float, dep
 
       Return alfa 'mejor movimiento para el jugador actual
     Endif
-    Return alfabeta2(board, alfa, beta, depth, depthmax, - side, jugadorMaximiza, Evaluator)
+    Return alfabeta2(board, alfa, beta, depth + 1, depthmax, - side, jugadorMaximiza, Evaluator)
 
   Else
     '' el jugador actual es el minimiza
@@ -909,7 +929,7 @@ Public Function alfabeta2(board As Classboard, alfa As Float, beta As Float, dep
 
       Return beta 'mejor movimiento para el jugador actual
     Endif
-    Return alfabeta2(board, alfa, beta, depth, depthmax, - side, jugadorMaximiza, Evaluator)
+    Return alfabeta2(board, alfa, beta, depth + 1, depthmax, - side, jugadorMaximiza, Evaluator)
   Endif
 
 End

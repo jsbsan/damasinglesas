@@ -5,6 +5,7 @@ Private side As Integer
 
 Public Sub ToolButton1_Click()
 
+  If evaluate = 5 Then evaluate = 12
   ValueBox1.value = ModuloCalculos.evaluateBoard(FMain.tablero, side, Evaluate)
 
 End

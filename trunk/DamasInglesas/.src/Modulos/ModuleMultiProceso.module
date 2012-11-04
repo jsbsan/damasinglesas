@@ -8,7 +8,7 @@ Public solucioncpu2 As ClassRespuesta
 '' url: http://code.google.com/p/intart/source/browse/trunk/juegos/base/_AgenteHeuristico.java?r=35
 '' *****************************
 
-Public Function MultiMinimax(board As Classboard, side As Integer, Depth As Integer, DepthMax As Integer, Evaluator As Integer) As ClassRespuesta
+Public Function MultiMinimax(board As Classboard, side As Integer, Depth As Integer, DepthMax As Integer, Evaluator As Integer, Optional superusuario As Boolean) As ClassRespuesta
 
   Dim jugadatemp As ClassMoveList
   Dim contenido As String
@@ -30,6 +30,7 @@ Public Function MultiMinimax(board As Classboard, side As Integer, Depth As Inte
   Dim boardtemp As New Classboard(8)
 
   Dim bestmovelistArray As New ClassMovelistArray
+  Dim prioritario As String 'prioridad de proceso cuando es sudo
 
   movelistArray = ModuloCalculos.GenerateMoveList(board, side)
 
@@ -63,12 +64,15 @@ Public Function MultiMinimax(board As Classboard, side As Integer, Depth As Inte
 
     contenido = contenidoPartida(board, side, Depth, DepthMax, Evaluator, movelistArrayCPU1)
     File.Save("/tmp/contenido1.txt", contenido)
-    comando = "/tmp/calculoDI.gambas /tmp/contenido1.txt" 'lo ejecuto en la carpeta temporal, para que se borre cuando se apague el ordenador
+
+    ' If superusuario = True Then prioritario = "nice -n -19 "
+
+    comando = "/tmp/" & prioritario & "calculoDI.gambas /tmp/contenido1.txt" 'lo ejecuto en la carpeta temporal, para que se borre cuando se apague el ordenador
     proceso1 = Shell comando For Read As "NumeroCPU1"
 
     contenido = contenidoPartida(board, side, Depth, DepthMax, Evaluator, movelistArrayCPU2)
     File.Save("/tmp/contenido2.txt", contenido)
-    comando = "/tmp/calculoDI.gambas /tmp/contenido2.txt" 'lo ejecuto en la carpeta temporal, para que se borre cuando se apague el ordenador
+    comando = "/tmp/" & prioritario & "calculoDI.gambas /tmp/contenido2.txt" 'lo ejecuto en la carpeta temporal, para que se borre cuando se apague el ordenador
     proceso1 = Shell comando For Read As "NumeroCPU2"
 
     '  espero mientras no se haya obtenido solucion....
@@ -76,7 +80,7 @@ Public Function MultiMinimax(board As Classboard, side As Integer, Depth As Inte
     While (numeroprocesos > 0)
       'espero un pequeño periodo de tiempo, a ver si se ha recibido respuestas de los dos procesos
       'cada proceso cada vez que responde, disminuye en una unidad el valor de "numeroprocesos"
-      Wait 0.5
+      Wait 1
     Wend
 
     'se han recibido la informacion de los dos procesos...

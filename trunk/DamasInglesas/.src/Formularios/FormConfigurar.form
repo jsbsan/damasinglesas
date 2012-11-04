@@ -34,13 +34,13 @@
     { ComboBoxWhite ComboBox
       MoveScaled(5,4,21,3)
       ReadOnly = True
-      List = [("Humano"), ("Ordenador Fácil"), ("Ordenador Medio"), ("Ordenador Difícil"), ("Negamax Dificil"), ("AlphaBeta"), ("AlphaBeta MultiProceso")]
+      List = [("Humano"), ("Ordenador Fácil"), ("Ordenador Medio"), ("Ordenador Difícil"), ("Negamax Dificil"), ("AlphaBeta (en pruebas)"), ("AlphaBeta MultiProceso (en pruebas)")]
       Text = ("Humano")
     }
     { ComboBoxBlack ComboBox
       MoveScaled(5,9,21,3)
       ReadOnly = True
-      List = [("Humano"), ("Ordenador Fácil"), ("Ordenador Medio"), ("Ordenador Difícil"), ("Negamax Dificil"), ("AlphaBeta (en pruebas)"), ("AlphaBeta MultiProceso")]
+      List = [("Humano"), ("Ordenador Fácil"), ("Ordenador Medio"), ("Ordenador Difícil"), ("Negamax Dificil"), ("AlphaBeta (en pruebas)"), ("AlphaBeta MultiProceso (en pruebas)")]
       Text = ("Humano")
     }
     { PictureBox4 PictureBox
