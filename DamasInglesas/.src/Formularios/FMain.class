@@ -178,13 +178,13 @@ Public Sub RelojIA()
     '********************************************************
     'aumenta la profundidad del analisis para pocas piezas...
     '********************************************************
-    profundidad = 3
+    profundidad = 1
 
     If tablero.piezasDisponibles(- turno) < 8 Then
-      profundidad = 3
+      profundidad = 2
     Endif
     If tablero.piezasDisponibles(- turno) < 6 Then
-      profundidad = 4
+      profundidad = 3
     Endif
     'modificar funcion evaluacion para finales...
     'si supera los 30 movimientos, el centtro adquire mucha mas importancia...
@@ -202,33 +202,38 @@ Public Sub RelojIA()
         ' Case 2      Return scoreSimple(tablero, side) 'cuenta piezas y reinas al centro.
         ' Case 3      Return scoreNat(tablero, side)
         ' Case 4      Return scoreSam(tablero, side)
+        ' case 12     Return scorefinal
       Case 1
 
         solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad, 1) 'solo valores de piezas...
         jugada.movimiento = solucion.mov
 
       Case 2
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 1, 2) 'solo valores de piezas...+ posicion
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 1, 1) 'solo valores de piezas...+ posicion
         jugada.movimiento = solucion.mov
 
       Case 3
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 2, 2 + evaluafinal)
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 2, 1)
         jugada.movimiento = solucion.mov
       Case 4
         constantes.jugadoractual = turno
-        'ModuloCalculos.AlphaBeta(tablero, turno, 0, promaxima, alfa, beta, evaluator)
-        solucion = ModuloCalculos.negamax(tablero, turno, 0, profundidad + 2, -9999, +9999, 2 + evaluafinal)
+
+        solucion = ModuloCalculos.negamax(tablero, turno, 0, profundidad + 4, -9999, +9999, 1)
         jugada.movimiento = solucion.mov
       Case 5
         constantes.jugadoractual = turno
-        solucion = ModuloCalculos.MinimaxAlfaBeta2(tablero, turno, 0, profundidad + 3, 2 + evaluafinal)
+        solucion = ModuloCalculos.MinimaxAlfaBeta2(tablero, turno, 0, profundidad + 3, 1)
         jugada.movimiento = solucion.mov
       Case 6
         'multiproceso...
         constantes.jugadoractual = turno
-        solucion = ModuleMultiProceso.MultiMinimax(tablero, turno, 0, profundidad + 3, 2 + evaluafinal) 'en pruebas...
+        solucion = ModuleMultiProceso.MultiMinimax(tablero, turno, 0, profundidad + 3, 1) 'en pruebas...
         jugada.movimiento = solucion.mov
-
+      Case 7
+        'multiproceso... como sudo
+        constantes.jugadoractual = turno
+        solucion = ModuleMultiProceso.MultiMinimax(tablero, turno, 0, profundidad + 3, 1, True) 'en pruebas...
+        jugada.movimiento = solucion.mov
     End Select
     'Print "Valoracion posicion actual...."; solucion.valor
 

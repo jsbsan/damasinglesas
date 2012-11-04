@@ -14,7 +14,7 @@
   { SpinBox1 SpinBox
     MoveScaled(25,15,8,4)
     MinValue = 1
-    MaxValue = 4
+    MaxValue = 5
   }
   { Label1 Label
     MoveScaled(3,1,17,5)
@@ -27,7 +27,7 @@
   { TextArea1 TextArea
     MoveScaled(1,19,60,25)
     Font = Font["-2"]
-    Text = (" Case 1\n      Return scoreS(tablero, side) 'solo cuenta piezas\n    Case 2\n      Return scoreSimple(tablero, side) 'cuenta piezas y reinas al centro.\n    Case 3\n      Return scoreNat(tablero, side)\n    Case 4\n      Return scoreSam(tablero, side)\n")
+    Text = (" Case 1\n      Return scoreS(tablero, side) 'solo cuenta piezas\n    Case 2\n      Return scoreSimple(tablero, side) 'cuenta piezas y reinas al centro.\n    Case 3\n      Return scoreNat(tablero, side)\n    Case 4\n      Return scoreSam(tablero, side)\n    Case 5\n      en pruebas...\n")
   }
   { ToolButton1 ToolButton
     MoveScaled(37,1,16,6)
