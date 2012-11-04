@@ -55,7 +55,7 @@ Private Sub tamano_Write(Value As Integer)
 
 End
 
-Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMovimiento[], Optional PiezaX As Integer, Optional PiezaY As Integer, Optional ValorAnimadoX As Float, Optional ValorAnimadoY As Float)
+Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMovimiento[], Optional PiezaX As Integer, Optional PiezaY As Integer, Optional ValorAnimadoX As Single, Optional ValorAnimadoY As Single)
 
   Dim exptemp As ClassExplosion
   Dim a As Integer
@@ -64,7 +64,7 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
   Dim x As Integer
   Dim y As Integer
   '  Dim fillcolor As Integer
-  Dim boxsize As Float
+  Dim boxsize As Single
   ''note: hola
   boxsize = area.h / htamano
   Draw.Begin(area)

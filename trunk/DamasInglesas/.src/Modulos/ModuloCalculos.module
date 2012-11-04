@@ -304,8 +304,8 @@ Public Sub minimax(board As Classboard, side As Integer, Depth As Integer, Depth
   Dim movimientoArray As New ClassMovimiento[]
   Dim movelistArray As New ClassMoveListArray
 
-  Dim score As Float
-  Dim bestscore As Float
+  Dim score As Single
+  Dim bestscore As Single
   Dim nextmini As ClassRespuesta
   Dim boardtemp As New Classboard(8)
 
@@ -386,7 +386,7 @@ End
 ''         Funcion Evaluador de tableros...
 ''-----------------------------------------------
 
-Public Function evaluateBoard(tablero As Classboard, side As Integer, evaluator As Integer) As Float
+Public Function evaluateBoard(tablero As Classboard, side As Integer, evaluator As Integer) As Single
 
   Select Evaluator
     Case 1
@@ -408,11 +408,11 @@ End
 '' Funciones de valoracion...
 ''**************************************************
 'funcion simple para retornar valor de las piezas en el tablero
-Public Function scoreS(tablero As Classboard, side As Integer) As Float
+Public Function scoreS(tablero As Classboard, side As Integer) As Single
 
   Dim x As Integer
   Dim y As Integer
-  Dim score As Float
+  Dim score As Single
   Dim pieza As Integer
 
   For x = 1 To constantes.squares
@@ -431,13 +431,13 @@ Public Function scoreS(tablero As Classboard, side As Integer) As Float
 
 End
 
-Public Function scoresimple(tablero As Classboard, side As Integer) As Float
+Public Function scoresimple(tablero As Classboard, side As Integer) As Single
 
   Dim x As Integer
   Dim y As Integer
-  Dim score As Float
+  Dim score As Single
   Dim pieza As Integer
-  Dim dist As Float
+  Dim dist As Single
 
   'valoracion de piezas
   For x = 1 To constantes.squares
@@ -479,12 +479,12 @@ End
 'funcion que añade bonux por canales de cuadrados
 'y piezas avanzadas...
 
-Public Function scorenat(tablero As Classboard, side As Integer) As Float
+Public Function scorenat(tablero As Classboard, side As Integer) As Single
 
   Dim pieza As Integer
   Dim x As Integer
   Dim y As Integer
-  Dim score As Float
+  Dim score As Single
   '¿puedo mover? No--> he perdido, dar la minima puntuacion
   '¿tengo piezas? No--> he perdido, dar la minima puntuacion
   'If comprobarfin(tablero, side) = True Then
@@ -518,12 +518,12 @@ Public Function scorenat(tablero As Classboard, side As Integer) As Float
 
 End
 
-Public Function scoreSam(tablero As Classboard, side As Integer) As Float
+Public Function scoreSam(tablero As Classboard, side As Integer) As Single
 
   Dim pieza As Integer
   Dim x As Integer
   Dim y As Integer
-  Dim score As Float
+  Dim score As Single
   '¿puedo mover? No--> he perdido, dar la minima puntuacion
   '¿tengo piezas? No--> he perdido, dar la minima puntuacion
   'If comprobarfin(tablero, side) = True Then
@@ -554,22 +554,22 @@ Public Function scoreSam(tablero As Classboard, side As Integer) As Float
 End
 'NOTE: probando distintas formas de valorar
 
-Public Function scoreFinal(tablero As Classboard, side As Integer) As Float
+Public Function scoreFinal(tablero As Classboard, side As Integer) As Single
 
   Dim x As Integer
   Dim y As Integer
-  Dim score As Float
+  Dim score As Single
   Dim pieza As Integer
-  Dim dist As Float
+  Dim dist As Single
   Dim movelistArray As New ClassMoveListArray
   Dim posiblesmovimientosBlancos As Integer
   Dim posiblesmovimientosNegros As Integer
   'valoracion de piezas
   '
   'si no hay movimientos posible, pierdo...
-  '  If comprobarfin(tablero, side) = True Then
-  '    score = -99999 * side
-  ' Endif
+  If comprobarfin(tablero, side) = True Then
+    score = -99999 * side
+  Endif
 
   For x = 1 To constantes.squares
     For y = 1 To constantes.squares
@@ -581,8 +581,8 @@ Public Function scoreFinal(tablero As Classboard, side As Integer) As Float
       'valoracion de posicion reinas
 
       If pieza = Constantes.king Or pieza = - constantes.king Then
-        dist = 4 - Round((Abs(x - constantes.squares / 2 - x) + Abs(y - constantes.squares / 2)) / 4, -2)
-        score += dist * pieza
+        dist = Abs(4 - x) + Abs(4 - y) + 0.1
+        score += 1 / dist * pieza
       Else
 
         'bonus por avance al final
@@ -611,7 +611,7 @@ Public Function scoreFinal(tablero As Classboard, side As Integer) As Float
 
   score *= side
 
-  Return (Int(score / 100) * 100)
+  Return (Int(score * 100) / 100)
 
 End
 
@@ -740,17 +740,17 @@ End
 ''**********************************************************************
 ''**********************************************************************
 'url de referencia: http://en.wikipedia.org/wiki/Negamax
-Public Function negamax(board As Classboard, side As Integer, depth As Integer, DepthMax As Integer, alfa As Float, beta As Float, Evaluator As Integer) As Classrespuesta
+Public Function negamax(board As Classboard, side As Integer, depth As Integer, DepthMax As Integer, alfa As Single, beta As Single, Evaluator As Integer) As Classrespuesta
 
   Dim a As Integer
   Dim solucion As ClassRespuesta
   Dim alfasolucion As New ClassRespuesta(alfa, Null)
   Dim intermediasolucion As ClassRespuesta
-
+  Dim boardtemp As New Classboard(8)
   Dim movelistArray As New ClassMoveListArray
   ' Dim movimi As ClassMovimiento
-  'Dim score As Float
-  ' Dim bestscore As Float
+  'Dim score As single
+  ' Dim bestscore As single
   ' Dim nextmini As ClassRespuesta
 
   'Dim bestmovelistArray As New ClassMovelistArray
@@ -762,10 +762,22 @@ Public Function negamax(board As Classboard, side As Integer, depth As Integer, 
   Else
     movelistArray = GenerateMoveList(board, side)
 
+    'evaluar si solo existe en el tablero actual una sola jugada a ejecutar...
+    If movelistArray.lista.count = 1 And depth = 0 Then
+      'solo un movimiento posible...
+      boardtemp = MakeMove(board, movelistArray.lista[0], side)
+      solucion = New ClassRespuesta(evaluateBoard(boardtemp, side, evaluator), movelistArray.lista[0].movimiento)
+
+      Return solucion
+    Endif
+
     For a = 0 To movelistArray.lista.Max
       intermediasolucion = negamax(MakeMove(board, movelistArray.lista[a], False), - side, depth + 1, depthmax, - beta, - alfa, Evaluator)
-      If intermediasolucion = Null Then
-        Print "producido un null"
+      If intermediasolucion.mov = Null Then
+        'no hay movimientos del otro, por lo tanto es victoria
+        solucion = New ClassRespuesta(-99999 * side, movelistArray.lista[a].movimiento)
+        Return solucion
+
       Endif
       If (- intermediasolucion.valor) >= beta Then
         alfasolucion.valor = - intermediasolucion.valor
@@ -803,8 +815,8 @@ Public Function MinimaxAlfaBeta2(board As Classboard, side As Integer, Depth As 
   Dim movimientoArray As New ClassMovimiento[]
   Dim movelistArray As New ClassMoveListArray
   '  Dim movimi As ClassMovimiento
-  Dim score As Float
-  Dim bestscore As Float
+  Dim score As Single
+  Dim bestscore As Single
   '  Dim nextmini As ClassRespuesta
   Dim boardtemp As New Classboard(8)
 
@@ -865,12 +877,12 @@ Public Function MinimaxAlfaBeta2(board As Classboard, side As Integer, Depth As 
 
 End
 
-Public Function alfabeta2(board As Classboard, alfa As Float, beta As Float, depth As Integer, DepthMax As Integer, side As Integer, jugadorMaximiza As Integer, Evaluator As Integer) As Float
+Public Function alfabeta2(board As Classboard, alfa As Single, beta As Single, depth As Integer, DepthMax As Integer, side As Integer, jugadorMaximiza As Integer, Evaluator As Integer) As Single
 
   '  Dim solucion As ClassRespuesta
   Dim movelistArray As ClassMoveListArray
   ' Dim boardtemp As Classboard
-  Dim a As Integer, valor As Float
+  Dim a As Integer, valor As Single
 
   If Depth = depthmax Then
     'hemos accedido a la profundidad de busqueda, retorna el valor del tablero y lista nula de movimientos

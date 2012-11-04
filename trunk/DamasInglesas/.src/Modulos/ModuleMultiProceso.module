@@ -24,8 +24,8 @@ Public Function MultiMinimax(board As Classboard, side As Integer, Depth As Inte
   Dim proceso1 As Process
 
   '  Dim movimi As ClassMovimiento
-  Dim score As Float
-  Dim bestscore As Float
+  Dim score As Single
+  Dim bestscore As Single
   '  Dim nextmini As ClassRespuesta
   Dim boardtemp As New Classboard(8)
 
@@ -143,7 +143,7 @@ Public Sub NumeroCPU1_Read()
 
   Dim sLine As String
   Dim sCad As String[]
-  Dim vx As Float
+  Dim vx As Single
 
   Read #Last, sLine, -50
   sLine = Trim(sLine)
@@ -165,7 +165,7 @@ Public Sub NumeroCPU2_Read()
 
   Dim sLine As String
   Dim sCad As String[]
-  Dim vx As Float
+  Dim vx As Single
 
   Read #Last, sLine, -50
   sLine = Trim(sLine)

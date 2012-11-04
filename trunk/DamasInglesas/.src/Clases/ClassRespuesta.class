@@ -2,16 +2,16 @@
 
 Property mov As ClassMovimiento[]
 Private hmov As New ClassMovimiento[]
-Property valor As Float
-Private hvalor As Float
+Property valor As Single
+Private hvalor As Single
 
-Private Function valor_Read() As Float
+Private Function valor_Read() As Single
 
   Return hvalor
 
 End
 
-Private Sub valor_Write(Value As Float)
+Private Sub valor_Write(Value As Single)
 
   hvalor = value
 
@@ -29,7 +29,7 @@ Private Sub mov_Write(Value As ClassMovimiento[])
 
 End
 
-Public Sub _new(v As Float, movimiento As ClassMovimiento[])
+Public Sub _new(v As Single, movimiento As ClassMovimiento[])
 
   hvalor = v
   hmov = movimiento
