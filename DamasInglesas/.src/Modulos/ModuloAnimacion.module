@@ -34,7 +34,7 @@ End
 
 Private Sub traslada(area As DrawingArea, tablero As Classboard, Movimiento As ClassMovimiento)
 
-  Dim incrementox As Float, incrementoy As Float, ax As Float, ay As Float
+  Dim incrementox As Single, incrementoy As Single, ax As Single, ay As Single
 
   Dim a As Integer
   'determinar direccion de a trasladar...

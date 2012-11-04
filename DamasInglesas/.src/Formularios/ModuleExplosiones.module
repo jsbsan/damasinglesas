@@ -9,8 +9,8 @@ Public Function divideImagen(imageninicial As String, SpritesX As Integer, Sprit
   Dim hImagentemp As New Picture
   Dim hImagenInicial As New Picture
   Dim harray_imagenes As New Picture[]
-  Dim porcionX As Float
-  Dim porcionY As Float
+  Dim porcionX As Single
+  Dim porcionY As Single
 
   hImagenInicial = Picture[imageninicial]
   porcionX = (hImagenInicial.w) / SpritesX

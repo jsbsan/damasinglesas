@@ -5,8 +5,11 @@ Private side As Integer
 
 Public Sub ToolButton1_Click()
 
+  Dim valor As Single
   If evaluate = 5 Then evaluate = 12
-  ValueBox1.value = ModuloCalculos.evaluateBoard(FMain.tablero, side, Evaluate)
+  valor = ModuloCalculos.evaluateBoard(FMain.tablero, side, Evaluate)
+  Print "Valoracion de la jugada: "; valor
+  ValueBox1.value = valor
 
 End
 
