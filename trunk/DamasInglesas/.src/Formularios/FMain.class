@@ -230,12 +230,12 @@ Public Sub RelojIA()
         'alfabeta
         constantes.jugadoractual = turno
         'a comprobar algoritmo
-        solucion = ModuloCalculos.MinimaxAlfaBeta2(tablero, turno, 0, profundidad + 3, 1)
+        solucion = ModuloCalculos.MinimaxAlfaBeta2(tablero, turno, 0, profundidad + 4, 12)
         jugada.movimiento = solucion.mov
       Case 6
         'multiproceso... minimax
         constantes.jugadoractual = turno
-        solucion = ModuleMultiProceso.MultiMinimax(tablero, turno, 0, profundidad + 3, 1) 'en pruebas...
+        solucion = ModuleMultiProceso.MultiMinimax(tablero, turno, 0, profundidad + 4, 12) 'en pruebas...
         jugada.movimiento = solucion.mov
       Case 7
         'minimax con formula de evaluciacion 5 (12)
