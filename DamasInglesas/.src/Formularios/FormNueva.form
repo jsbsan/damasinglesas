@@ -23,7 +23,7 @@
   { ComboBoxWhite ComboBox
     MoveScaled(16,3,25,4)
     ReadOnly = True
-    List = [("Humano"), ("IA Fácil"), ("IA Medio"), ("IA Difícil"), ("Negamax Dificil (no funciona corectamente)"), ("AlphaBeta (en pruebas)"), ("AlphaBeta MultiProceso (en pruebas)"), ("Minimax con formula evaluacion 12 (5)")]
+    List = [("Humano"), ("IA Fácil"), ("IA Medio"), ("IA Difícil"), ("Negamax Dificil "), ("AlphaBeta (en pruebas)"), ("AlphaBeta MultiProceso (en pruebas)"), ("Minimax con formula evaluacion 12 (5)")]
     Text = ("Humano")
   }
   { ButtonOK Button
@@ -33,7 +33,7 @@
   { ComboBoxBlack ComboBox
     MoveScaled(16,12,25,4)
     ReadOnly = True
-    List = [("Humano"), ("IA Fácil"), ("IA Medio"), ("IA Difícil"), ("Negamax Dificil (no funciona correctamente)"), ("AlphaBeta (en pruebas)"), ("AlphaBeta MultiProceso (en pruebas)"), ("Minimax con formula evaluacion 12 (5)")]
+    List = [("Humano"), ("IA Fácil"), ("IA Medio"), ("IA Difícil"), ("Negamax Dificil "), ("AlphaBeta (en pruebas)"), ("AlphaBeta MultiProceso (en pruebas)"), ("Minimax con formula evaluacion 12 (5)")]
     Text = ("Humano")
   }
   { RadioButtonIniciaPartidaBlanco RadioButton

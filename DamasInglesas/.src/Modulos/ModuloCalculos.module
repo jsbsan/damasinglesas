@@ -313,7 +313,7 @@ Public Sub minimax(board As Classboard, side As Integer, Depth As Integer, Depth
 
   If Depth > depthmax Then
     'hemos accedido a la profundidad de busqueda, retorna el valor del tablero y lista nula de movimientos
-    solucion = New ClassRespuesta(evaluateBoard(board, side, evaluator), Null)
+    solucion = New ClassRespuesta(evaluateBoard(board, evaluator) * side, Null)
     Return solucion
   Else
 
@@ -323,7 +323,7 @@ Public Sub minimax(board As Classboard, side As Integer, Depth As Integer, Depth
     If movelistArray.lista.count = 1 And depth = 0 Then
       'solo un movimiento posible...
       boardtemp = MakeMove(board, movelistArray.lista[0], side)
-      solucion = New ClassRespuesta(evaluateBoard(boardtemp, side, evaluator), movelistArray.lista[0].movimiento)
+      solucion = New ClassRespuesta(evaluateBoard(boardtemp, evaluator) * side, movelistArray.lista[0].movimiento)
       Return solucion
     Endif
 
@@ -333,7 +333,7 @@ Public Sub minimax(board As Classboard, side As Integer, Depth As Integer, Depth
 
     If movelistArray.lista.count = 0 Then
       'lista vacia
-      solucion = New ClassRespuesta(evaluateBoard(board, side, evaluator), Null)
+      solucion = New ClassRespuesta(evaluateBoard(board, evaluator) * side, Null)
       Return solucion
     Else
 
@@ -382,24 +382,26 @@ Public Sub minimax(board As Classboard, side As Integer, Depth As Integer, Depth
   Return solucion
 
 End
+'FIXME: Evaluar tablero de juego...
 ''-----------------------------------------------
 ''         Funcion Evaluador de tableros...
 ''-----------------------------------------------
 
-Public Function evaluateBoard(tablero As Classboard, side As Integer, evaluator As Integer) As Single
+Public Function evaluateBoard(tablero As Classboard, evaluator As Integer) As Single
 
+  constantes.AnalisisRealizados += 1
   Select Evaluator
     Case 1
-      Return scoreS(tablero, side) 'solo cuenta piezas
+      Return scoreS(tablero) 'solo cuenta piezas
     Case 2
-      Return scoreSimple(tablero, side) 'cuenta piezas y reinas al centro.
+      Return scoreSimple(tablero) 'cuenta piezas y reinas al centro.
     Case 3
-      Return scoreNat(tablero, side)
+      Return scoreNat(tablero)
     Case 4
-      Return scoreSam(tablero, side)
+      Return scoreSam(tablero)
     Case 12
       'evaluacion de final del partida... valora mejor,colocar damas en el centro.
-      Return scoreFinal(tablero, side)
+      Return scoreFinal(tablero)
   End Select
 
 End
@@ -408,7 +410,7 @@ End
 '' Funciones de valoracion...
 ''**************************************************
 'funcion simple para retornar valor de las piezas en el tablero
-Public Function scoreS(tablero As Classboard, side As Integer) As Single
+Public Function scoreS(tablero As Classboard) As Single
 
   Dim x As Integer
   Dim y As Integer
@@ -425,13 +427,11 @@ Public Function scoreS(tablero As Classboard, side As Integer) As Single
     Next
   Next
 
-  score *= side
-
   Return score
 
 End
 
-Public Function scoresimple(tablero As Classboard, side As Integer) As Single
+Public Function scoresimple(tablero As Classboard) As Single
 
   Dim x As Integer
   Dim y As Integer
@@ -457,20 +457,18 @@ Public Function scoresimple(tablero As Classboard, side As Integer) As Single
       Else
 
         'bonus por abance al final
-        If Abs(pieza) = constantes.piece Then
-          If side = 1 Then
-            score += x * pieza
-          Else
-            score += (constantes.squares + 1 - x) * pieza
+        '  If Abs(pieza) = constantes.piece Then
+        '   If side = 1 Then
+        '    score += x * pieza
+        '  Else
+        '   score += (constantes.squares + 1 - x) * pieza
 
-          Endif
-        Endif
+        'Endif
+        'Endif
       Endif
 
     Next
   Next
-
-  score *= side
 
   Return score
 
@@ -479,7 +477,7 @@ End
 'funcion que añade bonux por canales de cuadrados
 'y piezas avanzadas...
 
-Public Function scorenat(tablero As Classboard, side As Integer) As Single
+Public Function scorenat(tablero As Classboard) As Single
 
   Dim pieza As Integer
   Dim x As Integer
@@ -501,24 +499,23 @@ Public Function scorenat(tablero As Classboard, side As Integer) As Single
       Endif
 
       'bonus por abance al final
-      If Abs(pieza) = constantes.piece Then
-        If side = 1 Then
-          score += 0.125 * y
-        Else
-          score += -0.125 * (constantes.squares + 1 - y)
-
-        Endif
-      Endif
+      '    If Abs(pieza) = constantes.piece Then
+      '     If side = 1 Then
+      '      score += 0.125 * y
+      '   Else
+      '    score += -0.125 * (constantes.squares + 1 - y)
+      '
+      '       Endif
+      '    Endif
 
     Next
   Next
-  ' score *= side
 
   Return score
 
 End
 
-Public Function scoreSam(tablero As Classboard, side As Integer) As Single
+Public Function scoreSam(tablero As Classboard) As Single
 
   Dim pieza As Integer
   Dim x As Integer
@@ -547,14 +544,12 @@ Public Function scoreSam(tablero As Classboard, side As Integer) As Single
     Next
   Next
 
-  '  score *= side
-
   Return score
 
 End
 'NOTE: probando distintas formas de valorar
 
-Public Function scoreFinal(tablero As Classboard, side As Integer) As Single
+Public Function scoreFinal(tablero As Classboard) As Single
 
   Dim x As Integer
   Dim y As Integer
@@ -567,9 +562,9 @@ Public Function scoreFinal(tablero As Classboard, side As Integer) As Single
   'valoracion de piezas
   '
   'si no hay movimientos posible, pierdo...
-  If comprobarfin(tablero, side) = True Then
-    score = -99999 * side
-  Endif
+  'If comprobarfin(tablero) = True Then
+  '  score = -99999
+  'Endif
 
   For x = 1 To constantes.squares
     For y = 1 To constantes.squares
@@ -609,7 +604,7 @@ Public Function scoreFinal(tablero As Classboard, side As Integer) As Single
 
   '  score += (posiblesmovimientosBlancos - posiblesmovimientosNegros) / ((posiblesmovimientosBlancos + posiblesmovimientosNegros)) * 5 * side
 
-  score *= side
+  '
 
   Return (Int(score * 100) / 100)
 
@@ -757,31 +752,32 @@ Public Function negamax(board As Classboard, side As Integer, depth As Integer, 
 
   If Depth = depthmax Then
     'hemos accedido a la profundidad de busqueda, retorna el valor del tablero y lista nula de movimientos
-    solucion = New ClassRespuesta(evaluateBoard(board, side, evaluator), Null)
+    solucion = New ClassRespuesta(evaluateBoard(board, evaluator) * side, Null)
     Return solucion
   Else
+
     movelistArray = GenerateMoveList(board, side)
 
     'evaluar si solo existe en el tablero actual una sola jugada a ejecutar...
     If movelistArray.lista.count = 1 And depth = 0 Then
       'solo un movimiento posible...
       boardtemp = MakeMove(board, movelistArray.lista[0], side)
-      solucion = New ClassRespuesta(evaluateBoard(boardtemp, side, evaluator), movelistArray.lista[0].movimiento)
+      solucion = New ClassRespuesta(evaluateBoard(boardtemp, evaluator) * side, movelistArray.lista[0].movimiento)
 
       Return solucion
     Endif
 
     For a = 0 To movelistArray.lista.Max
       intermediasolucion = negamax(MakeMove(board, movelistArray.lista[a], False), - side, depth + 1, depthmax, - beta, - alfa, Evaluator)
-      If intermediasolucion.mov = Null Then
-        'no hay movimientos del otro, por lo tanto es victoria
-        solucion = New ClassRespuesta(-99999 * side, movelistArray.lista[a].movimiento)
-        Return solucion
+      '  If intermediasolucion.mov = Null Then
+      'no hay movimientos del otro, por lo tanto es victoria
+      '  solucion = New ClassRespuesta(-99999 * side, movelistArray.lista[a].movimiento)
+      '    Return solucion
 
-      Endif
+      '  Endif
       If (- intermediasolucion.valor) >= beta Then
         alfasolucion.valor = - intermediasolucion.valor
-        alfasolucion.mov = intermediasolucion.mov
+        alfasolucion.mov = movelistArray.lista[a].movimiento
         Return alfasolucion
 
       Endif

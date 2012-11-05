@@ -29,6 +29,7 @@ Public dibujoPeon As String = "peon"
 Public dibujoReina As String = "reina"
 
 Public jugadoractual As Integer
+Public AnalisisRealizados As Integer
 
 Public Sub iniciar()
 
