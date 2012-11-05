@@ -820,7 +820,7 @@ Public Function MinimaxAlfaBeta2(board As Classboard, side As Integer, Depth As 
 
   If Depth > depthmax Then
     'hemos accedido a la profundidad de busqueda, retorna el valor del tablero y lista nula de movimientos
-    solucion = New ClassRespuesta(evaluateBoard(board, side, evaluator), Null)
+    solucion = New ClassRespuesta(evaluateBoard(board, evaluator) * side, Null)
     Return solucion
   Else
 
@@ -830,7 +830,7 @@ Public Function MinimaxAlfaBeta2(board As Classboard, side As Integer, Depth As 
     If movelistArray.lista.count = 1 And depth = 0 Then
       'solo un movimiento posible...
       boardtemp = MakeMove(board, movelistArray.lista[0], side)
-      solucion = New ClassRespuesta(evaluateBoard(boardtemp, side, evaluator), movelistArray.lista[0].movimiento)
+      solucion = New ClassRespuesta(evaluateBoard(boardtemp, evaluator) * side, movelistArray.lista[0].movimiento)
       Return solucion
     Endif
 
@@ -843,7 +843,7 @@ Public Function MinimaxAlfaBeta2(board As Classboard, side As Integer, Depth As 
       For a = 0 To movelistArray.lista.Max
         '[
 
-        score = alfabeta2(MakeMove(board, movelistArray.lista[a], False), -99999, +99999, depth, depthmax, - side, side, evaluator)
+        score = alfabeta2(MakeMove(board, movelistArray.lista[a], False), -999999, +999999, depth, depthmax, - side, side, evaluator)
         '    Print score, movelistArray.lista[a].escribe()
         If score = bestscore Then
           'la añado a la lista de mejores...
@@ -882,7 +882,7 @@ Public Function alfabeta2(board As Classboard, alfa As Single, beta As Single, d
 
   If Depth = depthmax Then
     'hemos accedido a la profundidad de busqueda, retorna el valor del tablero y lista nula de movimientos
-    Return (evaluateBoard(board, side, evaluator))
+    Return (evaluateBoard(board, evaluator) * side)
   Else
 
     ' estado es final.... devolver el maximo valor heuristica
