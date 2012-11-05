@@ -193,6 +193,8 @@ Public Sub RelojIA()
       'piezas que hubiera y decidir cuando estamos pasando del medio juego al final de partida...
       evaluafinal = 10
     Endif
+    'contador de analisis igual a cero
+    constantes.AnalisisRealizados = 0
 
     Select constantes.PlayerStrategy[Str$(turno)]
         'NOTE: tipos de inteligencia artificial IA
@@ -204,42 +206,52 @@ Public Sub RelojIA()
         ' Case 4      Return scoreSam(tablero, side)
         ' case 12     Return scorefinal
       Case 1
-
+        'facil
         solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad, 1) 'solo valores de piezas...
         jugada.movimiento = solucion.mov
 
       Case 2
+        'medio
         solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 1, 1) 'solo valores de piezas...+ posicion
         jugada.movimiento = solucion.mov
 
       Case 3
+        'dificil
         solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 2, 1)
         jugada.movimiento = solucion.mov
       Case 4
+        'negamax
         constantes.jugadoractual = turno
+        'corregido 5/11/2012
 
-        'no funciona correctamente
-        solucion = ModuloCalculos.negamax(tablero, turno, 0, profundidad + 1, - 9999, +9999, 1)
+        solucion = ModuloCalculos.negamax(tablero, turno, 0, profundidad + 3, - 999999, +999999, 1)
         jugada.movimiento = solucion.mov
       Case 5
+        'alfabeta
         constantes.jugadoractual = turno
         'a comprobar algoritmo
         solucion = ModuloCalculos.MinimaxAlfaBeta2(tablero, turno, 0, profundidad + 3, 1)
         jugada.movimiento = solucion.mov
       Case 6
-        'multiproceso...
+        'multiproceso... minimax
         constantes.jugadoractual = turno
         solucion = ModuleMultiProceso.MultiMinimax(tablero, turno, 0, profundidad + 3, 1) 'en pruebas...
         jugada.movimiento = solucion.mov
       Case 7
         'minimax con formula de evaluciacion 5 (12)
         constantes.jugadoractual = turno
-
         solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 2, 12)
         '   solucion = ModuleMultiProceso.MultiMinimax(tablero, turno, 0, profundidad + 3, 1, True) 'en pruebas...
         jugada.movimiento = solucion.mov
     End Select
     'Print "Valoracion posicion actual...."; solucion.valor
+    'Print "Numero de tableros analizado: "; constantes.AnalisisRealizados
+
+    If turno = constantes.white Then
+      TextLabelJugadasBlanco.text = "TA: " & Format$(constantes.AnalisisRealizados, "##,")
+    Else
+      TextLabelJugadasNegro.text = "TA: " & Format$(constantes.AnalisisRealizados, "##,")
+    Endif
 
     'para presentar como va la partida en el slider...
     If solucion.valor > 2000 Then solucion.valor = 1100
