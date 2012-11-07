@@ -142,7 +142,7 @@
     Border = True
   }
   { ButtonCancela Button
-    MoveScaled(8,57,28,3)
+    MoveScaled(1,57,20,3)
     Font = Font["-2"]
     ToolTip = ("Cancelar Movimiento")
     Text = ("Cancela ficha elegida")
@@ -156,7 +156,7 @@
     Border = True
   }
   { TimerExplosiones #Timer
-    #MoveScaled(51,57)
+    #MoveScaled(54,57)
     Enabled = True
     Delay = 20
   }
@@ -171,5 +171,17 @@
     Font = Font["DejaVu Sans,-2"]
     ToolTip = ("tablero analizados...")
     Alignment = Align.Center
+  }
+  { ToolButtonSalir ToolButton
+    MoveScaled(79,61,9,4)
+    Text = ("Salir")
+    Picture = Picture["icon:/16/quit"]
+    Border = True
+  }
+  { RadioButtonMostrar CheckBox
+    MoveScaled(21,57,34,3)
+    Font = Font["-3"]
+    Text = ("Mostrar posibles movimientos de la ficha elegida")
+    Value = CheckBox.True
   }
 }

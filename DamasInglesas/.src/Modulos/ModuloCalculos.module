@@ -267,25 +267,40 @@ Public Sub MakeMove(board As Classboard, movelist As Classmovelist, Optional val
   Dim a As Integer
   'NOTE: MakeMove: hacer movimiento
   Dim pieza As Integer
-
+  Dim valorpieza As Byte
   Dim boarModificado As New Classboard(constantes.squares)
 
-  For a = 0 To constantes.squares
-    For b = 0 To constantes.squares
-      boarModificado.tablero[a, b] = board.tablero[a, b]
-    Next
-  Next
+  boarModificado.copia(board)
+  'For a = 0 To constantes.squares
+  ' For b = 0 To constantes.squares
+  '   boarModificado.tablero[a, b] = board.tablero[a, b]
+  ' Next
+  'Next
 
   For a = 0 To movelist.movimiento.max
-
+    'obtener el valor de la pieza que esta en x0 y y0
     pieza = boarModificado.tablero[movelist.movimiento[a].x0, movelist.movimiento[a].y0]
+
+    ' valorpieza = boarModificado.Piezas.buscar(movelist.movimiento[a].x0, movelist.movimiento[a].y0)
+
+    'asignar a esa posicion x0 y y0, vacio....
     boarModificado.tablero[movelist.movimiento[a].x0, movelist.movimiento[a].y0] = Constantes.blank
 
-    boarModificado.tablero[movelist.movimiento[a].x1, movelist.movimiento[a].y1] = pieza
+    ' boarModificado.Piezas.borrar(movelist.movimiento[a].x0, movelist.movimiento[a].y0)
+
+    'si estamos al final o al principio, poner dama sino poner la pieza movida
 
     If movelist.movimiento[a].y1 = constantes.squares Or movelist.movimiento[a].y1 = 1 Then
       'se consique reina
       boarModificado.tablero[movelist.movimiento[a].x1, movelist.movimiento[a].y1] = constantes.king * Sgn(pieza)
+
+      '    boarModificado.Piezas.add(constantes.king * Sgn(pieza), movelist.movimiento[a].x1, movelist.movimiento[a].y1)
+    Else
+
+      boarModificado.tablero[movelist.movimiento[a].x1, movelist.movimiento[a].y1] = pieza
+
+      '  boarModificado.Piezas.add(valorpieza, movelist.movimiento[a].x1, movelist.movimiento[a].y1)
+
     Endif
 
   Next
@@ -336,14 +351,6 @@ Public Sub minimax(board As Classboard, side As Integer, Depth As Integer, Depth
       solucion = New ClassRespuesta(evaluateBoard(board, evaluator) * side, Null)
       Return solucion
     Else
-
-      ' If JugadasInicialesIguales(movelistArray.lista).valor = 0 Then
-
-      '  boardtemp = MakeMove(board, movelistArray.lista[0], side)
-      ' solucion = New ClassRespuesta(evaluateBoard(boardtemp, side, evaluator), movelistArray.lista[0].movimiento)
-      '  Return solucion
-
-      '  Else
 
       'hallar el mejor movimiento....
       '
@@ -416,10 +423,10 @@ Public Function scoreS(tablero As Classboard) As Single
   Dim y As Integer
   Dim score As Single
   Dim pieza As Integer
+  Dim ficha As ClassPieza
 
   For x = 1 To constantes.squares
     For y = 1 To constantes.squares
-
       pieza = tablero.tablero[x, y]
       If pieza = 0 Then Continue
       score += pieza * 100
@@ -581,14 +588,14 @@ Public Function scoreFinal(tablero As Classboard) As Single
       Else
 
         'bonus por avance al final
-        If Abs(pieza) = - constantes.piece Then
-          If pieza = 1 Then
-            score += (x / 10) * pieza
-          Else
-            score += ((constantes.squares + 1 - x) / 10) * pieza
 
-          Endif
+        If pieza = 1 Then
+          score += (x / 10) * pieza
+        Else
+          score += ((constantes.squares + 1 - x) / 10) * pieza
+
         Endif
+
       Endif
 
     Next
@@ -820,7 +827,7 @@ Public Function MinimaxAlfaBeta2(board As Classboard, side As Integer, Depth As 
 
   If Depth > depthmax Then
     'hemos accedido a la profundidad de busqueda, retorna el valor del tablero y lista nula de movimientos
-    solucion = New ClassRespuesta(evaluateBoard(board, evaluator) * side, Null)
+    solucion = New ClassRespuesta(evaluateBoard(board, evaluator), Null)
     Return solucion
   Else
 
@@ -830,13 +837,13 @@ Public Function MinimaxAlfaBeta2(board As Classboard, side As Integer, Depth As 
     If movelistArray.lista.count = 1 And depth = 0 Then
       'solo un movimiento posible...
       boardtemp = MakeMove(board, movelistArray.lista[0], side)
-      solucion = New ClassRespuesta(evaluateBoard(boardtemp, evaluator) * side, movelistArray.lista[0].movimiento)
+      solucion = New ClassRespuesta(evaluateBoard(boardtemp, evaluator), movelistArray.lista[0].movimiento)
       Return solucion
     Endif
 
     If movelistArray.lista.count = 0 Then
       'lista vacia
-      solucion = New ClassRespuesta(evaluateBoard(board, side, evaluator), Null)
+      solucion = New ClassRespuesta(evaluateBoard(board, evaluator), Null)
       Return solucion
     Else
       bestscore = -999999
@@ -872,6 +879,9 @@ Public Function MinimaxAlfaBeta2(board As Classboard, side As Integer, Depth As 
   Return solucion
 
 End
+'----------------------------------------------------
+'http://en.wikipedia.org/wiki/Alpha-beta_pruning
+'----------------------------------------------------
 
 Public Function alfabeta2(board As Classboard, alfa As Single, beta As Single, depth As Integer, DepthMax As Integer, side As Integer, jugadorMaximiza As Integer, Evaluator As Integer) As Single
 
@@ -880,64 +890,55 @@ Public Function alfabeta2(board As Classboard, alfa As Single, beta As Single, d
   ' Dim boardtemp As Classboard
   Dim a As Integer, valor As Single
 
-  If Depth = depthmax Then
+  If Depth <= depthmax Then
     'hemos accedido a la profundidad de busqueda, retorna el valor del tablero y lista nula de movimientos
     Return (evaluateBoard(board, evaluator) * side)
   Else
+    'calcula movimientos posibles
+    movelistArray = GenerateMoveList(board, side)
 
-    ' estado es final.... devolver el maximo valor heuristica
-    '   If movelistArray.lista.count = 0 Then
-    'es un estado final del juego
-    ' Si es un estado final se devuelve el mayor valor para esta heur ística posible
-
-    '  Return 9999
-    '  Endif
+    ' estado es final....
+    If movelistArray.lista.count = 0 Then
+      'es un estado final del juego
+      ' Si es un estado final se devuelve el mayor valor para esta heur ística posible
+      Return (evaluateBoard(board, evaluator) * side)
+    Endif
   Endif
-
-  'calcula movimientos posibles
-  movelistArray = GenerateMoveList(board, side)
 
   '' El jugador actual es el que maximiza...
   If side = jugadorMaximiza Then
-    If movelistArray <> Null Then
-      '  If movelistArray.lista.count = 1 And depth = 0 Then
-      'solo un movimiento posible...
-      '    boardtemp = MakeMove(board, movelistArray.lista[0], side)
-      '    Return (evaluateBoard(boardtemp, side, evaluator)
-      '   Endif
 
-      'varias jugadas a elegir...
-      For a = 0 To movelistArray.lista.Max
-        valor = alfabeta2(MakeMove(board, movelistArray.lista[a], False), alfa, beta, depth + 1, depthmax, - side, jugadorMaximiza, Evaluator)
-        If valor > alfa Then
-          alfa = valor ' se encuentra un nuevo mejor movimiento para el jugador actual
-        Endif
-        If alfa >= beta Then
-          Return alfa 'se hace poda
-        Endif
-      Next
+    '  If movelistArray.lista.count = 1 And depth = 0 Then
+    'solo un movimiento posible...
+    '    boardtemp = MakeMove(board, movelistArray.lista[0], side)
+    '    Return (evaluateBoard(boardtemp, side, evaluator)
+    '   Endif
 
-      Return alfa 'mejor movimiento para el jugador actual
-    Endif
-    Return alfabeta2(board, alfa, beta, depth + 1, depthmax, - side, jugadorMaximiza, Evaluator)
+    'varias jugadas a elegir...
+    For a = 0 To movelistArray.lista.Max
+      valor = alfabeta2(MakeMove(board, movelistArray.lista[a], False), alfa, beta, depth + 1, depthmax, - side, jugadorMaximiza, Evaluator)
+      alfa = Max(alfa, valor)
+      If beta <= alfa Then
+        Break 'alfa = valor ' se encuentra un nuevo mejor movimiento para el jugador actual
+      Endif
+    Next
+
+    Return alfa 'mejor movimiento para el jugador actual
+    ' Endif
+    '  Return alfabeta2(board, alfa, beta, depth + 1, depthmax, - side, jugadorMaximiza, Evaluator)
 
   Else
     '' el jugador actual es el minimiza
-    If movelistArray <> Null Then
-      For a = 0 To movelistArray.lista.Max
-        valor = alfabeta2(MakeMove(board, movelistArray.lista[a], False), alfa, beta, depth + 1, depthmax, - side, jugadorMaximiza, Evaluator)
-        If valor < beta Then
-          beta = valor 'El oponente encontr ó un nuevo mejor movimiento para él (peor para el jugador actual)
+    For a = 0 To movelistArray.lista.Max
+      valor = alfabeta2(MakeMove(board, movelistArray.lista[a], False), alfa, beta, depth + 1, depthmax, - side, jugadorMaximiza, Evaluator)
+      beta = Min(valor, beta)
+      If beta <= alfa Then
+        Break 'El oponente encontr ó un nuevo mejor movimiento para él (peor para el jugador actual)
+      Endif
+    Next
 
-        Endif
-        If alfa >= beta Then
-          Return beta 'se hace poda
-        Endif
-      Next
+    Return beta 'mejor movimiento para el jugador actual
 
-      Return beta 'mejor movimiento para el jugador actual
-    Endif
-    Return alfabeta2(board, alfa, beta, depth + 1, depthmax, - side, jugadorMaximiza, Evaluator)
   Endif
 
 End
