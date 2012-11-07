@@ -1,0 +1,30 @@
+' Gambas class file
+
+Property x As Byte 'uso byte para ocupar menos memoria, esperando que asi sea mas rapido. Limitando a un tablero de maximo 255 casillas !!!
+Private hx As Byte
+Property y As Byte
+Private hy As Byte
+
+Private Function x_Read() As Byte
+
+  Return hx
+
+End
+
+Private Sub x_Write(Value As Byte)
+
+  hx = Value
+
+End
+
+Private Function y_Read() As Byte
+
+  Return hy
+
+End
+
+Private Sub y_Write(Value As Byte)
+
+  hy = Value
+
+End

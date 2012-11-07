@@ -1,0 +1,71 @@
+' Gambas class file
+
+'
+Property lista As ClassPieza[] 'Lista de piezas
+Private hlista As New ClassPieza[]
+
+Private Function lista_Read() As ClassPieza[]
+
+  Return hlista
+
+End
+
+Private Sub lista_Write(Value As ClassPieza[])
+
+  hlista = value
+
+End
+
+Public Function buscar(Xx As Short, Yy As Short) As Short 'devuelve el tipo de pieza
+
+  Dim ficha As ClassPieza
+
+  For Each ficha In hlista
+    If ficha.pos.x = XX And ficha.pos.y = YY Then Return ficha.TipoPieza
+  Next
+
+  Return 0
+
+End
+
+Public Sub borrar(Xx As Short, Yy As Short) '
+
+  Dim a As Integer
+  Dim ficha As ClassPieza
+
+  For a = 0 To hlista.max
+    If hlista[a].pos.x = XX And hlista[a].pos.y = YY Then
+      hlista.Delete(a) 'borro la ficha con esas coordenadas
+      Break
+    Endif
+  Next
+
+End
+
+Public Sub add(tipo As Byte, xx As Short, yy As Short) 'añado una nueva ficha en la lista
+
+  Dim ficha As New ClassPieza(tipo, xx, yy)
+
+  hlista.Add(ficha)
+
+End
+
+Public Function escribe() As String
+
+  Dim cadena As String
+
+  Dim ficha As ClassPieza
+
+  For Each ficha In hlista
+    cadena &= ficha.escribe() & "\n"
+  Next
+
+  Return cadena
+
+End
+
+Public Sub copia(l As ClassListaPiezas)
+
+  hlista = l.lista
+
+End

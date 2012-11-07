@@ -148,6 +148,7 @@ Public Sub ButtonCancela_Click()
   tablero.seleccionado[0, 1] = 0
   tablero.seleccionado[1, 0] = 0
   tablero.seleccionado[1, 1] = 0
+  tablero.jugadasposibles.lista.Clear()
   tablero.displayboard(DrawingArea1)
   casilla = 0
 
@@ -212,12 +213,12 @@ Public Sub RelojIA()
 
       Case 2
         'medio
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 1, 1) 'solo valores de piezas...+ posicion
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 2, 1) 'solo valores de piezas...+ posicion
         jugada.movimiento = solucion.mov
 
       Case 3
         'dificil
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 2, 1)
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 3, 1)
         jugada.movimiento = solucion.mov
       Case 4
         'negamax
@@ -230,7 +231,7 @@ Public Sub RelojIA()
         'alfabeta
         constantes.jugadoractual = turno
         'a comprobar algoritmo
-        solucion = ModuloCalculos.MinimaxAlfaBeta2(tablero, turno, 0, profundidad + 4, 12)
+        solucion = ModuloCalculos.MinimaxAlfaBeta2(tablero, turno, 0, 7, 12)
         jugada.movimiento = solucion.mov
       Case 6
         'multiproceso... minimax
@@ -464,7 +465,7 @@ Public Sub DrawingArea1_MouseDown()
                 '  Print "ejecuta la jugada..."
                 ejecutajugada = True
                 '   tablero = ModuloCalculos.MakeMove(tablero, listamovArray.lista[a], True)
-
+                tablero.jugadasposibles.lista.Clear 'borro todas las jugadas disponibles
                 listamov = listamovArray.lista[a]
                 Break
               Endif
@@ -505,8 +506,10 @@ Public Sub DrawingArea1_MouseDown()
       If tablero.tablero[x, y] = turno Or tablero.tablero[x, y] = turno * constantes.king Then
         tablero.seleccionado[0, 0] = x
         tablero.seleccionado[0, 1] = constantes.squares - y + 1
+        tablero.jugadasposibles = ModuloCalculos.GenerateMoveList(tablero, turno)
         tablero.displayboard(DrawingArea1)
         casilla = 2
+
       Endif
     Endif
 
@@ -871,5 +874,23 @@ Public Sub TimerExplosiones_Timer()
       ArrayExplosiones.Remove(ArrayExplosiones.Find(exptemp))
     Endif
   Next
+
+End
+
+Public Sub ToolButtonSalir_Click()
+
+  Me.close
+
+End
+
+Public Sub RadioButtonMostrar_Click()
+
+  If RadioButtonMostrar.value = True Then
+    tablero.mostrarmovimientos = True
+  Else
+    tablero.mostrarmovimientos = False
+  Endif
+
+  tablero.displayboard(drawingarea1)
 
 End
