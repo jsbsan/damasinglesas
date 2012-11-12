@@ -3,8 +3,8 @@
 Property mostrarmovimientos As Boolean
 Private hmostrarmovimientos As Boolean = True
 
-Property tamano As Integer
-Private htamano As Integer
+Property tamano As Byte ' Integer
+Private htamano As Byte ' Integer
 Public tablero As New Integer[11, 11] 'tablero maximo de 8x8 y 10x10
 Public seleccionado As New Integer[2, 2] 'celda de tablero seleccionado
 'Property Piezas As ClassListaPiezas
@@ -20,7 +20,7 @@ Public Sub _new(squares As Integer)
 
 End
 
-Public Sub inicio(squares As Integer)
+Fast Public Sub inicio(squares As Integer)
 
   Dim piezatemp As ClassPieza
   Dim x As Integer
@@ -30,23 +30,24 @@ Public Sub inicio(squares As Integer)
   Constantes.squares = squares
 
   For x = 1 To squares
-    For y = 1 To squares
-      tablero[x, y] = Constantes.blank
-    Next
-  Next
+    For y = 1 To Constantes.initialrows
 
-  For y = 1 To Constantes.initialrows
-    For x = 1 To squares
+      '  Next
+      'Next
+
+      'For y = 1 To Constantes.initialrows
+      ' For x = 1 To squares
       If (x + y) Mod 2 <> 0 Then
         tablero[x, y] = Constantes.white
 
+      Else
+
+        If (x + ((squares + 1) - y)) Mod 2 <> 0 Then
+          tablero[x, squares + 1 - y] = Constantes.black
+        Else
+          tablero[x, y] = Constantes.blank
+        Endif
       Endif
-
-      If (x + ((squares + 1) - y)) Mod 2 <> 0 Then
-        tablero[x, squares + 1 - y] = Constantes.black
-
-      Endif
-
     Next
   Next
   '---------------------------------------------------
@@ -74,13 +75,13 @@ Public Sub inicio(squares As Integer)
 
 End
 
-Private Function tamano_Read() As Integer
+Private Function tamano_Read() As Byte
 
   Return htamano
 
 End
 
-Private Sub tamano_Write(Value As Integer)
+Private Sub tamano_Write(Value As Byte)
 
   htamano = value
 
@@ -90,7 +91,7 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
 
   Dim listajugada As ClassMoveList
   Dim exptemp As ClassExplosion
-  Dim a As Integer
+  Dim a As Byte
   Dim pieza As Picture
   Dim colorpieza As String
   Dim x As Integer
@@ -139,17 +140,7 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
 
   Endif
 
-  'si hay datos de la lista de movimiento...
-  If listamovimiento <> Null Then
-    For a = 0 To listamovimiento.count - 1
-      '   Draw.fillcolor = color.cyan
-      Draw.FillStyle = fill.Dense94 'fill.CrossDiagonal <-marca la jugada con un pequeño circulo denso
-      ' Draw.FillRect((listamovimiento[a].x0 - 1) * boxsize, (listamovimiento[a].y0 - 1) * boxsize, boxsize, boxsize, color.cyan)
-      '   Draw.FillRect((listamovimiento[a].x1 - 1) * boxsize, (listamovimiento[a].y1 - 1) * boxsize, boxsize, boxsize, color.cyan)
-      Draw.Circle((listamovimiento[a].x0 - 0.25) * boxsize, (listamovimiento[a].y0 - 0.25) * boxsize, boxsize * 0.13)
-      Draw.Circle((listamovimiento[a].x1 - 0.25) * boxsize, (listamovimiento[a].y1 - 0.25) * boxsize, boxsize * 0.13)
-    Next
-  Endif
+
 
   'dibujo explosicones
   For Each exptemp In FMain.ArrayExplosiones
@@ -229,6 +220,19 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
 
   Next
 
+
+  'si hay datos de la lista de movimiento...
+  If listamovimiento <> Null Then
+    For a = 0 To listamovimiento.count - 1
+      '   Draw.fillcolor = color.cyan
+      Draw.FillStyle = fill.Dense94 'fill.CrossDiagonal <-marca la jugada con un pequeño circulo denso
+      ' Draw.FillRect((listamovimiento[a].x0 - 1) * boxsize, (listamovimiento[a].y0 - 1) * boxsize, boxsize, boxsize, color.cyan)
+      '   Draw.FillRect((listamovimiento[a].x1 - 1) * boxsize, (listamovimiento[a].y1 - 1) * boxsize, boxsize, boxsize, color.cyan)
+      Draw.Circle((listamovimiento[a].x0 - 0.25) * boxsize, (listamovimiento[a].y0 - 0.25) * boxsize, boxsize * 0.13)
+      Draw.Circle((listamovimiento[a].x1 - 0.25) * boxsize, (listamovimiento[a].y1 - 0.25) * boxsize, boxsize * 0.13)
+    Next
+  Endif
+
   Draw.End
 
 End
@@ -249,12 +253,14 @@ Public Sub piezasDisponibles(turno As Integer) As Boolean
 
 End
 
-Public Sub copia(board As Classboard)
+Fast Public Sub copia(board As Classboard)
 
   Dim x As Integer, y As Integer
 
-  For x = 0 To 10
-    For y = 0 To 10
+  For x = 1 To htamano
+    For y = 1 To htamano
+      '  For x = 0 To 10
+      '  For y = 0 To 10
       tablero[x, y] = board.tablero[x, y]
     Next
   Next

@@ -40,7 +40,7 @@ Public Sub Form_Open()
   'imagen de explosion
 
   Try Copy "calculoDI.gambas" To "/tmp/calculoDI.gambas"
-  Chmod "/tmp/calculoDI.gambas" To "rwxrwxrwx" 'doy permisos de ejecucion
+  '  Chmod "/tmp/calculoDI.gambas" To "rwxrwxrwx" 'doy permisos de ejecucion
   Try Copy "explosion.png" To "/tmp/explosion.png"
   'copio sonidos...
 
@@ -241,7 +241,7 @@ Public Sub RelojIA()
       Case 7
         'minimax con formula de evaluciacion 5 (12)
         constantes.jugadoractual = turno
-        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 2, 12)
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 4, 12)
         '   solucion = ModuleMultiProceso.MultiMinimax(tablero, turno, 0, profundidad + 3, 1, True) 'en pruebas...
         jugada.movimiento = solucion.mov
     End Select
@@ -282,7 +282,7 @@ Public Sub RelojIA()
 End
 
 ' Escribe movimiento en tablero
-Public Sub escribeMovimientoyCambiaTurno(jugada As Classmovelist)
+Fast Public Sub escribeMovimientoyCambiaTurno(jugada As Classmovelist)
 
   Dim listamovArray As New ClassMoveListArray
 
@@ -296,7 +296,8 @@ Public Sub escribeMovimientoyCambiaTurno(jugada As Classmovelist)
     comprobarVictoria()
     'cambio turno
     'TODO: espera 0.75 segundos para jugar de nuevo
-    Exec ["play", "/tmp/bit.ogg"] 'hace ruido de colocar pieza...
+    Try Exec ["play", "/tmp/bit.ogg"] 'hace ruido de colocar pieza...
+    ''Nota: Debe de tener instalado el programa play,  sudo apt-get install sox, para que funcione el sonido...
     Wait 0.75 'espero medio segundo para ver bien la jugada
     If turno = constantes.white Then
 
