@@ -14,34 +14,34 @@ Property jugadasposibles As ClassMoveListArray
 Private hjugadasposibles As New Classmovelistarray
 
 Public Sub _new(squares As Integer)
-
+  
   inicio(squares)
   'tablero iniciado...
-
+  
 End
 
 Fast Public Sub inicio(squares As Integer)
-
+  
   Dim piezatemp As ClassPieza
   Dim x As Integer
   Dim y As Integer
-
+  
   htamano = squares
   Constantes.squares = squares
-
+  
   For x = 1 To squares
     For y = 1 To Constantes.initialrows
-
+      
       '  Next
       'Next
-
+      
       'For y = 1 To Constantes.initialrows
       ' For x = 1 To squares
       If (x + y) Mod 2 <> 0 Then
         tablero[x, y] = Constantes.white
-
+        
       Else
-
+        
         If (x + ((squares + 1) - y)) Mod 2 <> 0 Then
           tablero[x, squares + 1 - y] = Constantes.black
         Else
@@ -61,34 +61,34 @@ Fast Public Sub inicio(squares As Integer)
   '       hpiezas.lista.Add(piezatemp)
   '      piezatemp = Null
   '   Endif
-
+  
   '   If (x + ((squares + 1) - y)) Mod 2 <> 0 Then
   '     piezatemp = New ClassPieza(Constantes.black, x, squares + 1 - y)
   '      hpiezas.lista.Add(piezatemp)
   '     piezatemp = Null
-
+  
   '   Endif
-
+  
   '  Next
   '  Next
   '  Print hpiezas.escribe()
-
+  
 End
 
 Private Function tamano_Read() As Byte
-
+  
   Return htamano
-
+  
 End
 
 Private Sub tamano_Write(Value As Byte)
-
+  
   htamano = value
-
+  
 End
 
 Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMovimiento[], Optional PiezaX As Integer, Optional PiezaY As Integer, Optional ValorAnimadoX As Single, Optional ValorAnimadoY As Single)
-
+  
   Dim listajugada As ClassMoveList
   Dim exptemp As ClassExplosion
   Dim a As Byte
@@ -97,7 +97,7 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
   Dim x As Integer
   Dim y As Integer
   Dim marcarx As Integer, marcary As Integer 'marca la ultima celda donde puede moverse la ficha elegida
-
+  
   '  Dim fillcolor As Integer
   Dim boxsize As Single
   ''note: hola
@@ -105,21 +105,21 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
   Draw.Begin(area)
   For x = 1 To htamano
     For y = 1 To htamano
-
+      
       Draw.FillColor = If((x + y) Mod 2 = 0, Constantes.ColorDarkSquare, Constantes.ColorLightSquare)
-      Draw.FillRect((x - 1) * boxsize, (htamano - y) * boxsize, boxsize, boxsize)
-
+      Draw.FillRect((x - 1) * boxsize, (htamano - y) * boxsize, boxsize, boxsize, Draw.FillColor)
+      
     Next
   Next
-
+  
   'dibujo ficha seleccionada
-
+  
   For a = 0 To 1
     Draw.fillcolor = color.green
     Draw.FillStyle = fill.Dense37
-    Draw.FillRect((seleccionado[a, 0] - 1) * boxsize, (htamano - seleccionado[a, 1]) * boxsize, boxsize, boxsize)
+    Draw.FillRect((seleccionado[a, 0] - 1) * boxsize, (htamano - seleccionado[a, 1]) * boxsize, boxsize, boxsize, Draw.fillcolor)
   Next
-
+  
   'dibujo jugadas posibles si las hubiese... y esta activado mostrar movimientos
   If hjugadasposibles.lista.count <> 0 And hmostrarmovimientos = True Then
     'hay jugadas...
@@ -127,34 +127,32 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
       If hjugadasposibles.lista[a].movimiento[0].x0 = seleccionado[0, 0] And hjugadasposibles.lista[a].movimiento[0].y0 = 9 - seleccionado[0, 1] Then
         'la primera jugada coincide con la celda selecionada inicial...
         'tengo que marcar la ultima celda de esta lista de movimientos...
-
+        
         marcarx = hjugadasposibles.lista[a].movimiento[hjugadasposibles.lista[a].movimiento.max].x1
         marcary = 8 - hjugadasposibles.lista[a].movimiento[hjugadasposibles.lista[a].movimiento.max].y1
         Draw.fillcolor = color.red
         Draw.FillStyle = fill.Dense37
         Draw.Circle((marcarx - 0.5) * boxsize, (htamano - marcary - 0.5) * boxsize, boxsize * 0.30)
-
+        
       Endif
-
+      
     Next
-
+    
   Endif
-
-
-
+  
   'dibujo explosicones
   For Each exptemp In FMain.ArrayExplosiones
     If exptemp.contador <> -1 Then
       Draw.Picture(FMain.recorridoExplosion[exptemp.contador], (exptemp.coorX - 1) * boxsize, (exptemp.coorY - 1) * boxsize) 'dibujo array de explosion
     Endif
-
+    
   Next
-
+  
   'fichas
   For x = 1 To htamano
-
+    
     For y = 1 To htamano
-
+      
       If tablero[x, y] <> Constantes.blank Then
         If Sgn(tablero[x, y]) = Constantes.white Then
           '  Draw.fillcolor = color.blue 'color de white (blancass)
@@ -164,9 +162,9 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
             '  Draw.fillcolor = Color.green 'Color de black (negras)
             colorpieza = "_negro.png"
           Endif
-
+          
         Endif
-
+        
         '-------------------
         'dibujando piezas
         'animacion....
@@ -175,7 +173,7 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
           'dibuja la pieza trasladada....
           'damas...
           If Abs(tablero[x, y]) = Constantes.king Then
-
+            
             colorpieza = Constantes.dibujoReina & colorpieza
             pieza = Picture[colorpieza]
             Draw.Picture(pieza, (x - 1 + ValorAnimadoX) * boxsize + 5, (y - 1 + ValorAnimadoY) * boxsize)
@@ -184,13 +182,13 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
             colorpieza = Constantes.dibujoPeon & colorpieza
             pieza = Picture[colorpieza]
             Draw.Picture(pieza, (x - 1 + ValorAnimadoX) * boxsize + 5, (y - 1 + ValorAnimadoY) * boxsize)
-
+            
           Endif
-
+          
         Else
           'damas...
           If Abs(tablero[x, y]) = Constantes.king Then
-
+            
             colorpieza = Constantes.dibujoReina & colorpieza
             pieza = Picture[colorpieza]
             Draw.Picture(pieza, (x - 1) * boxsize + 5, (y - 1) * boxsize)
@@ -199,28 +197,27 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
             colorpieza = Constantes.dibujoPeon & colorpieza
             pieza = Picture[colorpieza]
             Draw.Picture(pieza, (x - 1) * boxsize + 5, (y - 1) * boxsize)
-
+            
           Endif
-
+          
         Endif
         '-------------------
       Endif
       'pongo la numeracion de las filas, en la primera columna x=1
       If x = 1 Then Draw.Text(Str$(9 - y), (x - 1) * boxsize, (y - 1) * boxsize)
       '   If x = 8 Then Draw.Text(Str$(9 - y), (x - 0.25) * boxsize, (y - 1) * boxsize)
-
+      
     Next
-
+    
   Next
-
+  
   For x = 1 To htamano
     'letras de las columnas, puestas en la ultima fila
     '   Draw.Text(Choose(x, "A", "B", "C", "D", "E", "F", "G", "H"), (x - 0.25) * boxsize, (0.5) * boxsize)
     Draw.Text(Choose(x, "A", "B", "C", "D", "E", "F", "G", "H"), (x - 0.25) * boxsize, (7.5) * boxsize)
-
+    
   Next
-
-
+  
   'si hay datos de la lista de movimiento...
   If listamovimiento <> Null Then
     For a = 0 To listamovimiento.count - 1
@@ -232,16 +229,16 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
       Draw.Circle((listamovimiento[a].x1 - 0.25) * boxsize, (listamovimiento[a].y1 - 0.25) * boxsize, boxsize * 0.13)
     Next
   Endif
-
+  
   Draw.End
-
+  
 End
 
 Public Sub piezasDisponibles(turno As Integer) As Boolean
-
+  
   Dim x As Integer
   Dim y As Integer
-
+  
   For x = 1 To htamano
     For y = 1 To htamano
       If tablero[x, y] = turno Or tablero[x, y] = turno * Constantes.king Then
@@ -250,13 +247,13 @@ Public Sub piezasDisponibles(turno As Integer) As Boolean
     Next
   Next
   Return False 'no hay piezas de ese turno
-
+  
 End
 
 Fast Public Sub copia(board As Classboard)
-
+  
   Dim x As Integer, y As Integer
-
+  
   For x = 1 To htamano
     For y = 1 To htamano
       '  For x = 0 To 10
@@ -264,26 +261,26 @@ Fast Public Sub copia(board As Classboard)
       tablero[x, y] = board.tablero[x, y]
     Next
   Next
-
+  
   '  hpiezas.copia(board.Piezas)
   ' Print hpiezas.escribe()
-
+  
 End
 
 Public Function escribe() As String
-
+  
   Dim x As Integer, y As Integer
   Dim cadena As String
-
+  
   cadena = "tablero\n"
   For x = 0 To 10
     For y = 0 To 10
       cadena &= Str$(tablero[x, y]) & "\n"
     Next
   Next
-
+  
   Return cadena
-
+  
 End
 
 'Private Function Piezas_Read() As ClassListaPiezas
@@ -299,25 +296,25 @@ End
 'End
 
 Private Function jugadasposibles_Read() As ClassMoveListArray
-
+  
   Return hjugadasposibles
-
+  
 End
 
 Private Sub jugadasposibles_Write(Value As ClassMoveListArray)
-
+  
   hjugadasposibles = value
-
+  
 End
 
 Private Function mostrarmovimientos_Read() As Boolean
-
+  
   Return hmostrarmovimientos
-
+  
 End
 
 Private Sub mostrarmovimientos_Write(Value As Boolean)
-
+  
   hmostrarmovimientos = value
-
+  
 End
