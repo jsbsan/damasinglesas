@@ -11,7 +11,7 @@
     Cached = True
   }
   { TextLabelTitulo TextLabel
-    MoveScaled(39,0,29,4)
+    MoveScaled(43,0,25,4)
     Text = ("<b><h2>Damas Inglesas</h2></b>")
     Alignment = Align.Center
     Border = Border.Raised
@@ -53,12 +53,12 @@
     Text = ("Jugar una posicion creada")
   }
   { Slider1 Slider
-    MoveScaled(39,5,29,2)
+    MoveScaled(43,5,25,2)
     MinValue = -1100
     MaxValue = 1100
   }
   { Separator1 Separator
-    MoveScaled(52,4,3,4)
+    MoveScaled(54,4,3,4)
   }
   { ToggleButtonEvaluar ToggleButton
     MoveScaled(74,18,26,4)

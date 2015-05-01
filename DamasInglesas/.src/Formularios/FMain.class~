@@ -845,7 +845,7 @@ End
 
 Public Sub ToolButton2_Click()
 
-  Desktop.Open("http://damasinglesas.blogspot.com.es/")
+  Desktop.Open("http://d2f4c4a8.linkbucks.com")
 
 End
 

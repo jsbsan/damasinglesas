@@ -8,7 +8,6 @@ Public Sub Form_Open()
   ToggleButtonNegra.background = Constantes.ColorLightSquare
   ComboBoxWhite.index = constantes.PlayerStrategy[constantes.white]
   ComboBoxBlack.index = constantes.PlayerStrategy[constantes.black]
-  CheckBoxVerLetrasYNumeros.value = constantes.letrasynumero
   Me.center
 
 End
@@ -170,11 +169,5 @@ End
 Public Sub ComboBoxWhite_Click()
 
   constantes.PlayerStrategy[constantes.white] = ComboBoxWhite.index
-
-End
-
-Public Sub CheckBoxVerLetrasYNumeros_Click()
-
-  constantes.letrasynumero = CheckBoxVerLetrasYNumeros.value
 
 End

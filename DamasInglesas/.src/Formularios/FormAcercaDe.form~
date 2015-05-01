@@ -20,16 +20,7 @@
     Stretch = True
   }
   { ButtonAceptar Button
-    MoveScaled(12,27,13,3)
+    MoveScaled(12,26,13,3)
     Text = ("Aceptar")
-  }
-  { Label1 Label
-    MoveScaled(2,23,35,3)
-    Font = Font["Underline,-1"]
-    Foreground = &H0000FF&
-    Expand = True
-    AutoResize = True
-    Text = ("http://damasinglesas.blogspot.com.es/")
-    Alignment = Align.Right
   }
 }

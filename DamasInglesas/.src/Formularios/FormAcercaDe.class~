@@ -11,9 +11,3 @@ Public Sub Form_Open()
   Me.center
 
 End
-
-Public Sub Label1_MouseDown()
-
-  Desktop.Open("http://damasinglesas.blogspot.com.es/")
-
-End

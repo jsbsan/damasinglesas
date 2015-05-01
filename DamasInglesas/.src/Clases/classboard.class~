@@ -207,18 +207,18 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
       If Constantes.letrasynumero Then
         'pongo la numeracion de las filas, en la primera columna x=1
         If x = 1 Then Draw.Text(Str$(9 - y), (x - 1) * boxsize, (y - 1) * boxsize)
+
       Endif
     Next
 
   Next
 
-  If Constantes.letrasynumero Then
-    For x = 1 To htamano
-      'letras de las columnas, puestas en la ultima fila
-      Draw.Text(Choose(x, "A", "B", "C", "D", "E", "F", "G", "H"), (x - 0.25) * boxsize, (7.5) * boxsize)
+  For x = 1 To htamano
+    'letras de las columnas, puestas en la ultima fila
+    '   Draw.Text(Choose(x, "A", "B", "C", "D", "E", "F", "G", "H"), (x - 0.25) * boxsize, (0.5) * boxsize)
+    Draw.Text(Choose(x, "A", "B", "C", "D", "E", "F", "G", "H"), (x - 0.25) * boxsize, (7.5) * boxsize)
 
-    Next
-  Endif
+  Next
 
   'si hay datos de la lista de movimiento...
   If listamovimiento <> Null Then

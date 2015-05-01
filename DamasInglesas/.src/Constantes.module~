@@ -42,7 +42,7 @@ Public Sub iniciar()
   PlayerStrategy.Clear()
   PlayerStrategy.Add(0, Str$(black))
   PlayerStrategy.Add(0, Str$(white))
-  letrasynumero = True
+  letrasynumero = False
   FMain.casilla = 1 'que siempre empiece por casilla "origen"
 
 End

@@ -1,9 +1,9 @@
 # Gambas Project File 3.0
-# Compiled with Gambas 3.3.90
+# Compiled with Gambas 3.5.4
 Title=DamasInglesas
 Startup=FMain
 Icon=tablero-damas.png
-Version=0.0.25
+Version=0.0.26
 Component=gb.image
 Component=gb.gui
 Component=gb.form

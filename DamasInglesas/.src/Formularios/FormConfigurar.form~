@@ -25,7 +25,7 @@
     }
   }
   { ButtonOK Button
-    MoveScaled(20,37,24,4)
+    MoveScaled(28,36,10,4)
     Text = ("OK")
   }
   { Frame2 Frame
@@ -95,8 +95,7 @@
     }
   }
   { Frame4 Frame
-    MoveScaled(44,33,29,14)
-    Visible = False
+    MoveScaled(33,21,29,14)
     Enabled = False
     Text = ("Tamaño Tablero")
     { RadioButton8 RadioButton
@@ -107,13 +106,5 @@
       MoveScaled(3,8,24,3)
       Text = ("10x10 (100 casillas)")
     }
-  }
-  { CheckBoxVerLetrasYNumeros CheckBox
-    MoveScaled(35,26,27,6)
-    Text = ("Ver letras y numeros")
-  }
-  { Label3 Label
-    MoveScaled(35,23,18,3)
-    Text = ("Tablero:")
   }
 }

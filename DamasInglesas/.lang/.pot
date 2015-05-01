@@ -1,0 +1,338 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2002-11-01 04:27+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .project:1
+msgid "DamasInglesas"
+msgstr ""
+
+#: .project:2
+msgid ""
+"Juego de damas inglesas\n"
+"Corregido Negamax. Cambio en botones puestos como barra\n"
+"Estoy en arreglar el  Alfa-beta poda"
+msgstr ""
+
+#: FMain.form:49
+msgid "<b><h2>Damas Inglesas</h2></b>"
+msgstr ""
+
+#: FMain.form:77
+msgid "Hola ¡¡Bienvenido!!... en esta linea verá mensajes del programa..."
+msgstr ""
+
+#: FMain.form:86
+msgid "definir piezas en el tablero"
+msgstr ""
+
+#: FMain.form:87
+msgid "Crear Posicion"
+msgstr ""
+
+#: FMain.form:94
+msgid "jugar posicion"
+msgstr ""
+
+#: FMain.form:95
+msgid "Jugar una posicion creada"
+msgstr ""
+
+#: FMain.form:110
+msgid "Evaluar Posicion"
+msgstr ""
+
+#: FMain.form:111
+msgid "Evaluar posición"
+msgstr ""
+
+#: FMain.form:117
+msgid "Cancelar Movimiento"
+msgstr ""
+
+#: FMain.form:118
+msgid "Cancela ficha elegida"
+msgstr ""
+
+#: FMain.form:130
+msgid "tablero analizados..."
+msgstr ""
+
+#: FMain.form:144
+msgid "Mostrar posibles movimientos de la ficha elegida"
+msgstr ""
+
+#: FMain.form:150
+msgid "Retroceder una jugada"
+msgstr ""
+
+#: FMain.form:157
+msgid "Ir al principio del juego"
+msgstr ""
+
+#: FMain.form:164
+msgid "Siguiente jugada"
+msgstr ""
+
+#: FMain.form:171
+msgid "Salir  de la aplicacion"
+msgstr ""
+
+#: FMain.form:179
+msgid "Jugadas Realizadas"
+msgstr ""
+
+#: FMain.form:185
+msgid "jugar una nueva partida"
+msgstr ""
+
+#: FMain.form:186
+msgid "Jugar"
+msgstr ""
+
+#: FMain.form:193
+msgid "guarda partida actual en el disco duro"
+msgstr ""
+
+#: FMain.form:194
+msgid "Guardar"
+msgstr ""
+
+#: FMain.form:201
+msgid "cargar partida anteriormente guardada"
+msgstr ""
+
+#: FMain.form:202
+msgid "Abrir"
+msgstr ""
+
+#: FMain.form:209
+msgid "configurar: colores, piezas, inteligencia"
+msgstr ""
+
+#: FMain.form:210
+msgid "Configurar"
+msgstr ""
+
+#: FMain.form:217
+msgid "Finalizar partida actual"
+msgstr ""
+
+#: FMain.form:218
+msgid "Parar"
+msgstr ""
+
+#: FMain.form:225
+msgid "informacion sobre la aplicación"
+msgstr ""
+
+#: FMain.form:226
+msgid "Acerca de.."
+msgstr ""
+
+#: FMain.form:233
+msgid "¿como jugar a las damas inglesas?"
+msgstr ""
+
+#: FMain.form:234
+msgid "web"
+msgstr ""
+
+#: FMain.class:52
+msgid "Damas Inglesas"
+msgstr ""
+
+#: FMain.class:117
+msgid "Ganador es el jugador Negro"
+msgstr ""
+
+#: FMain.class:132
+msgid "Ganador es el jugador Blanco"
+msgstr ""
+
+#: FMain.class:174
+msgid ". Pensando..."
+msgstr ""
+
+#: FMain.class:335
+msgid "Negras"
+msgstr ""
+
+#: FMain.class:336
+msgid "Blancas"
+msgstr ""
+
+#: FormAcercaDe.form:22
+msgid ""
+"<h2>Damas Inglesas</h2><br>\n"
+"Programado en Gambas3<br>\n"
+"Realizado por Julio Sanchez Berro<br>\n"
+"<br>\n"
+"Basado en el programa realizado en SmallBasic<br>\n"
+"por KC Goldberg e Hijos<br>\n"
+msgstr ""
+
+#: FormAcercaDe.form:35 FormEvaluar.form:52 FormNueva.form:48
+msgid "Aceptar"
+msgstr ""
+
+#: FormAcercaDe.form:44
+msgid "http://damasinglesas.blogspot.com.es/"
+msgstr ""
+
+#: FormConfigurar.form:37
+msgid "Colores Casillas"
+msgstr ""
+
+#: FormConfigurar.form:41
+msgid "Negra:"
+msgstr ""
+
+#: FormConfigurar.form:47
+msgid "Blanca:"
+msgstr ""
+
+#: FormConfigurar.form:62
+msgid "OK"
+msgstr ""
+
+#: FormConfigurar.form:67
+msgid "Inteligencia Artificial"
+msgstr ""
+
+#: FormConfigurar.form:72 FormNueva.form:42
+msgid "Humano"
+msgstr ""
+
+#: FormConfigurar.form:72
+msgid "Ordenador Fácil"
+msgstr ""
+
+#: FormConfigurar.form:72
+msgid "Ordenador Medio"
+msgstr ""
+
+#: FormConfigurar.form:72
+msgid "Ordenador Difícil"
+msgstr ""
+
+#: FormConfigurar.form:72 FormNueva.form:42
+msgid "Negamax Dificil "
+msgstr ""
+
+#: FormConfigurar.form:72 FormNueva.form:42
+msgid "AlphaBeta (en pruebas)"
+msgstr ""
+
+#: FormConfigurar.form:72 FormNueva.form:42
+msgid "AlphaBeta MultiProceso (en pruebas)"
+msgstr ""
+
+#: FormConfigurar.form:72
+msgid "Minimax formula evalucacion 12 (5)"
+msgstr ""
+
+#: FormConfigurar.form:79
+msgid "Minimax formula evaluacion 12 (5)"
+msgstr ""
+
+#: FormConfigurar.form:96
+msgid "Piezas "
+msgstr ""
+
+#: FormConfigurar.form:112
+msgid "Dama"
+msgstr ""
+
+#: FormConfigurar.form:117
+msgid "Peon"
+msgstr ""
+
+#: FormConfigurar.form:149
+msgid "Tamaño Tablero"
+msgstr ""
+
+#: FormConfigurar.form:153
+msgid "8x8 (64 casillas)"
+msgstr ""
+
+#: FormConfigurar.form:158
+msgid "10x10 (100 casillas)"
+msgstr ""
+
+#: FormConfigurar.form:164
+msgid "Ver letras y numeros"
+msgstr ""
+
+#: FormConfigurar.form:169
+msgid "Tablero:"
+msgstr ""
+
+#: FormEvaluar.form:19
+msgid "Blanco"
+msgstr ""
+
+#: FormEvaluar.form:25
+msgid "Negro"
+msgstr ""
+
+#: FormEvaluar.form:36
+msgid "Turno...."
+msgstr ""
+
+#: FormEvaluar.form:41
+msgid "Funcion evaluadora:"
+msgstr ""
+
+#: FormEvaluar.form:47
+msgid ""
+" Case 1\n"
+"      Return scoreS(tablero, side) 'solo cuenta piezas\n"
+"    Case 2\n"
+"      Return scoreSimple(tablero, side) 'cuenta piezas y reinas al centro.\n"
+"    Case 3\n"
+"      Return scoreNat(tablero, side)\n"
+"    Case 4\n"
+"      Return scoreSam(tablero, side)\n"
+"    Case 5\n"
+"      en pruebas...\n"
+msgstr ""
+
+#: FormEvaluar.form:59
+msgid "Valoracion:"
+msgstr ""
+
+#: FormEvaluar.form:64
+msgid "ValueBox1"
+msgstr ""
+
+#: FormNueva.form:21
+msgid "Jugador:"
+msgstr ""
+
+#: FormNueva.form:42
+msgid "IA Fácil"
+msgstr ""
+
+#: FormNueva.form:42
+msgid "IA Medio"
+msgstr ""
+
+#: FormNueva.form:42
+msgid "IA Difícil"
+msgstr ""
+
+#: FormNueva.form:42
+msgid "Minimax con formula evaluacion 12 (5)"
+msgstr ""
+
+#: FormNueva.form:60
+msgid "Inicia Partida"
+msgstr ""
