@@ -107,27 +107,28 @@ Public Sub PictureBoxBlancaPeon_MouseDown()
       PictureBoxBlancaPeon.Picture = Picture["peon_blanco.png"]
       PictureBoxBlancaPeon.tag = "pb"
       Constantes.dibujoPeon = "peon"
+      Constantes.dibujoReina = "reina"
 
     Case "pb"
       PictureBoxBlancaPeon.Picture = Picture["n1_blanco.png"]
       PictureBoxBlancaPeon.tag = "n3"
       Constantes.dibujoPeon = "n1"
-
+      Constantes.dibujoReina = "n2"
     Case "n3"
       PictureBoxBlancaPeon.Picture = Picture["e1_blanco.png"]
       PictureBoxBlancaPeon.tag = "n4"
-      Constantes.dibujoPeon = "e1"
-
+      Constantes.dibujoReina = "e1"
+      Constantes.dibujoPeon = "e2"
     Case "n4"
       PictureBoxBlancaPeon.Picture = Picture["u1_blanco.png"]
       PictureBoxBlancaPeon.tag = "n5"
-      Constantes.dibujoPeon = "u1"
-
+      Constantes.dibujoReina = "u1"
+      Constantes.dibujoPeon = "u2"
     Case "n5"
       PictureBoxBlancaPeon.Picture = Picture["s1_blanco.png"]
       PictureBoxBlancaPeon.tag = "n1"
       Constantes.dibujoPeon = "s1"
-
+      Constantes.dibujoReina = "s2"
   End Select
 
 End

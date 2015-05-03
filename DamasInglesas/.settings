@@ -20,7 +20,6 @@ Geometry=[-119,234,300,599]
 
 [OpenFile]
 File[1]=".src/Formularios/FMain.form"
-Active=2
 File[2]=".src/Formularios/FMain.class:30.0"
 File[3]=".src/Formularios/FormEvaluar.form"
 File[4]=".src/Formularios/FormConfigurar.form"
@@ -43,7 +42,18 @@ File[20]=".src/Modulos/ModuleMultiProceso.module:0.20"
 File[21]=".src/Clases/ClassMoveListArray.class:9.15"
 File[22]="posible.png"
 File[23]="cuadradoVerde.png"
-Count=23
+File[24]="peon_negro.png"
+File[25]="pro1_blanco.png"
+File[26]="pro1_negra.png"
+File[27]="pro2_blanco.png"
+File[28]="pro2_negra.png"
+File[29]="reina_blanco.png"
+File[30]="tro1_blanco.png"
+File[31]="tro1_negra.png"
+Active=32
+File[32]="tro2_blanco.png"
+File[33]="tro2_negra.png"
+Count=33
 
 [Watches]
 Count=0

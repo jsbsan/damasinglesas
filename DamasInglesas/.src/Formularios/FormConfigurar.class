@@ -105,30 +105,41 @@ Public Sub PictureBoxBlancaPeon_MouseDown()
 
     Case "n1"
       PictureBoxBlancaPeon.Picture = Picture["peon_blanco.png"]
-      PictureBoxBlancaPeon.tag = "pb"
+      PictureBoxBlancaPeon.tag = "pb" 'envio a otro caso
       Constantes.dibujoPeon = "peon"
       Constantes.dibujoReina = "reina"
 
     Case "pb"
       PictureBoxBlancaPeon.Picture = Picture["n1_blanco.png"]
-      PictureBoxBlancaPeon.tag = "n3"
+      PictureBoxBlancaPeon.tag = "n3" 'envio a otro caso
       Constantes.dibujoPeon = "n1"
       Constantes.dibujoReina = "n2"
     Case "n3"
       PictureBoxBlancaPeon.Picture = Picture["e1_blanco.png"]
-      PictureBoxBlancaPeon.tag = "n4"
+      PictureBoxBlancaPeon.tag = "n4" 'envio a otro caso
       Constantes.dibujoReina = "e1"
       Constantes.dibujoPeon = "e2"
     Case "n4"
       PictureBoxBlancaPeon.Picture = Picture["u1_blanco.png"]
-      PictureBoxBlancaPeon.tag = "n5"
+      PictureBoxBlancaPeon.tag = "n5" 'envio a otro caso
       Constantes.dibujoReina = "u1"
       Constantes.dibujoPeon = "u2"
     Case "n5"
       PictureBoxBlancaPeon.Picture = Picture["s1_blanco.png"]
-      PictureBoxBlancaPeon.tag = "n1"
+      PictureBoxBlancaPeon.tag = "pro" 'envio a otro caso
       Constantes.dibujoPeon = "s1"
       Constantes.dibujoReina = "s2"
+    Case "pro"
+      PictureBoxBlancaPeon.Picture = Picture["pro1_blanco.png"]
+      PictureBoxBlancaPeon.tag = "tro" 'envio a otro caso
+      Constantes.dibujoPeon = "pro1"
+      Constantes.dibujoReina = "pro2"
+    Case "tro"
+      PictureBoxBlancaPeon.Picture = Picture["tro1_blanco.png"]
+      PictureBoxBlancaPeon.tag = "n1" 'envio a otro caso
+      Constantes.dibujoPeon = "tro1"
+      Constantes.dibujoReina = "tro2"
+
   End Select
 
 End
