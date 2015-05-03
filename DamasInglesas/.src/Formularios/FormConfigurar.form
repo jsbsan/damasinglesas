@@ -55,43 +55,19 @@
   { Frame3 Frame
     MoveScaled(32,2,28,18)
     Text = ("Piezas ")
-    { LabelB1 Label
-      MoveScaled(0,12,9,3)
-      Text = ("Negra:")
-      Alignment = Align.Right
-    }
     { LabelB2 Label
-      MoveScaled(0,5,9,3)
+      MoveScaled(0,6,10,5)
       Text = ("Blanca:")
       Alignment = Align.Right
     }
-    { Label1 Label
-      MoveScaled(21,2,7,3)
-      Text = ("Dama")
-    }
     { Label2 Label
       MoveScaled(12,2,7,3)
-      Text = ("Peon")
-    }
-    { PictureBoxNegraPeon PictureBox
-      MoveScaled(12,11,6,6)
-      Tag = "pn"
-      Picture = Picture["peon_negro.png"]
+      Text = ("Tipo")
     }
     { PictureBoxBlancaPeon PictureBox
       MoveScaled(12,5,6,6)
       Tag = "pb"
       Picture = Picture["peon_blanco.png"]
-    }
-    { PictureBoxBlancaDama PictureBox
-      MoveScaled(21,5,6,6)
-      Tag = "rb"
-      Picture = Picture["reina_blanco.png"]
-    }
-    { PictureBoxNegraDama PictureBox
-      MoveScaled(21,11,6,6)
-      Tag = "rn"
-      Picture = Picture["reina_negro.png"]
     }
   }
   { Frame4 Frame

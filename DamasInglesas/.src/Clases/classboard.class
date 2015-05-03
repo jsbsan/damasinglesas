@@ -102,7 +102,9 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
   Dim boxsize As Single
   ''note: hola
   boxsize = area.h / htamano
+
   Draw.Begin(area)
+
   For x = 1 To htamano
     For y = 1 To htamano
 
@@ -118,6 +120,7 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
     Draw.fillcolor = color.green
     Draw.FillStyle = fill.Dense37
     Draw.FillRect((seleccionado[a, 0] - 1) * boxsize, (htamano - seleccionado[a, 1]) * boxsize, boxsize, boxsize, Draw.fillcolor)
+
   Next
 
   'dibujo jugadas posibles si las hubiese... y esta activado mostrar movimientos
@@ -130,10 +133,10 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
 
         marcarx = hjugadasposibles.lista[a].movimiento[hjugadasposibles.lista[a].movimiento.max].x1
         marcary = 8 - hjugadasposibles.lista[a].movimiento[hjugadasposibles.lista[a].movimiento.max].y1
-        Draw.fillcolor = color.red
-        Draw.FillStyle = fill.Dense37
-        Draw.Circle((marcarx - 0.5) * boxsize, (htamano - marcary - 0.5) * boxsize, boxsize * 0.30)
-
+        ' Draw.fillcolor = color.red
+        ' Draw.FillStyle = fill.Dense37
+        ' Draw.Circle((marcarx - 0.5) * boxsize, (htamano - marcary - 0.5) * boxsize, boxsize * 0.30)
+        Draw.Picture(Picture["posible.png"], (marcarx - 0.75) * boxsize, (htamano - marcary - 0.75) * boxsize)
       Endif
 
     Next
@@ -224,11 +227,14 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
   If listamovimiento <> Null Then
     For a = 0 To listamovimiento.count - 1
       '   Draw.fillcolor = color.cyan
-      Draw.FillStyle = fill.Dense94 'fill.CrossDiagonal <-marca la jugada con un pequeño circulo denso
-      ' Draw.FillRect((listamovimiento[a].x0 - 1) * boxsize, (listamovimiento[a].y0 - 1) * boxsize, boxsize, boxsize, color.cyan)
-      '   Draw.FillRect((listamovimiento[a].x1 - 1) * boxsize, (listamovimiento[a].y1 - 1) * boxsize, boxsize, boxsize, color.cyan)
-      Draw.Circle((listamovimiento[a].x0 - 0.25) * boxsize, (listamovimiento[a].y0 - 0.25) * boxsize, boxsize * 0.13)
-      Draw.Circle((listamovimiento[a].x1 - 0.25) * boxsize, (listamovimiento[a].y1 - 0.25) * boxsize, boxsize * 0.13)
+      ' Draw.FillStyle = fill.Dense94 'fill.CrossDiagonal <-marca la jugada con un pequeño circulo denso
+      ' ' Draw.FillRect((listamovimiento[a].x0 - 1) * boxsize, (listamovimiento[a].y0 - 1) * boxsize, boxsize, boxsize, color.cyan)
+      ' '   Draw.FillRect((listamovimiento[a].x1 - 1) * boxsize, (listamovimiento[a].y1 - 1) * boxsize, boxsize, boxsize, color.cyan)
+      ' Draw.Circle((listamovimiento[a].x0 - 0.25) * boxsize, (listamovimiento[a].y0 - 0.25) * boxsize, boxsize * 0.13)
+      ' Draw.Circle((listamovimiento[a].x1 - 0.25) * boxsize, (listamovimiento[a].y1 - 0.25) * boxsize, boxsize * 0.13)
+      Draw.Picture(Picture["cuadradoVerde.png"], (listamovimiento[a].x0 - 0.5) * boxsize, (listamovimiento[a].y0 - 0.5) * boxsize)
+      Draw.Picture(Picture["cuadradoVerde.png"], (listamovimiento[a].x1 - 0.5) * boxsize, (listamovimiento[a].y1 - 0.5) * boxsize)
+
     Next
   Endif
 

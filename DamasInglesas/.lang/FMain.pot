@@ -142,23 +142,23 @@ msgstr ""
 msgid "Damas Inglesas"
 msgstr ""
 
-#: FMain.class:117
+#: FMain.class:120
 msgid "Ganador es el jugador Negro"
 msgstr ""
 
-#: FMain.class:132
+#: FMain.class:135
 msgid "Ganador es el jugador Blanco"
 msgstr ""
 
-#: FMain.class:174
+#: FMain.class:181
 msgid ". Pensando..."
 msgstr ""
 
-#: FMain.class:335
+#: FMain.class:345
 msgid "Negras"
 msgstr ""
 
-#: FMain.class:336
+#: FMain.class:346
 msgid "Blancas"
 msgstr ""
 

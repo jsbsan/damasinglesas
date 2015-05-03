@@ -149,23 +149,23 @@ msgstr ""
 msgid "Damas Inglesas"
 msgstr ""
 
-#: FMain.class:117
+#: FMain.class:120
 msgid "Ganador es el jugador Negro"
 msgstr ""
 
-#: FMain.class:132
+#: FMain.class:135
 msgid "Ganador es el jugador Blanco"
 msgstr ""
 
-#: FMain.class:174
+#: FMain.class:181
 msgid ". Pensando..."
 msgstr ""
 
-#: FMain.class:335
+#: FMain.class:345
 msgid "Negras"
 msgstr ""
 
-#: FMain.class:336
+#: FMain.class:346
 msgid "Blancas"
 msgstr ""
 
@@ -187,91 +187,87 @@ msgstr ""
 msgid "http://damasinglesas.blogspot.com.es/"
 msgstr ""
 
-#: FormConfigurar.form:37
+#: FormConfigurar.form:32
 msgid "Colores Casillas"
 msgstr ""
 
-#: FormConfigurar.form:41
+#: FormConfigurar.form:36
 msgid "Negra:"
 msgstr ""
 
-#: FormConfigurar.form:47
+#: FormConfigurar.form:42
 msgid "Blanca:"
 msgstr ""
 
-#: FormConfigurar.form:62
+#: FormConfigurar.form:57
 msgid "OK"
 msgstr ""
 
-#: FormConfigurar.form:67
+#: FormConfigurar.form:62
 msgid "Inteligencia Artificial"
 msgstr ""
 
-#: FormConfigurar.form:72 FormNueva.form:42
+#: FormConfigurar.form:67 FormNueva.form:42
 msgid "Humano"
 msgstr ""
 
-#: FormConfigurar.form:72
+#: FormConfigurar.form:67
 msgid "Ordenador Fácil"
 msgstr ""
 
-#: FormConfigurar.form:72
+#: FormConfigurar.form:67
 msgid "Ordenador Medio"
 msgstr ""
 
-#: FormConfigurar.form:72
+#: FormConfigurar.form:67
 msgid "Ordenador Difícil"
 msgstr ""
 
-#: FormConfigurar.form:72 FormNueva.form:42
+#: FormConfigurar.form:67 FormNueva.form:42
 msgid "Negamax Dificil "
 msgstr ""
 
-#: FormConfigurar.form:72 FormNueva.form:42
+#: FormConfigurar.form:67 FormNueva.form:42
 msgid "AlphaBeta (en pruebas)"
 msgstr ""
 
-#: FormConfigurar.form:72 FormNueva.form:42
+#: FormConfigurar.form:67 FormNueva.form:42
 msgid "AlphaBeta MultiProceso (en pruebas)"
 msgstr ""
 
-#: FormConfigurar.form:72
+#: FormConfigurar.form:67
 msgid "Minimax formula evalucacion 12 (5)"
 msgstr ""
 
-#: FormConfigurar.form:79
+#: FormConfigurar.form:74
 msgid "Minimax formula evaluacion 12 (5)"
 msgstr ""
 
-#: FormConfigurar.form:96
+#: FormConfigurar.form:91
 msgid "Piezas "
 msgstr ""
 
-#: FormConfigurar.form:112
-msgid "Dama"
+#: FormConfigurar.form:101
+msgid "Tipo"
 msgstr ""
 
-#: FormConfigurar.form:117
-msgid "Peon"
-msgstr ""
-
-#: FormConfigurar.form:149
+#: FormConfigurar.form:115
 msgid "Tamaño Tablero"
 msgstr ""
 
-#: FormConfigurar.form:153
+#: FormConfigurar.form:119
 msgid "8x8 (64 casillas)"
 msgstr ""
 
-#: FormConfigurar.form:158
+#: FormConfigurar.form:124
 msgid "10x10 (100 casillas)"
 msgstr ""
 
-#: FormConfigurar.form:164
+#: FormConfigurar.form:130
 msgid "Ver letras y numeros"
 msgstr ""
 
-#: FormConfigurar.form:169
+#: FormConfigurar.form:135
 msgid "Tablero:"
 msgstr ""
 

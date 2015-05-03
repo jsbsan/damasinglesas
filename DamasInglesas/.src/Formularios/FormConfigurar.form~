@@ -25,7 +25,7 @@
     }
   }
   { ButtonOK Button
-    MoveScaled(28,36,10,4)
+    MoveScaled(20,37,24,4)
     Text = ("OK")
   }
   { Frame2 Frame
@@ -55,47 +55,24 @@
   { Frame3 Frame
     MoveScaled(32,2,28,18)
     Text = ("Piezas ")
-    { LabelB1 Label
-      MoveScaled(0,12,9,3)
-      Text = ("Negra:")
-      Alignment = Align.Right
-    }
     { LabelB2 Label
-      MoveScaled(0,5,9,3)
+      MoveScaled(0,6,10,5)
       Text = ("Blanca:")
       Alignment = Align.Right
-    }
-    { Label1 Label
-      MoveScaled(21,2,7,3)
-      Text = ("Dama")
     }
     { Label2 Label
       MoveScaled(12,2,7,3)
       Text = ("Peon")
-    }
-    { PictureBoxNegraPeon PictureBox
-      MoveScaled(12,11,6,6)
-      Tag = "pn"
-      Picture = Picture["peon_negro.png"]
     }
     { PictureBoxBlancaPeon PictureBox
       MoveScaled(12,5,6,6)
       Tag = "pb"
       Picture = Picture["peon_blanco.png"]
     }
-    { PictureBoxBlancaDama PictureBox
-      MoveScaled(21,5,6,6)
-      Tag = "rb"
-      Picture = Picture["reina_blanco.png"]
-    }
-    { PictureBoxNegraDama PictureBox
-      MoveScaled(21,11,6,6)
-      Tag = "rn"
-      Picture = Picture["reina_negro.png"]
-    }
   }
   { Frame4 Frame
-    MoveScaled(33,21,29,14)
+    MoveScaled(44,33,29,14)
+    Visible = False
     Enabled = False
     Text = ("Tamaño Tablero")
     { RadioButton8 RadioButton
@@ -106,5 +83,13 @@
       MoveScaled(3,8,24,3)
       Text = ("10x10 (100 casillas)")
     }
+  }
+  { CheckBoxVerLetrasYNumeros CheckBox
+    MoveScaled(35,26,27,6)
+    Text = ("Ver letras y numeros")
+  }
+  { Label3 Label
+    MoveScaled(35,23,18,3)
+    Text = ("Tablero:")
   }
 }

@@ -37,8 +37,10 @@ Public Sub _new()
 End
 
 Public Sub Form_Open()
-  'imagen de explosion
 
+  Randomize ' reinicio la semilla de numeros aleatorios (para jugadas con igual puntuacion)
+
+  'imagen de explosion
   Try Copy "calculoDI.gambas" To "/tmp/calculoDI.gambas"
   '  Chmod "/tmp/calculoDI.gambas" To "rwxrwxrwx" 'doy permisos de ejecucion
   Try Copy "explosion.png" To "/tmp/explosion.png"
@@ -91,9 +93,12 @@ Public Sub NuevoJuego_Click()
   'compruebo que el jugador white es humano
   If constantes.PlayerStrategy[Str$(turno)] <> "0" Then
     'es el turno del ordenador
+    drawingarea1.Mouse = Mouse.Wait
+    Wait 0.01
 
     RelojIA()
-
+  Else
+    drawingarea1.Mouse = Mouse.Arrow
   Endif
 
 End
@@ -167,15 +172,21 @@ Public Sub RelojIA()
   Dim jugada As New Classmovelist
   Dim evaluafinal As Integer
 
-  If finjuego = True Then Return
+  If finjuego = True Then
+    drawingarea1.Mouse = Mouse.Arrow
+    Wait 0.01
+    Return
+  Endif
 
   If constantes.PlayerStrategy[Str$(turno)] <> "0" Then
     'es el turno del ordenador...
     LabelMensajes.text &= (". Pensando...")
+    drawingarea1.Mouse = Mouse.Wait
+    drawingarea1.Refresh()
+    LabelMensajes.Refresh()
 
-    '[
-    '  LabelMensajes.text = Replace(LabelMensajes.text, (". Pensando..."), "")
     Wait 0.01
+
     '********************************************************
     'aumenta la profundidad del analisis para pocas piezas...
     '********************************************************
@@ -188,7 +199,7 @@ Public Sub RelojIA()
       profundidad = 3
     Endif
     'modificar funcion evaluacion para finales...
-    'si supera los 30 movimientos, el centtro adquire mucha mas importancia...
+    'si supera los 30 movimientos, el centro adquire mucha mas importancia...
     If GridJugadas.Rows.count > 19 Then
       'he elegido 19 movimento de una manera aleatoria... podia ser 20 o 30 movientos... lo mejor seria contar las
       'piezas que hubiera y decidir cuando estamos pasando del medio juego al final de partida...
@@ -278,6 +289,7 @@ Public Sub RelojIA()
     Endif
 
   Endif
+  drawingarea1.Mouse = Mouse.Arrow
 
 End
 
@@ -680,7 +692,7 @@ Public Sub ToolButtonPartidaAnterior_Click()
         contador += 1
       Next
     Next
-
+    tablero.displayboard(DrawingArea1) 'redibujo el tablero
     'jugadas del gridview...
     'habria que guardar las jugadas tal como las entiende el ordenador..
     '  contador += 1

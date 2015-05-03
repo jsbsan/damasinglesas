@@ -787,7 +787,7 @@ Fast Public Function negamax(board As Classboard, side As Integer, depth As Inte
 
     movelistArray = GenerateMoveList(board, side)
 
-    If movelistArray.lista.count = 0 Then
+    If movelistArray.count = 0 Then
       'no se ha generado ninguna posible jugada
       solucion = New ClassRespuesta(evaluateBoard(board, evaluator) * side, Null)
       Return solucion

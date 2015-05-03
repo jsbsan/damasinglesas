@@ -14,91 +14,87 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: FormConfigurar.form:37
+#: FormConfigurar.form:32
 msgid "Colores Casillas"
 msgstr ""
 
-#: FormConfigurar.form:41
+#: FormConfigurar.form:36
 msgid "Negra:"
 msgstr ""
 
-#: FormConfigurar.form:47
+#: FormConfigurar.form:42
 msgid "Blanca:"
 msgstr ""
 
-#: FormConfigurar.form:62
+#: FormConfigurar.form:57
 msgid "OK"
 msgstr ""
 
-#: FormConfigurar.form:67
+#: FormConfigurar.form:62
 msgid "Inteligencia Artificial"
 msgstr ""
 
-#: FormConfigurar.form:72
+#: FormConfigurar.form:67
 msgid "Humano"
 msgstr ""
 
-#: FormConfigurar.form:72
+#: FormConfigurar.form:67
 msgid "Ordenador Fácil"
 msgstr ""
 
-#: FormConfigurar.form:72
+#: FormConfigurar.form:67
 msgid "Ordenador Medio"
 msgstr ""
 
-#: FormConfigurar.form:72
+#: FormConfigurar.form:67
 msgid "Ordenador Difícil"
 msgstr ""
 
-#: FormConfigurar.form:72
+#: FormConfigurar.form:67
 msgid "Negamax Dificil "
 msgstr ""
 
-#: FormConfigurar.form:72
+#: FormConfigurar.form:67
 msgid "AlphaBeta (en pruebas)"
 msgstr ""
 
-#: FormConfigurar.form:72
+#: FormConfigurar.form:67
 msgid "AlphaBeta MultiProceso (en pruebas)"
 msgstr ""
 
-#: FormConfigurar.form:72
+#: FormConfigurar.form:67
 msgid "Minimax formula evalucacion 12 (5)"
 msgstr ""
 
-#: FormConfigurar.form:79
+#: FormConfigurar.form:74
 msgid "Minimax formula evaluacion 12 (5)"
 msgstr ""
 
-#: FormConfigurar.form:96
+#: FormConfigurar.form:91
 msgid "Piezas "
 msgstr ""
 
-#: FormConfigurar.form:112
-msgid "Dama"
+#: FormConfigurar.form:101
+msgid "Tipo"
 msgstr ""
 
-#: FormConfigurar.form:117
-msgid "Peon"
-msgstr ""
-
-#: FormConfigurar.form:149
+#: FormConfigurar.form:115
 msgid "Tamaño Tablero"
 msgstr ""
 
-#: FormConfigurar.form:153
+#: FormConfigurar.form:119
 msgid "8x8 (64 casillas)"
 msgstr ""
 
-#: FormConfigurar.form:158
+#: FormConfigurar.form:124
 msgid "10x10 (100 casillas)"
 msgstr ""
 
-#: FormConfigurar.form:164
+#: FormConfigurar.form:130
 msgid "Ver letras y numeros"
 msgstr ""
 
-#: FormConfigurar.form:169
+#: FormConfigurar.form:135
 msgid "Tablero:"
 msgstr ""
 

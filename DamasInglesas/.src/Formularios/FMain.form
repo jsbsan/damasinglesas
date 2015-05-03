@@ -6,7 +6,7 @@
   Resizable = False
   { DrawingArea1 DrawingArea
     MoveScaled(16,8,53,52)
-    Mouse = Mouse.Cross
+    Mouse = Mouse.Arrow
     Border = Border.Plain
     Cached = True
   }

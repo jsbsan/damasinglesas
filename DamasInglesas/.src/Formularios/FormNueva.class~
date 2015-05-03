@@ -18,9 +18,8 @@ Public Sub ButtonOK_Click()
   fmain.finjuego = False
   fmain.turnoInicial = fmain.turno
   fmain.tableroInicio.copia(fmain.tablero)
-
-  fmain.contadorboton = -1
   Me.Close
+  fmain.contadorboton = -1
 
 End
 
