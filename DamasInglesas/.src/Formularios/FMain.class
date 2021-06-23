@@ -1,0 +1,897 @@
+' Gambas class file
+
+'Fuente original:  http://smallbasic.sourceforge.net/?q=node/72
+'Autor original: Ken Goldberg
+'url interesantes juego en java online: http://e6e6a5f4.linkbucks.com
+'url juego entre humanos: http://e2577960.linkbucks.com
+'*********************************************
+'comentarios especiales:
+'*********************************************
+'FIXME: comentario especial (color rojo)
+'NOTE: comentario especial (color negro)
+'TODO: comentario especial (colo verde)
+Public turno As Integer 'controla el turno del jugador que tiene que jugar ahora
+Public tablero As New ClassBoard(constantes.squares)
+Public casilla As Integer '1 es la primera casilla seleccionada (origen) , 2 es la casilla la 2º casilla (destino)
+Public finjuego As Boolean
+Public listamovimientos As New ClassMovimiento[] 'lista de movimientos a realizar..
+Public tableroTemporal As New Classboard(8)
+Public ejecutajugada As Boolean 'revisa si la jugada introducida por un humano se puede hacer
+
+'editar un tablero...
+Public editandotablero As Integer
+Public piezaAponer As Integer
+Public xant As Integer
+Public yant As Integer
+
+Public turnoInicial As Integer
+Public tableroInicio As New Classboard(8)
+Public CreandoPosicion As Boolean
+Public contadorboton As Integer
+
+Public recorridoExplosion As New Picture[] 'para el desarrollo de las explosiones
+Public ArrayExplosiones As New ClassExplosion[] ' array de todas las explosiones
+
+Public Sub _new()
+
+End
+
+Public Sub Form_Open()
+
+  Randomize ' reinicio la semilla de numeros aleatorios (para jugadas con igual puntuacion)
+
+  'imagen de explosion
+  Try Copy "calculoDI.gambas" To "/tmp/calculoDI.gambas"
+  '  Chmod "/tmp/calculoDI.gambas" To "rwxrwxrwx" 'doy permisos de ejecucion
+  Try Copy "explosion.png" To "/tmp/explosion.png"
+  'copio sonidos...
+
+  Try Copy "explosion.wav" To "/tmp/explosion.wav"
+  Try Copy "bit.ogg" To "/tmp/bit.ogg"
+  recorridoExplosion = ModuleExplosiones.divideImagen("/tmp/explosion.png", 5, 5)
+  constantes.squares = 8
+  GenerarGridJugadas()
+  Me.Caption = ("Damas Inglesas")
+  Constantes.iniciar
+
+  Me.center
+  tablero.displayboard(DrawingArea1)
+
+End
+
+Public Sub ToolButtonConfigurar_Click()
+
+  FormConfigurar.ShowDialog
+  ' tablero.inicio(Constantes.squares)
+  tablero.displayboard(DrawingArea1)
+
+End
+
+Public Sub NuevoJuego_Click()
+
+  Dim jugadorturno As String
+
+  Slider1.value = 0
+
+  FormNueva.ShowDialog()
+  GenerarGridJugadas()
+
+  jugadorturno = If(turno = Constantes.black, "Negro", "Blanco")
+  LabelMensajes.text = "Turno del jugador " & jugadorturno & " (" & Constantes.PlayerStrategy[Constantes.Colorblack] & ")"
+  LabelMensajes.Refresh()
+
+  'para desactivar boton de posicion y boton de jugar posicion
+  ToolButtonCrearPosicion.Enabled = False
+  ButtonJugar.enabled = False
+
+  FMain.finjuego = False
+  Wait 0.01
+  tablero.inicio(constantes.squares)
+  tableroInicio.copia(tablero)
+  tablero.displayboard(drawingarea1)
+
+  'compruebo que el jugador white es humano
+  If constantes.PlayerStrategy[Str$(turno)] <> "0" Then
+    'es el turno del ordenador
+    drawingarea1.Mouse = Mouse.Wait
+    Wait 0.01
+
+    RelojIA()
+  Else
+    drawingarea1.Mouse = Mouse.Arrow
+  Endif
+
+End
+
+Public Sub ToolButton1_Click()
+
+  FormAcercaDe.show
+
+End
+
+Public Sub jugar()
+
+  Dim listamovimientos As ClassMovimiento[]
+  'comprobar ganador
+
+  Dim movimientos As New ClassMovimiento[]
+
+  movimientos = ModuloCalculos.GenerateMoveList(tablero, constantes.white)
+
+  If movimientos.max = 0 Then
+    Message.Info(("Ganador es el jugador Negro"))
+    finjuego = True
+  Else
+    '' conseguir lista movimiento
+    listamovimientos = ModuloCalculos.DetermineMove(tablero, constantes.white)
+
+    '' aplicar movimiento
+    tablero = ModuloCalculos.makemove(tablero, listamovimientos, True)
+    '' mostrar tablero
+    tablero.displayboard(DrawingArea1, listamovimientos)
+  Endif
+
+  movimientos = ModuloCalculos.generateMove(tablero, Constantes.black)
+  If movimientos.max = 0 Then
+
+    Message.Info(("Ganador es el jugador Blanco"))
+    finjuego = True
+  Else
+    '' conseguir lista movimiento
+    listamovimientos = ModuloCalculos.DetermineMovimiento(tablero, constantes.black)
+    '' aplicar movimiento
+    tablero = ModuloCalculos.makemove(tablero, listamovimientos, True)
+    '' mostrar tablero
+    tablero.displayboard(DrawingArea1, listamovimientos)
+  Endif
+
+End
+
+Public Sub ButtonCancela_Click()
+
+  tablero.seleccionado[0, 0] = 0
+  tablero.seleccionado[0, 1] = 0
+  tablero.seleccionado[1, 0] = 0
+  tablero.seleccionado[1, 1] = 0
+  tablero.jugadasposibles.lista.Clear()
+  tablero.displayboard(DrawingArea1)
+  casilla = 0
+
+End
+
+Public Sub Form_Close()
+
+  tablero = Null
+
+End
+
+Public Sub RelojIA()
+
+  Dim profundidad As Integer
+  Dim solucion As ClassRespuesta
+  Dim jugada As New Classmovelist
+  Dim evaluafinal As Integer
+
+  If finjuego = True Then
+    drawingarea1.Mouse = Mouse.Arrow
+    Wait 0.01
+    Return
+  Endif
+
+  If constantes.PlayerStrategy[Str$(turno)] <> "0" Then
+    'es el turno del ordenador...
+    LabelMensajes.text &= (". Pensando...")
+    drawingarea1.Mouse = Mouse.Wait
+    drawingarea1.Refresh()
+    LabelMensajes.Refresh()
+
+    Wait 0.01
+
+    '********************************************************
+    'aumenta la profundidad del analisis para pocas piezas...
+    '********************************************************
+    profundidad = 1
+
+    If tablero.piezasDisponibles(- turno) < 8 Then
+      profundidad = 2
+    Endif
+    If tablero.piezasDisponibles(- turno) < 6 Then
+      profundidad = 3
+    Endif
+    'modificar funcion evaluacion para finales...
+    'si supera los 30 movimientos, el centro adquire mucha mas importancia...
+    If GridJugadas.Rows.count > 19 Then
+      'he elegido 19 movimento de una manera aleatoria... podia ser 20 o 30 movientos... lo mejor seria contar las
+      'piezas que hubiera y decidir cuando estamos pasando del medio juego al final de partida...
+      evaluafinal = 10
+    Endif
+    'contador de analisis igual a cero
+    constantes.AnalisisRealizados = 0
+
+    Select constantes.PlayerStrategy[Str$(turno)]
+        'NOTE: tipos de inteligencia artificial IA
+        ' minimax(board As Classboard, side As Integer, Depth As Integer, DepthMax As Integer, Evaluator As Integer)
+        '  Select Evaluator
+        ' Case 1      Return scoreS(tablero, side) 'solo cuenta piezas
+        ' Case 2      Return scoreSimple(tablero, side) 'cuenta piezas y reinas al centro.
+        ' Case 3      Return scoreNat(tablero, side)
+        ' Case 4      Return scoreSam(tablero, side)
+        ' case 12     Return scorefinal
+      Case 1
+        'facil
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad, 1) 'solo valores de piezas...
+        jugada.movimiento = solucion.mov
+
+      Case 2
+        'medio
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 2, 1) 'solo valores de piezas...+ posicion
+        jugada.movimiento = solucion.mov
+
+      Case 3
+        'dificil
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 3, 1)
+        jugada.movimiento = solucion.mov
+      Case 4
+        'negamax
+        constantes.jugadoractual = turno
+        'corregido 5/11/2012
+
+        solucion = ModuloCalculos.negamax(tablero, turno, 0, profundidad + 3, - 999999, +999999, 1)
+        jugada.movimiento = solucion.mov
+      Case 5
+        'alfabeta
+        constantes.jugadoractual = turno
+        'a comprobar algoritmo
+        solucion = ModuloCalculos.MinimaxAlfaBeta2(tablero, turno, 0, 7, 12)
+        jugada.movimiento = solucion.mov
+      Case 6
+        'multiproceso... minimax
+        constantes.jugadoractual = turno
+        solucion = ModuleMultiProceso.MultiMinimax(tablero, turno, 0, profundidad + 4, 12) 'en pruebas...
+        jugada.movimiento = solucion.mov
+      Case 7
+        'minimax con formula de evaluciacion 5 (12)
+        constantes.jugadoractual = turno
+        solucion = ModuloCalculos.Minimax(tablero, turno, 0, profundidad + 4, 12)
+        '   solucion = ModuleMultiProceso.MultiMinimax(tablero, turno, 0, profundidad + 3, 1, True) 'en pruebas...
+        jugada.movimiento = solucion.mov
+    End Select
+    'Print "Valoracion posicion actual...."; solucion.valor
+    'Print "Numero de tableros analizado: "; constantes.AnalisisRealizados
+
+    If turno = constantes.white Then
+      TextLabelJugadasBlanco.text = "TA: " & Format$(constantes.AnalisisRealizados, "##,")
+    Else
+      TextLabelJugadasNegro.text = "TA: " & Format$(constantes.AnalisisRealizados, "##,")
+    Endif
+
+    'para presentar como va la partida en el slider...
+    If solucion.valor > 2000 Then solucion.valor = 1100
+    If solucion.valor < -2000 Then solucion.valor = -1100
+    Slider1.Value = If(turno = 1, solucion.valor, - solucion.valor)
+    Slider1.Tooltip = "valoracion del tablero: " & Str$(If(turno = 1, solucion.valor, - solucion.valor))
+    If jugada.movimiento <> Null Then
+      escribeMovimientoyCambiaTurno(jugada)
+      tablero.displayboard(drawingarea1, jugada.movimiento)
+      'Wait 0.5
+      '  Print jugada.escribe()
+      ']
+      If constantes.PlayerStrategy[Str$(turno)] <> "0" Then
+        'es el turno del ordenador
+        comprobarVictoria()
+
+        RelojIA()
+        comprobarVictoria()
+      Endif
+
+    Else
+      comprobarVictoria()
+    Endif
+
+  Endif
+  drawingarea1.Mouse = Mouse.Arrow
+
+End
+
+' Escribe movimiento en tablero
+Fast Public Sub escribeMovimientoyCambiaTurno(jugada As Classmovelist)
+
+  Dim listamovArray As New ClassMoveListArray
+
+  If finjuego <> True Then
+    'animacion de la jugada....
+    ModuloAnimacion.animacion(drawingarea1, tablero, jugada.movimiento)
+    'Obtener tablero una vez ejecutado el movimiento....
+    tablero = ModuloCalculos.MakeMove(tablero, jugada, False)
+    tablero.displayboard(drawingarea1, jugada.movimiento) 'escribe el movimiento (circulos rayados en verde)
+    jugada.escribegrid(GridJugadas, turno) 'rellena el grid con la jugada que se ha realizado
+    comprobarVictoria()
+    'cambio turno
+    'TODO: espera 0.75 segundos para jugar de nuevo
+    Try Exec ["play", "/tmp/bit.ogg"] 'hace ruido de colocar pieza...
+    ''Nota: Debe de tener instalado el programa play,  sudo apt-get install sox, para que funcione el sonido...
+    Wait 0.75 'espero medio segundo para ver bien la jugada
+    If turno = constantes.white Then
+
+      turno = constantes.black
+      LabelMensajes.text = "Turno del jugador Negro (" & Constantes.PlayerStrategy[Constantes.Colorblack] & ")"
+      'comprobar que hay movimientos posibles, si no lo hay gana el Blanco...
+
+      listamovArray = ModuloCalculos.GenerateMoveList(tablero, turno)
+      If listamovArray.lista.count = 0 Then
+        message.info("Ganan las Blancas porque no puedes mover ninguna pieza")
+        finjuego = True
+      Endif
+
+    Else
+      turno = constantes.white
+      LabelMensajes.text = "Turno del jugador Blanco (" & Constantes.PlayerStrategy[Constantes.Colorwhite] & ")"
+      'comprobar que hay movimientos posibles, si no lo hay gana el Negro...
+      listamovArray = ModuloCalculos.GenerateMoveList(tablero, turno)
+      If listamovArray.lista.count = 0 Then
+        message.info("Ganan las Negras porque no puedes mover ninguna pieza")
+        finjuego = True
+      Endif
+    Endif
+  Endif
+
+End
+
+Public Sub GenerarGridJugadas()
+
+  With GridJugadas
+    .mode = Select.Single 'para que aparezca el cursor
+    .header = 3
+    .rows.count = 0
+    .columns.count = 4
+    .Columns[0].title = ("Negras")
+    .Columns[1].title = ("Blancas")
+    .Columns[0].width = 100
+    .Columns[1].width = 100
+    .Columns[2].width = 0
+    .Columns[3].width = 0
+    .font.name = "Bitstream Charter"
+    .font.size = 8
+    .Background = 16777215
+    .Foreground = 0
+  End With
+
+End
+
+Public Sub GridJugadas_Select()
+
+  Dim a As Integer
+  Dim b As Integer
+
+  For a = 0 To GridJugadas.columns.count - 1
+    For b = 0 To GridJugadas.Rows.count - 1
+
+      GridJugadas[b, a].Background = Color.White
+
+    Next
+  Next
+  '
+  'marcar celda
+  Try GridJugadas[GridJugadas.row, GridJugadas.column].Background = Color.green
+  '
+
+End
+
+Public Sub comprobarVictoria()
+
+  Dim s As Integer
+  Dim tienen As String
+  'si hay piezas, entonces
+  'si solo hay blancas-> victoria blancas
+  If finjuego = True Then Return
+
+  If tablero.piezasDisponibles(constantes.white) Then
+    'hay piezas blancas
+    s = 1
+    tienen = "blancas"
+  Endif
+
+  If tablero.piezasDisponibles(constantes.black) Then
+    'hay piezas negras
+    s = 1
+    tienen &= "negras"
+  Endif
+
+  If tienen = "" Then
+    Message.Info("Tablas!!!\nNo puedo hacer ningun movimiento")
+    finjuego = True
+    'para desactivar boton de posicion y boton de jugar posicion
+    ToolButtonCrearPosicion.Enabled = True
+    ButtonJugar.visible = True
+
+  Else
+    If InStr(tienen, "blancas") <> 0 And InStr(tienen, "negras") = 0 Then
+      Message.Info("Blancas ganan!!!")
+      finjuego = True
+      'para desactivar boton de posicion y boton de jugar posicion
+      ToolButtonCrearPosicion.Enabled = True
+      ButtonJugar.visible = True
+
+    Else
+      If InStr(tienen, "blancas") = 0 And InStr(tienen, "negras") <> 0 Then
+        Message.Info("Negras ganan!!!")
+        finjuego = True
+        'para desactivar boton de posicion y boton de jugar posicion
+        ToolButtonCrearPosicion.Enabled = True
+        ButtonJugar.visible = True
+
+      Endif
+    Endif
+  Endif
+
+End
+
+Public Sub DrawingArea1_MouseDown()
+
+  Dim a As Integer
+  Dim mimovimientoinicial As String
+  Dim mimovimientofinal As String
+  Dim listamovArray As New ClassMoveListArray
+  Dim listamov As New ClassMoveList
+
+  Dim mov As ClassMovimiento
+  Dim x As Integer
+  Dim y As Integer
+
+  x = Int(Mouse.x / (DrawingArea1.h / constantes.squares)) + 1
+  y = Int(Mouse.y / (DrawingArea1.h / constantes.squares)) + 1
+  '  Print x, y
+  'he pulsado click en el area de dibujo...
+  'compruebo que el jugador del turno es "Humano"
+  If constantes.PlayerStrategy[Str$(turno)] = "0" Then
+    'obtengo coordenada x,y del tablero donde he hecho clik..
+
+    'es Humano
+    If casilla = 2 Then
+
+      If tablero.tablero[x, y] = constantes.blank Then
+        tablero.seleccionado[1, 0] = x
+        tablero.seleccionado[1, 1] = constantes.squares - y + 1
+
+        If editandotablero <> 1 Then
+          ejecutajugada = False
+          mov = New ClassMovimiento(tablero.seleccionado[0, 0], constantes.squares - tablero.seleccionado[0, 1] + 1, tablero.seleccionado[1, 0], constantes.squares - tablero.seleccionado[1, 1] + 1)
+          'comprobar movimiento valido...
+          listamovArray = ModuloCalculos.GenerateMoveList(tablero, turno)
+          'Print "Movimientos posibles..."
+          'Print listamovArray.escribe()
+
+          mimovimientoinicial = "(" & Str$(tablero.seleccionado[0, 0]) & "," & Str(constantes.squares - tablero.seleccionado[0, 1] + 1) & ")"
+          mimovimientofinal = "(" & Str$(tablero.seleccionado[1, 0]) & "," & Str(constantes.squares - tablero.seleccionado[1, 1] + 1) & ")"
+          '  Print "Mi movimiento: "; mimovimientoinicial; " a "; mimovimientofinal
+          'compruebo en la lista de movimiento si existe esa posibilidad
+          For a = 0 To listamovArray.lista.count - 1
+            '   Print a; "Inicio..."
+            '   Print listamovArray.lista[a].movimiento[0].x0, listamovArray.lista[a].movimiento[0].y0
+            '   Print tablero.seleccionado[0, 0], (8 - tablero.seleccionado[0, 1] + 1)
+            If listamovArray.lista[a].movimiento[0].x0 = tablero.seleccionado[0, 0] And listamovArray.lista[a].movimiento[0].y0 = (8 - tablero.seleccionado[0, 1] + 1) Then
+              '   Print a; "Fin..."
+              '  Print listamovArray.lista[a].movimiento[0].x1, listamovArray.lista[a].movimiento[0].y1
+              '  Print tablero.seleccionado[1, 0], (8 - tablero.seleccionado[1, 1] + 1)
+              If listamovArray.lista[a].movimiento[listamovArray.lista[a].movimiento.max].x1 = tablero.seleccionado[1, 0] And listamovArray.lista[a].movimiento[listamovArray.lista[a].movimiento.Max].y1 = (8 - tablero.seleccionado[1, 1] + 1) Then
+
+                '  Print "ejecuta la jugada..."
+                ejecutajugada = True
+                '   tablero = ModuloCalculos.MakeMove(tablero, listamovArray.lista[a], True)
+                tablero.jugadasposibles.lista.Clear 'borro todas las jugadas disponibles
+                listamov = listamovArray.lista[a]
+                Break
+              Endif
+            Endif
+          Next
+          If ejecutajugada = False Then
+            tablero.seleccionado[0, 0] = 0
+            tablero.seleccionado[1, 1] = 0
+            casilla = 0
+            tablero.displayboard(DrawingArea1)
+            Message("No se puede realizar esa jugada...")
+          Endif
+          If ejecutajugada = True Then
+            '   tablero.displayboard(DrawingArea1)
+            '
+            '         listamovimientos.Clear
+            '        listamovimientos.Add(movUsuarioLista)
+
+            '       listamov.movimiento = listamovimientos
+            ButtonCancela_Click()
+            escribeMovimientoyCambiaTurno(listamov)
+
+            If constantes.PlayerStrategy[Str$(turno)] <> "0" Then
+              'el siguiente jugador es el ordenador
+              ' Wait 0.5
+              RelojIA()
+            Endif
+            ButtonCancela_Click()
+          Endif
+        Endif
+      Endif
+    Else
+
+      'Si es la primera casilla, debe de contener pieza del mismo color del turno
+
+      'contiene misma ficha de color
+
+      If tablero.tablero[x, y] = turno Or tablero.tablero[x, y] = turno * constantes.king Then
+        tablero.seleccionado[0, 0] = x
+        tablero.seleccionado[0, 1] = constantes.squares - y + 1
+        tablero.jugadasposibles = ModuloCalculos.GenerateMoveList(tablero, turno)
+        tablero.displayboard(DrawingArea1)
+        casilla = 2
+
+      Endif
+    Endif
+
+  Endif
+
+  If editandotablero = 1 Then
+    If xant = x And yant = y Then
+      piezaAponer += 1
+    Else
+      If tablero.tablero[x, y] = constantes.blank Then piezaAponer = 1
+      If tablero.tablero[x, y] = constantes.black Then piezaAponer = 2
+      If tablero.tablero[x, y] = - constantes.king Then piezaAponer = 3
+      If tablero.tablero[x, y] = constantes.white Then piezaAponer = 4
+      If tablero.tablero[x, y] = constantes.king Then piezaAponer = 0
+
+    Endif
+
+    Select piezaAponer
+      Case 1
+        tablero.tablero[x, y] = constantes.black
+      Case 2
+        tablero.tablero[x, y] = - constantes.king
+      Case 3
+        tablero.tablero[x, y] = constantes.white
+      Case 4
+        tablero.tablero[x, y] = constantes.king
+      Case 5
+        piezaAponer = 0
+        tablero.tablero[x, y] = Constantes.blank
+    End Select
+    tablero.displayboard(drawingarea1)
+    'Print piezaAponer
+    xant = x
+    yant = y
+  Endif
+
+End
+
+Public Sub ToolButtonCrearPosicion_Click()
+
+  Dim a As Integer
+  Dim b As Integer
+  'iniciar gridview
+  GenerarGridJugadas()
+
+  drawingarea1.Tooltip = "Haga click en la celda para ir dibujando la pieza"
+  editandotablero = 1
+  For a = 0 To constantes.squares
+    For b = 0 To constantes.squares
+      tablero.tablero[a, b] = 0
+
+    Next
+  Next
+
+  tablero.displayboard(DrawingArea1)
+  NuevoJuego.Enabled = False
+  ButtonJugar.Enabled = True
+  CreandoPosicion = True
+
+End
+
+Public Sub ButtonJugar_Click()
+
+  Dim jugadorturno As String
+
+  GenerarGridJugadas()
+  ButtonJugar.enabled = False
+  FormNueva.ShowDialog()
+  jugadorturno = If(turno = Constantes.black, "Negro", "Blanco")
+  LabelMensajes.text = "Turno del jugador " & jugadorturno & " (" & Constantes.PlayerStrategy[Constantes.Colorblack] & ")"
+  LabelMensajes.Refresh()
+
+  editandotablero = 0
+  FMain.finjuego = False
+
+  'compruebo que el jugador white es humano
+  If constantes.PlayerStrategy[Str$(turno)] <> "0" Then
+    'es el turno del ordenador
+
+    RelojIA()
+
+  Endif
+
+End
+
+Public Sub ToggleButtonEvaluar_Click()
+
+  FormEvaluar.Show()
+
+End
+
+Public Sub ToolButtonGuardarPartida_Click()
+
+  Dim destino As String
+  Dim a As Integer, b As Integer
+  Dim lineas As String
+
+  If CreandoPosicion = True Then fmain.tableroInicio.copia(fmain.tablero)
+  'abro cuadro de dialogo para que eliga el nombre de la partida a guardar
+
+  Dialog.title = "Escriba el nombre de la partida a guardar"
+  Dialog.Filter = ["*.DamasInglesas", "Datos de Partidas"]
+  If Not Dialog.SaveFile() Then
+    If Right$(Dialog.path, Len(".DamasInglesas")) <> ".DamasInglesas" Then
+      destino = Dialog.path & ".DamasInglesas"
+    Else
+      destino = Dialog.path
+    Endif
+
+    lineas = "Partida de Damas Inglesas\n"
+    lineas &= "version 0.0.8\n"
+    'guardo los siguientes datos:
+    'posicion inicial
+    lineas &= "***************** Posicion Inicial ***************** \n"
+    For a = 1 To 8
+      For b = 1 To 8
+        lineas &= Str$(tableroInicio.tablero[a, b]) & "\n"
+      Next
+    Next
+
+    'jugadas del gridview...
+    'habria que guardar las jugadas tal como las entiende el ordenador..
+    lineas &= "*****************  Jugadas ***************** \n"
+    lineas &= Str$(GridJugadas.rows.count) & "\n" ' numero de filas
+    For a = 0 To GridJugadas.rows.count - 1
+      lineas &= GridJugadas[a, 0].text & "\n"
+      lineas &= GridJugadas[a, 1].text & "\n"
+      lineas &= GridJugadas[a, 2].text & "\n"
+      lineas &= GridJugadas[a, 3].text & "\n"
+    Next
+
+    'turno inicio
+    lineas &= "***************** Turno Inicio ***************** \n"
+    lineas &= Str$(fmain.turnoInicial) & "\n"
+    lineas &= "***************** IA/humano *************** \n"
+    lineas &= "Blancas \n"
+    lineas &= Str$(Constantes.PlayerStrategy[Str$(Constantes.white)]) & "\n"
+    lineas &= "Negras \n"
+    lineas &= Str$(Constantes.PlayerStrategy[Str$(Constantes.black)]) & "\n"
+
+    File.Save(destino, lineas)
+
+  Endif
+
+End
+
+Public Sub ToolButtonPartidaAnterior_Click()
+
+  Dim contador As Integer, a As Integer, b As Integer, contadorjugadas As Integer
+  Dim cadena As New String[]
+
+  Dialog.title = "Escriba el nombre de la partida a leer"
+  Dialog.Filter = ["*.DamasInglesas", "Datos de Partidas"]
+  If Not Dialog.OpenFile() Then
+    cadena = Split(File.Load(Dialog.path), "\n")
+
+    'las dos primeras lineas es para ver si es el programa, y la verico
+    'lineas = "Partida de Damas Inglesas\n" 'linea 0
+    ' lineas &= "version 0.0.8\n" 'linea 1
+    'guardo los siguientes datos:
+    'posicion inicial
+    'lineas &= "***************** Posicion Inicial ***************** \n" 'linea 3
+    contador = 3
+    For a = 1 To 8
+      For b = 1 To 8
+        tablero.tablero[a, b] = Val(cadena[contador])
+        contador += 1
+      Next
+    Next
+    tablero.displayboard(DrawingArea1) 'redibujo el tablero
+    'jugadas del gridview...
+    'habria que guardar las jugadas tal como las entiende el ordenador..
+    '  contador += 1
+    '  lineas &= "*****************  Jugadas ***************** \n"
+    contador += 1
+    contadorjugadas = Val(cadena[contador])
+
+    GridJugadas.columns.count = 4
+    GridJugadas.rows.count = contadorjugadas
+
+    For a = 0 To contadorjugadas - 1
+      contador += 1
+      GridJugadas[a, 0].text = cadena[contador]
+      contador += 1
+      GridJugadas[a, 1].text = cadena[contador]
+      contador += 1
+      GridJugadas[a, 2].text = cadena[contador]
+      contador += 1
+      GridJugadas[a, 3].text = cadena[contador]
+    Next
+    'turno inicio
+    contador += 1
+    '    lineas &= "***************** Turno Inicio ***************** \n"
+    contador += 1
+    fmain.turnoInicial = Val(cadena[contador])
+    contador += 1
+    '   lineas &= "***************** IA/humano *************** \n"
+    contador += 1
+    '  lineas &= "Blancas \n"
+    contador += 1
+
+    Constantes.PlayerStrategy[Str$(Constantes.white)] = Val(cadena[contador])
+    contador += 1
+    ' lineas &= "Negras \n"
+    contador += 1
+    Constantes.PlayerStrategy[Str$(Constantes.black)] = Val(cadena[contador])
+    tablero.displayboard(drawingarea1)
+    'reinicio el tableroInicio para que se puedan ver las jugadas hacia adelante y hacia atras...
+    tableroInicio.copia(tablero)
+  Endif
+
+End
+
+Public Sub ToolButtonInicioAdelante_Click()
+
+  Dim a As Integer, jugada As New String[]
+  Dim movelist As New Classmovelist
+  Dim filas As Integer, mostrar As Integer
+
+  tableroTemporal = New Classboard(8)
+  tableroTemporal.copia(tableroInicio)
+  If contadorboton < ((GridJugadas.Rows.count * 2) - 1) Then
+    contadorboton += 1
+    'recorro todos las jugadas...
+    For a = 0 To contadorboton
+      filas = Int(a / 2) 'fila hasta llegar a mostrar
+      mostrar = If(espar(a), 2, 3) 'columna a mostrar 2 es negras, 3 es blanca
+
+      jugada = Split(GridJugadas[filas, mostrar].text, "\n")
+
+      movelist = convierteJugada(jugada)
+
+      tableroTemporal = ModuloCalculos.MakeMove(tableroTemporal, movelist, True)
+    Next
+
+    tableroTemporal.displayboard(DrawingArea1)
+    GridJugadas.row = Int(contadorboton / 2)
+    GridJugadas.column = If(espar(contadorboton), 0, 1)
+    GridJugadas_Select()
+  Endif
+
+End
+
+Public Sub ToolButtonInicio_Click()
+
+  'mostrar el tablero inicial....
+  '
+  tableroInicio.displayboard(DrawingArea1)
+
+  contadorboton = -1
+  GridJugadas.row = 0
+  GridJugadas.column = 0
+  GridJugadas_Select()
+  tableroTemporal.copia(tableroInicio)
+
+End
+
+Public Function espar(a As Integer) As Boolean
+
+  If (Int(a / 2) * 2) = a Then Return True
+
+  Return False
+
+End
+
+Public Function convierteJugada(jugada As String[]) As ClassMoveList
+
+  Dim a As Integer, b As Integer
+  Dim movelist As New ClassMoveList
+  Dim cadenaarray As New String[] 'cadena de movimientos
+  Dim cadenaarray2 As New String[]
+  ' Dim movimiento As New String[]
+  Dim movimi As ClassMovimiento
+
+  For a = 0 To jugada.count - 1
+    'split de  jugadas con saltos "|"
+    cadenaarray = Split(jugada[a], "|")
+    'obtengo los mivimientos intermedio
+    For b = 0 To cadenaarray.count - 1
+      'veo los movimientos de uno en uno
+      cadenaarray2 = Split(cadenaarray[b], "-")
+      movimi = New ClassMovimiento(Val(cadenaarray2[0]), Val(cadenaarray2[1]), Val(cadenaarray2[2]), Val(cadenaarray2[3]))
+      movelist.movimiento.add(movimi)
+
+    Next
+
+  Next
+  '  Print movelist.escribe()
+  Return movelist
+
+End
+
+Public Sub ToolButtonAtras_Click()
+
+  Dim a As Integer, jugada As New String[]
+  Dim movelist As New Classmovelist
+  Dim filas As Integer, mostrar As Integer
+
+  tableroTemporal = New Classboard(8)
+  tableroTemporal.copia(tableroInicio)
+  If contadorboton > 0 Then
+    contadorboton -= 1
+    'recorro todos las jugadas...
+    For a = 0 To contadorboton
+      filas = Int(a / 2) 'fila hasta llegar a mostrar
+      mostrar = If(espar(a), 2, 3) 'columna a mostrar 2 es negras, 3 es blanca
+
+      jugada = Split(GridJugadas[filas, mostrar].text, "\n")
+
+      movelist = convierteJugada(jugada)
+
+      tableroTemporal = ModuloCalculos.MakeMove(tableroTemporal, movelist, True)
+    Next
+
+    tableroTemporal.displayboard(DrawingArea1)
+    GridJugadas.row = Int(contadorboton / 2)
+    GridJugadas.column = If(espar(contadorboton), 0, 1)
+    GridJugadas_Select()
+  Endif
+
+End
+
+Public Sub ToolButtonFinJugar_Click()
+
+  finjuego = True
+  'para activar boton de posicion y boton de jugar posicion
+  ToolButtonCrearPosicion.Enabled = True
+  ButtonJugar.enabled = True
+  NuevoJuego.enabled = True
+
+End
+
+Public Sub ToolButton2_Click()
+
+  Desktop.Open("http://damasinglesas.blogspot.com.es/")
+
+End
+
+Public Sub TimerExplosiones_Timer()
+
+  Dim exptemp As ClassExplosion
+
+  For Each exptemp In ArrayExplosiones
+
+    exptemp.cuenta()
+
+    If exptemp.contador = -1 Then
+      'elimina la explosion que se ha producido
+
+      ArrayExplosiones.Remove(ArrayExplosiones.Find(exptemp))
+    Endif
+  Next
+
+End
+
+Public Sub ToolButtonSalir_Click()
+
+  Me.close
+
+End
+
+Public Sub RadioButtonMostrar_Click()
+
+  If RadioButtonMostrar.value = True Then
+    tablero.mostrarmovimientos = True
+  Else
+    tablero.mostrarmovimientos = False
+  Endif
+
+  tablero.displayboard(drawingarea1)
+
+End

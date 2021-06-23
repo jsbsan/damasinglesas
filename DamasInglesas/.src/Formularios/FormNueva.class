@@ -1,0 +1,55 @@
+' Gambas class file
+
+Public Sub Form_Open()
+
+  fmain.turno = constantes.black 'jugador negro empieza el juego
+  ComboBoxWhite.index = constantes.PlayerStrategy[constantes.white]
+  ComboBoxBlack.index = constantes.PlayerStrategy[constantes.black]
+
+  Me.center
+
+End
+
+Public Sub ButtonOK_Click()
+  'tipo de jugador humano o ordenador de distinta IA
+
+  Constantes.PlayerStrategy[Str$(Constantes.black)] = Str$(comboboxblack.index) '0 ("Humano"), 1 ("Ordenador Fácil"),2 ("Ordenador Medio"), 3 ("Ordenador Difícil"))
+  Constantes.PlayerStrategy[Str$(Constantes.white)] = Str$(comboboxWhite.index) '0 ("Humano"), 1 ("Ordenador Fácil"), 2 ("Ordenador Medio"), 3 ("Ordenador Difícil"))
+  fmain.finjuego = False
+  fmain.turnoInicial = fmain.turno
+  fmain.tableroInicio.copia(fmain.tablero)
+
+  fmain.contadorboton = -1
+  Me.Close
+
+End
+
+Public Sub ComboBoxWhite_Click()
+
+  Constantes.PlayerStrategy[Constantes.Colorwhite] = Str$(comboboxWhite.text)
+  '  Print "Nivel:"; Str$(comboboxWhite.text)
+
+End
+
+Public Sub ComboBoxBlack_Click()
+
+  Constantes.PlayerStrategy[Constantes.ColorBlack] = Str$(comboboxblack.text)
+  '  Print "Nivel:"; Str$(comboboxblack.text)
+
+End
+
+Public Sub RadioButtonIniciaPartidaNegro_Click()
+
+  fmain.turno = constantes.black 'el primer jugador es el negro
+
+End
+
+Public Sub RadioButtonIniciaPartidaBlanco_Click()
+
+  fmain.turno = constantes.white 'el primer jugador es el blanco (white)
+
+End
+
+Public Sub Label1_MouseDown()
+
+End

@@ -1,0 +1,177 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,101,68)
+  Icon = Picture["tablero-damas.png"]
+  Resizable = False
+  { DrawingArea1 DrawingArea
+    MoveScaled(16,8,53,52)
+    Mouse = Mouse.Arrow
+    Border = Border.Plain
+    Cached = True
+  }
+  { TextLabelTitulo TextLabel
+    MoveScaled(39,0,29,4)
+    Text = ("<b><h2>Damas Inglesas</h2></b>")
+    Alignment = Align.Center
+    Border = Border.Raised
+  }
+  { PictureBox1 PictureBox
+    MoveScaled(69,0,5,5)
+    Picture = Picture["reina_blanco.png"]
+  }
+  { PictureBox2 PictureBox
+    MoveScaled(26,0,5,5)
+    Picture = Picture["reina_negro.png"]
+  }
+  { PictureBox3 PictureBox
+    MoveScaled(75,-1,5,6)
+    Picture = Picture["peon_blanco.png"]
+  }
+  { PictureBox4 PictureBox
+    MoveScaled(32,-1,5,6)
+    Picture = Picture["peon_negro.png"]
+  }
+  { LabelMensajes Label
+    MoveScaled(1,64,73,4)
+    Font = Font["Ubuntu,Italic,-2"]
+    Text = ("Hola ¡¡Bienvenido!!... en esta linea verá mensajes del programa...")
+  }
+  { GridJugadas GridView
+    MoveScaled(74,27,26,29)
+  }
+  { ToolButtonCrearPosicion ToolButton
+    MoveScaled(74,10,26,4)
+    ToolTip = ("definir piezas en el tablero")
+    Text = ("Crear Posicion")
+    Picture = Picture["tablero-damas.png"]
+    Border = True
+  }
+  { ButtonJugar Button
+    MoveScaled(74,14,26,4)
+    ToolTip = ("jugar posicion")
+    Text = ("Jugar una posicion creada")
+  }
+  { Slider1 Slider
+    MoveScaled(39,5,29,2)
+    MinValue = -1100
+    MaxValue = 1100
+  }
+  { Separator1 Separator
+    MoveScaled(52,4,3,4)
+  }
+  { ToggleButtonEvaluar ToggleButton
+    MoveScaled(74,18,26,4)
+    ToolTip = ("Evaluar Posicion")
+    Text = ("Evaluar posición")
+  }
+  { ButtonCancela Button
+    MoveScaled(1,61,29,3)
+    Font = Font["-2"]
+    ToolTip = ("Cancelar Movimiento")
+    Text = ("Cancela ficha elegida")
+    Picture = Picture["icon:/16/cancel"]
+  }
+  { TimerExplosiones #Timer
+    #MoveScaled(3,51)
+    Enabled = True
+    Delay = 20
+  }
+  { TextLabelJugadasNegro TextLabel
+    MoveScaled(23,6,14,2)
+    Font = Font["DejaVu Sans,-2"]
+    ToolTip = ("tablero analizados...")
+    Alignment = Align.Center
+  }
+  { TextLabelJugadasBlanco TextLabel
+    MoveScaled(69,6,13,2)
+    Font = Font["DejaVu Sans,-2"]
+    ToolTip = ("tablero analizados...")
+    Alignment = Align.Center
+  }
+  { RadioButtonMostrar CheckBox
+    MoveScaled(31,61,39,3)
+    Font = Font["-3"]
+    Text = ("Mostrar posibles movimientos de la ficha elegida")
+    Value = CheckBox.True
+  }
+  { ToolButtonAtras ToolButton
+    MoveScaled(85,56,4,4)
+    ToolTip = ("Retroceder una jugada")
+    Picture = Picture["icon:/16/left"]
+    Border = True
+  }
+  { ToolButtonInicio ToolButton
+    MoveScaled(81,56,4,4)
+    ToolTip = ("Ir al principio del juego")
+    Picture = Picture["icon:/16/first"]
+    Border = True
+  }
+  { ToolButtonInicioAdelante ToolButton
+    MoveScaled(90,56,4,4)
+    ToolTip = ("Siguiente jugada")
+    Picture = Picture["icon:/16/right"]
+    Border = True
+  }
+  { ToolButtonSalir ToolButton
+    MoveScaled(76,63,23,4)
+    Text = ("Salir  de la aplicacion")
+    Picture = Picture["icon:/16/quit"]
+    Border = True
+  }
+  { Label1 Label
+    MoveScaled(74,23,26,4)
+    Font = Font["Tlwg Typo,Bold,Italic,Underline"]
+    Text = ("Jugadas Realizadas")
+    Alignment = Align.Center
+  }
+  { NuevoJuego ToolButton
+    MoveScaled(0,18,15,4)
+    ToolTip = ("jugar una nueva partida")
+    Text = ("Jugar")
+    Picture = Picture["icon:/16/play"]
+    Border = True
+  }
+  { ToolButtonGuardarPartida ToolButton
+    MoveScaled(0,4,14,4)
+    ToolTip = ("guarda partida actual en el disco duro")
+    Text = ("Guardar")
+    Picture = Picture["icon:/16/save"]
+    Border = True
+  }
+  { ToolButtonPartidaAnterior ToolButton
+    MoveScaled(0,0,14,4)
+    ToolTip = ("cargar partida anteriormente guardada")
+    Text = ("Abrir")
+    Picture = Picture["icon:/16/open"]
+    Border = True
+  }
+  { ToolButtonConfigurar ToolButton
+    MoveScaled(0,8,14,4)
+    ToolTip = ("configurar: colores, piezas, inteligencia")
+    Text = ("Configurar")
+    Picture = Picture["icon:/16/options"]
+    Border = True
+  }
+  { ToolButtonFinJugar ToolButton
+    MoveScaled(0,22,15,4)
+    ToolTip = ("Finalizar partida actual")
+    Text = ("Parar")
+    Picture = Picture["icon:/16/pause"]
+    Border = True
+  }
+  { ToolButton1 ToolButton
+    MoveScaled(0,29,15,4)
+    ToolTip = ("informacion sobre la aplicación")
+    Text = ("Acerca de..")
+    Picture = Picture["icon:/16/help"]
+    Border = True
+  }
+  { ToolButton2 ToolButton
+    MoveScaled(0,37,14,4)
+    ToolTip = ("¿como jugar a las damas inglesas?")
+    Text = ("web")
+    Picture = Picture["icon:/16/internet"]
+    Border = True
+  }
+}

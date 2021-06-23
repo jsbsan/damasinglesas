@@ -1,0 +1,266 @@
+' Gambas module file
+
+Public numeroprocesos As Integer
+Public solucionCPU1 As ClassRespuesta
+Public solucioncpu2 As ClassRespuesta
+'' *****************************
+'' otra forma de implementarlo....
+'' url: http://code.google.com/p/intart/source/browse/trunk/juegos/base/_AgenteHeuristico.java?r=35
+'' *****************************
+
+Public Function MultiMinimax(board As Classboard, side As Integer, Depth As Integer, DepthMax As Integer, Evaluator As Integer, Optional superusuario As Boolean) As ClassRespuesta
+
+  Dim jugadatemp As ClassMoveList
+  Dim contenido As String
+  Dim a As Integer
+  Dim solucion As ClassRespuesta
+  Dim movimientoArray As New ClassMovimiento[]
+  Dim movelistArray As New ClassMoveListArray
+
+  Dim movelistArrayCPU1 As New ClassMoveListArray
+  Dim movelistArrayCPU2 As New ClassMoveListArray
+  Dim comando As String
+
+  Dim proceso1 As Process
+
+  '  Dim movimi As ClassMovimiento
+  Dim score As Single
+  Dim bestscore As Single
+  '  Dim nextmini As ClassRespuesta
+  Dim boardtemp As New Classboard(8)
+
+  Dim bestmovelistArray As New ClassMovelistArray
+  Dim prioritario As String 'prioridad de proceso cuando es sudo
+
+  movelistArray = ModuloCalculos.GenerateMoveList(board, side)
+
+  'evaluar si solo existe en el tablero actual una sola jugada a ejecutar...
+  If movelistArray.lista.count = 1 And depth = 0 Then
+    'solo un movimiento posible...
+    boardtemp = ModuloCalculos.MakeMove(board, movelistArray.lista[0], side)
+    solucion = New ClassRespuesta(ModuloCalculos.evaluateBoard(boardtemp, side, evaluator), movelistArray.lista[0].movimiento)
+    Return solucion
+  Endif
+
+  If movelistArray.lista.count = 0 Then
+    'lista vacia
+    solucion = New ClassRespuesta(ModuloCalculos.evaluateBoard(board, side, evaluator), Null)
+    Return solucion
+  Else
+    bestscore = -999999
+    'Ejemplo usando 2 procesos (para ordenador con 2 nucleos)
+    numeroprocesos = 2
+
+    'dividir en 2 lotes (por ser multiprocesador 2) las jugadas posibles...
+    For a = 0 To movelistArray.lista.Max
+      If (a Mod 2) = 0 Then
+        'es par..
+        movelistArrayCPU1.lista.Add(movelistArray.lista[a])
+      Else
+        movelistArrayCPU2.lista.Add(movelistArray.lista[a])
+      Endif
+    Next
+    'crear el archivo para cada proceso y un proceso...
+
+    contenido = contenidoPartida(board, side, Depth, DepthMax, Evaluator, movelistArrayCPU1)
+    File.Save("/tmp/contenido1.txt", contenido)
+
+    ' If superusuario = True Then prioritario = "nice -n -19 "
+
+    comando = "/tmp/" & prioritario & "calculoDI.gambas /tmp/contenido1.txt" 'lo ejecuto en la carpeta temporal, para que se borre cuando se apague el ordenador
+    proceso1 = Shell comando For Read As "NumeroCPU1"
+
+    contenido = contenidoPartida(board, side, Depth, DepthMax, Evaluator, movelistArrayCPU2)
+    File.Save("/tmp/contenido2.txt", contenido)
+    comando = "/tmp/" & prioritario & "calculoDI.gambas /tmp/contenido2.txt" 'lo ejecuto en la carpeta temporal, para que se borre cuando se apague el ordenador
+    proceso1 = Shell comando For Read As "NumeroCPU2"
+
+    '  espero mientras no se haya obtenido solucion....
+    'inicialmente el numeroprocesos=2
+    While (numeroprocesos > 0)
+      'espero un pequeño periodo de tiempo, a ver si se ha recibido respuestas de los dos procesos
+      'cada proceso cada vez que responde, disminuye en una unidad el valor de "numeroprocesos"
+      Wait 1
+    Wend
+
+    'se han recibido la informacion de los dos procesos...
+    'comparo la mejor jugada del proceso 1 y del proceso 2, devolviendo la mejor...
+
+    'fin del primer acto... :)
+    bestscore = -999999
+    '******************************************
+    'lo hago para la primera jugada...
+    '******************************************
+    If solucionCPU1.valor = bestscore Then
+      'la añado a la lista de mejores...
+      jugadatemp = New ClassMoveList
+      jugadatemp.movimiento = solucionCPU1.mov
+      bestmovelistArray.lista.Add(jugadatemp)
+
+    Else
+
+      If solucionCPU1.valor > bestscore Then
+        jugadatemp = New ClassMoveList
+        jugadatemp.movimiento = solucionCPU1.mov
+
+        bestmovelistArray.lista.Clear()
+        bestmovelistArray.lista.add(jugadatemp, 0)
+        bestscore = solucionCPU1.valor
+      Endif
+
+    Endif
+    '******************************************
+    'lo hago para la segunda jugada...
+    '******************************************
+    If solucionCPU2.valor = bestscore Then
+      'la añado a la lista de mejores...
+      jugadatemp = New ClassMoveList
+      jugadatemp.movimiento = solucionCPU2.mov
+      bestmovelistArray.lista.Add(jugadatemp)
+
+    Else
+
+      If solucionCPU2.valor > bestscore Then
+        jugadatemp = New ClassMoveList
+        jugadatemp.movimiento = solucionCPU2.mov
+
+        bestmovelistArray.lista.Clear()
+        bestmovelistArray.lista.add(jugadatemp, 0)
+        bestscore = solucionCPU2.valor
+      Endif
+
+    Endif
+
+    movimientoArray = bestmovelistArray.lista[Int(Rnd(0, bestmovelistArray.lista.count))].movimiento
+
+    solucion = New ClassRespuesta(bestscore, movimientoArray)
+    Return solucion
+  Endif
+
+End
+
+Public Sub NumeroCPU1_Read()
+
+  Dim sLine As String
+  Dim sCad As String[]
+  Dim vx As Single
+
+  Read #Last, sLine, -50
+  sLine = Trim(sLine)
+
+  If Val(sline) = 1 Then
+    'todo ha ido correptamente
+    'ha creado el archivo con la solucion optima
+    'lo tengo que leer para obtener la jugada y la puntuacion...
+    solucionCPU1 = leesolucion("/tmp/solucion1.txt")
+    Wait 0.1 'espero un poco para que de tiempo a la lectura y recibir la solucion...
+    numeroprocesos -= 1 'disminuyo el numero de procesos activos el bucle while pueda salir...
+  Else
+    Print sline
+  Endif
+
+End
+
+Public Sub NumeroCPU2_Read()
+
+  Dim sLine As String
+  Dim sCad As String[]
+  Dim vx As Single
+
+  Read #Last, sLine, -50
+  sLine = Trim(sLine)
+
+  If Val(sline) = 1 Then
+    'todo ha ido correptamente
+    'ha creado el archivo con la solucion optima
+    'lo tengo que leer para obtener la jugada y la puntuacion...
+    solucionCPU2 = leesolucion("/tmp/solucion2.txt")
+    Wait 0.1 'espero un poco para que de tiempo a la lectura y recibir la solucion...
+    numeroprocesos -= 1
+  Endif
+
+End
+
+Private Function leesolucion(fichero As String) As ClassRespuesta
+
+  Dim cadena As New String[]
+  Dim res As New ClassRespuesta(0, Null)
+
+  cadena = Split(File.Load(fichero), "\n")
+  'el primer dato contiene el valor de la jugada
+  res.valor = cadena[0]
+  'el resto contiene el movimiento
+  res.mov = convierteMovimientos(cadena[1])
+  Return res
+
+End
+
+'contenido de partida: toda la informacion del tablero, nivel, evaluacion, profundidad y cpu
+Private Function contenidoPartida(board As Classboard, side As Integer, Depth As Integer, DepthMax As Integer, Evaluator As Integer, movelistArrayCPU As Classmovelistarray) As String
+
+  Dim cadena As String
+
+  cadena = "turno\n"
+  cadena &= Str$(side) & "\n"
+  cadena &= "profundiddad actual\n"
+  cadena &= Str$(depth) & "\n"
+  cadena &= "profundiddad maxima\n"
+  cadena &= Str$(depthmax) & "\n"
+  cadena &= "funcion evaluadora\n"
+  cadena &= Str$(Evaluator) & "\n"
+  cadena &= board.escribe() & "\n"
+  cadena &= "Jugadas\n"
+  cadena &= Str$(movelistArrayCPU.lista.count) & "\n"
+  cadena &= movelistArrayCPU.escribe() & "\n"
+
+  Return cadena
+
+End
+
+'esta funcion devuelve un array de movimientos
+Private Function convierteMovimientos(cadena As String) As ClassMovimiento[]
+
+  'trocear la cadena en  "\n"
+  'trocear la jugada en "|", la primera contiene el numero de jugada... (no vale para nada)
+  'troce el movimeinto en "a"
+  'elimina "(" y ")"
+  'trocea en ,
+
+  Dim listaMovimiento As New ClassMovimiento[]
+  Dim a As Integer, b As Integer, c As Integer
+  Dim jugada As New String[]
+  Dim movimientojugada As New String[]
+  Dim celda As New String[]
+  Dim posi As New String[]
+  Dim movimientotemp As ClassMovimiento
+  'elimino todos los ( y )
+  cadena = Replace(cadena, "(", "")
+  cadena = Replace(cadena, ")", "")
+
+  jugada = Split(cadena, "\n")
+
+  For a = 0 To jugada.count - 1
+    movimientojugada = Split(jugada[a], "|")
+    For b = 1 To movimientojugada.count - 1 'salto el 0 ya que contiene el numero de jugada...
+      celda = Split(movimientojugada[b], "a")
+      movimientotemp = New ClassMovimiento(0, 0, 0, 0)
+      For c = 0 To celda.count - 1
+        posi = Split(celda[c], ",")
+
+        If c = 0 Then
+          movimientotemp.x0 = Val(posi[0])
+          movimientotemp.y0 = Val(posi[1])
+        Else
+          movimientotemp.x1 = Val(posi[0])
+          movimientotemp.y1 = Val(posi[1])
+
+        Endif
+      Next
+      'añado el movimiento al array de movimientos
+      listaMovimiento.Add(movimientotemp)
+    Next
+
+  Next
+  Return listaMovimiento
+
+End

@@ -1,0 +1,48 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,73,25)
+  Icon = Picture["reina_blanco.png"]
+  Resizable = False
+  { Label1 Label
+    MoveScaled(7,3,11,4)
+    Text = ("Jugador:")
+  }
+  { Label2 Label
+    MoveScaled(7,12,11,4)
+    Text = ("Jugador:")
+  }
+  { PictureBox3 PictureBox
+    MoveScaled(2,2,5,6)
+    Picture = Picture["peon_blanco.png"]
+  }
+  { PictureBox4 PictureBox
+    MoveScaled(2,11,5,6)
+    Picture = Picture["peon_negro.png"]
+  }
+  { ComboBoxWhite ComboBox
+    MoveScaled(16,3,25,4)
+    ReadOnly = True
+    List = [("Humano"), ("IA Fácil"), ("IA Medio"), ("IA Difícil"), ("Negamax Dificil "), ("AlphaBeta (en pruebas)"), ("AlphaBeta MultiProceso (en pruebas)"), ("Minimax con formula evaluacion 12 (5)")]
+    Text = ("Humano")
+  }
+  { ButtonOK Button
+    MoveScaled(33,20,17,3)
+    Text = ("Aceptar")
+  }
+  { ComboBoxBlack ComboBox
+    MoveScaled(16,12,25,4)
+    ReadOnly = True
+    List = [("Humano"), ("IA Fácil"), ("IA Medio"), ("IA Difícil"), ("Negamax Dificil "), ("AlphaBeta (en pruebas)"), ("AlphaBeta MultiProceso (en pruebas)"), ("Minimax con formula evaluacion 12 (5)")]
+    Text = ("Humano")
+  }
+  { RadioButtonIniciaPartidaBlanco RadioButton
+    MoveScaled(46,3,22,4)
+    Text = ("Inicia Partida")
+  }
+  { RadioButtonIniciaPartidaNegro RadioButton
+    MoveScaled(46,12,22,4)
+    Text = ("Inicia Partida")
+    Value = True
+  }
+}

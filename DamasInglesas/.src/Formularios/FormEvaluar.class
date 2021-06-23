@@ -1,0 +1,47 @@
+' Gambas class file
+
+Private evaluate As Integer
+Private side As Integer
+
+Public Sub ToolButton1_Click()
+
+  Dim valor As Single
+  If evaluate = 5 Then evaluate = 12
+  valor = ModuloCalculos.evaluateBoard(FMain.tablero, side, Evaluate)
+  Print "Valoracion de la jugada: "; valor
+  ValueBox1.value = valor
+
+End
+
+Public Sub SpinBox1_Change()
+
+  evaluate = SpinBox1.Value
+
+End
+
+Public Sub RadioButtonBlanco_Click()
+
+  If RadioButtonBlanco.Value = True Then
+    side = Constantes.black
+  Else
+    side = Constantes.white
+  Endif
+
+End
+
+Public Sub RadioButtonNegro_Click()
+
+  If RadioButtonNegro.Value = False Then
+    side = Constantes.black
+  Else
+    side = Constantes.white
+  Endif
+
+End
+
+Public Sub Form_Open()
+
+  side = Constantes.black
+  evaluate = SpinBox1.Value
+
+End

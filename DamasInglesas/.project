@@ -1,0 +1,26 @@
+# Gambas Project File 3.0
+# Compiled with Gambas 3.5.4
+Title=DamasInglesas
+Startup=FMain
+Icon=tablero-damas.png
+Version=0.0.27
+Component=gb.image
+Component=gb.gui
+Component=gb.form
+Component=gb.desktop
+Description="Juego de damas inglesas\nCorregido Negamax. Cambio en botones puestos como barra\nEstoy en arreglar el  Alfa-beta poda"
+TabSize=2
+Translate=1
+Language=es
+ExecPath=/home/uno/DamasInglesas.gambas
+Maintainer=Julio Sanchez Berro
+Address=jusabejusabe@gmail.com
+Url=jsbsan.blogspot.com
+License=General Public License
+PackageName=damasinglesas-0.0.14
+CreateEachDirectory=1
+Packager=1
+Systems=ubuntu
+Menus=ubuntu:"Games/Board"
+Categories=ubuntu:"BoardGame"
+Groups=ubuntu:"games"

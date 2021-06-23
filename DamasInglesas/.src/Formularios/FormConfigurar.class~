@@ -1,0 +1,193 @@
+' Gambas class file
+
+Public Sub Form_Open()
+
+  constantes.squares = 8
+  Me.Caption = "Configuración..."
+  ToggleButtonBlanca.background = Constantes.ColorDarkSquare
+  ToggleButtonNegra.background = Constantes.ColorLightSquare
+  ComboBoxWhite.index = constantes.PlayerStrategy[constantes.white]
+  ComboBoxBlack.index = constantes.PlayerStrategy[constantes.black]
+  CheckBoxVerLetrasYNumeros.value = constantes.letrasynumero
+  Me.center
+
+End
+
+Public Sub ToggleButtonBlanca_Click()
+
+  Dialog.Color = ToggleButtonBlanca.background
+  If Dialog.SelectColor() Then Return
+  ToggleButtonBlanca.background = Dialog.Color
+  Constantes.ColorDarkSquare = Dialog.Color
+
+End
+
+Public Sub ButtonOK_Click()
+
+  Me.Close
+
+End
+
+Public Sub ToggleButtonNegra_Click()
+
+  Dialog.Color = ToggleButtonNegra.background
+  If Dialog.SelectColor() Then Return
+  ToggleButtonNegra.background = Dialog.Color
+  Constantes.ColorLightSquare = Dialog.Color
+
+End
+
+Public Sub Label2_MouseDown()
+
+End
+
+' Public Sub PictureBoxBlancaDama_MouseDown()
+'
+'   Select PictureBoxBlancaDama.tag
+'     Case "rb"
+'
+'       PictureBoxBlancaDama.Picture = Picture["n2_blanco.png"]
+'       PictureBoxBlancaDama.tag = "n2"
+'       Constantes.dibujoReina = "n2"
+'
+'     Case "n2"
+'       PictureBoxBlancaDama.Picture = Picture["reina_blanco.png"]
+'       PictureBoxBlancaDama.tag = "n3"
+'       Constantes.dibujoReina = "reina"
+'
+'     Case "n3"
+'       PictureBoxBlancaDama.Picture = Picture["e2_blanco.png"]
+'       PictureBoxBlancaDama.tag = "n4"
+'       Constantes.dibujoReina = "e2"
+'     Case "n4"
+'       PictureBoxBlancaDama.Picture = Picture["u2_blanco.png"]
+'       PictureBoxBlancaDama.tag = "n5"
+'       Constantes.dibujoReina = "u2"
+'
+'     Case "n5"
+'       PictureBoxBlancaDama.Picture = Picture["s2_blanco.png"]
+'       PictureBoxBlancaDama.tag = "s2"
+'       Constantes.dibujoReina = "rb"
+'
+'   End Select
+'
+' End
+
+' Public Sub PictureBoxNegraDama_MouseDown()
+'
+'   Select PictureBoxNegraDama.tag
+'     Case "rn"
+'       PictureBoxNegraDama.Picture = Picture["n2_negro.png"]
+'       PictureBoxNegraDama.tag = "n3"
+'       Constantes.dibujoReina = "n2"
+'
+'     Case "n2"
+'
+'       PictureBoxNegraDama.Picture = Picture["reina_negro.png"]
+'       PictureBoxNegraDama.tag = "rn"
+'       Constantes.dibujoReina = "reina"
+'
+'     Case "n3"
+'       PictureBoxNegraDama.Picture = Picture["e2_negro.png"]
+'       PictureBoxNegraDama.tag = "n4"
+'       Constantes.dibujoReina = "e2"
+'     Case "n4"
+'       PictureBoxNegraDama.Picture = Picture["u2_negro.png"]
+'       PictureBoxNegraDama.tag = "n2"
+'       Constantes.dibujoReina = "u2"
+'   End Select
+'
+' End
+
+Public Sub PictureBoxBlancaPeon_MouseDown()
+
+  Select PictureBoxBlancaPeon.tag
+
+    Case "n1"
+      PictureBoxBlancaPeon.Picture = Picture["peon_blanco.png"]
+      PictureBoxBlancaPeon.tag = "pb"
+      Constantes.dibujoPeon = "peon"
+      Constantes.dibujoReina = "reina"
+
+    Case "pb"
+      PictureBoxBlancaPeon.Picture = Picture["n1_blanco.png"]
+      PictureBoxBlancaPeon.tag = "n3"
+      Constantes.dibujoPeon = "n1"
+      Constantes.dibujoReina = "n2"
+    Case "n3"
+      PictureBoxBlancaPeon.Picture = Picture["e1_blanco.png"]
+      PictureBoxBlancaPeon.tag = "n4"
+      Constantes.dibujoReina = "e1"
+      Constantes.dibujoPeon = "e2"
+    Case "n4"
+      PictureBoxBlancaPeon.Picture = Picture["u1_blanco.png"]
+      PictureBoxBlancaPeon.tag = "n5"
+      Constantes.dibujoReina = "u1"
+      Constantes.dibujoPeon = "u2"
+    Case "n5"
+      PictureBoxBlancaPeon.Picture = Picture["s1_blanco.png"]
+      PictureBoxBlancaPeon.tag = "n1"
+      Constantes.dibujoPeon = "s1"
+      Constantes.dibujoReina = "s2"
+  End Select
+
+End
+
+' Public Sub PictureBoxNegraPeon_mousedown()
+'
+'   Select PictureBoxNegraPeon.tag
+'     Case "pn"
+'       PictureBoxNegraPeon.Picture = Picture["n1_negro.png"]
+'       PictureBoxNegraPeon.tag = "n2"
+'       Constantes.dibujoPeon = "n1"
+'
+'     Case "n1"
+'       PictureBoxNegraPeon.Picture = Picture["peon_negro.png"]
+'       PictureBoxNegraPeon.tag = "pn"
+'       constantes.dibujoPeon = "peon"
+'
+'     Case "n2"
+'       PictureBoxNegraPeon.Picture = Picture["e1_negro.png"]
+'       PictureBoxNegraPeon.tag = "n3"
+'       constantes.dibujoPeon = "e1"
+'
+'     Case "n3"
+'       PictureBoxNegraPeon.Picture = Picture["u1_negro.png"]
+'       PictureBoxNegraPeon.tag = "n1"
+'       constantes.dibujoPeon = "u1"
+'
+'   End Select
+'
+' End
+'
+Public Sub RadioButton8_Click()
+
+  constantes.squares = 8
+  Constantes.initialrows = 3
+
+End
+
+Public Sub RadioButton10_Click()
+
+  constantes.squares = 10
+  Constantes.initialrows = 4
+
+End
+
+Public Sub ComboBoxBlack_Click()
+
+  constantes.PlayerStrategy[constantes.black] = ComboBoxBlack.index
+
+End
+
+Public Sub ComboBoxWhite_Click()
+
+  constantes.PlayerStrategy[constantes.white] = ComboBoxWhite.index
+
+End
+
+Public Sub CheckBoxVerLetrasYNumeros_Click()
+
+  constantes.letrasynumero = CheckBoxVerLetrasYNumeros.value
+
+End

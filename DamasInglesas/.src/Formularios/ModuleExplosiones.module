@@ -1,0 +1,31 @@
+' Gambas module file
+
+'-----------------------------------dividir una imagen en un array de pictures-------------------------------
+
+Public Function divideImagen(imageninicial As String, SpritesX As Integer, SpritesY As Integer) As Picture[]
+
+  Dim a, b As Integer
+
+  Dim hImagentemp As New Picture
+  Dim hImagenInicial As New Picture
+  Dim harray_imagenes As New Picture[]
+  Dim porcionX As Single
+  Dim porcionY As Single
+
+  hImagenInicial = Picture[imageninicial]
+  porcionX = (hImagenInicial.w) / SpritesX
+  porcionY = (hImagenInicial.h) / SpritesY
+
+  '    Print porcionX, porcionY
+  For b = 0 To Spritesy - 1
+    For a = 0 To Spritesx - 1
+      hImagentemp = hImagenInicial.Copy(a * porcionX, b * porciony, porcionX, porciony)
+      harray_imagenes.Add(hImagentemp)
+
+    Next
+
+  Next
+
+  Return harray_imagenes
+
+End

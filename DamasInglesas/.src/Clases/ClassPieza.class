@@ -1,0 +1,48 @@
+' Gambas class file
+
+Property TipoPieza As Short ''Tipo de TipoPieza: (-2,-1,1,2). limito de -32000 a +32000,posibles tipos de TipoPiezas
+Private hTipoPieza As Short
+
+Property pos As ClassPosicion ''guardo el valor de la situacion X,Y de la TipoPieza  (1...8,1...8)
+Private hpos As New ClassPosicion
+
+Private Function pos_Read() As ClassPosicion
+
+  Return hpos
+
+End
+
+Private Sub pos_Write(Value As ClassPosicion)
+
+  hpos = value
+
+End
+
+Private Function TipoPieza_Read() As Short
+
+  Return hTipoPieza
+
+End
+
+Private Sub TipoPieza_Write(Value As Short)
+
+  hTipoPieza = value
+
+End
+
+Public Sub _new(valorTipoPieza As Short, coordX As Byte, coordY As Byte)
+
+  hTipoPieza = valorTipoPieza
+  hpos.x = coordX
+  hpos.y = coordY
+
+End
+
+Public Function escribe() As String
+
+  Dim cadena As String
+
+  cadena = "TipoPieza: " & Str$(hTipoPieza) & " CoorX= " & Str$(hpos.x) & " CoorY= " & Str$(hpos.Y)
+  Return cadena
+
+End

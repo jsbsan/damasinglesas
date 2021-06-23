@@ -1,0 +1,35 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,38,30)
+  Icon = Picture["reina_blanco.png"]
+  Resizable = False
+  { PictureBox1 PictureBox
+    MoveScaled(31,3,6,6)
+    Picture = Picture["reina_blanco.png"]
+  }
+  { TextLabel1 TextLabel
+    MoveScaled(1,1,36,24)
+    Text = ("<h2>Damas Inglesas</h2><br>\nProgramado en Gambas3<br>\nRealizado por Julio Sanchez Berro<br>\n<br>\nBasado en el programa realizado en SmallBasic<br>\npor KC Goldberg e Hijos<br>\n")
+    Alignment = Align.Center
+    Border = Border.Raised
+  }
+  { PictureBox2 PictureBox
+    MoveScaled(1,2,7,8)
+    Picture = Picture["gambas3.png"]
+    Stretch = True
+  }
+  { ButtonAceptar Button
+    MoveScaled(12,27,13,3)
+    Text = ("Aceptar")
+  }
+  { Label1 Label
+    MoveScaled(2,23,35,3)
+    Font = Font["Underline,-1"]
+    Foreground = &H0000FF&
+    Expand = True
+    AutoResize = True
+    Text = ("http://damasinglesas.blogspot.com.es/")
+    Alignment = Align.Right
+  }
+}
