@@ -192,10 +192,10 @@ Public Sub RelojIA()
     '********************************************************
     profundidad = 1
 
-    If tablero.piezasDisponibles(- turno) < 8 Then
+    If tablero.piezasDisponibles(-turno) < 8 Then
       profundidad = 2
     Endif
-    If tablero.piezasDisponibles(- turno) < 6 Then
+    If tablero.piezasDisponibles(-turno) < 6 Then
       profundidad = 3
     Endif
     'modificar funcion evaluacion para finales...
@@ -236,7 +236,7 @@ Public Sub RelojIA()
         constantes.jugadoractual = turno
         'corregido 5/11/2012
 
-        solucion = ModuloCalculos.negamax(tablero, turno, 0, profundidad + 3, - 999999, +999999, 1)
+        solucion = ModuloCalculos.negamax(tablero, turno, 0, profundidad + 3, -999999, +999999, 1)
         jugada.movimiento = solucion.mov
       Case 5
         'alfabeta
@@ -268,8 +268,8 @@ Public Sub RelojIA()
     'para presentar como va la partida en el slider...
     If solucion.valor > 2000 Then solucion.valor = 1100
     If solucion.valor < -2000 Then solucion.valor = -1100
-    Slider1.Value = If(turno = 1, solucion.valor, - solucion.valor)
-    Slider1.Tooltip = "valoracion del tablero: " & Str$(If(turno = 1, solucion.valor, - solucion.valor))
+    Slider1.Value = If(turno = 1, solucion.valor, -solucion.valor)
+    Slider1.Tooltip = "valoracion del tablero: " & Str$(If(turno = 1, solucion.valor, -solucion.valor))
     If jugada.movimiento <> Null Then
       escribeMovimientoyCambiaTurno(jugada)
       tablero.displayboard(drawingarea1, jugada.movimiento)
@@ -534,7 +534,7 @@ Public Sub DrawingArea1_MouseDown()
     Else
       If tablero.tablero[x, y] = constantes.blank Then piezaAponer = 1
       If tablero.tablero[x, y] = constantes.black Then piezaAponer = 2
-      If tablero.tablero[x, y] = - constantes.king Then piezaAponer = 3
+      If tablero.tablero[x, y] = -constantes.king Then piezaAponer = 3
       If tablero.tablero[x, y] = constantes.white Then piezaAponer = 4
       If tablero.tablero[x, y] = constantes.king Then piezaAponer = 0
 
@@ -544,7 +544,7 @@ Public Sub DrawingArea1_MouseDown()
       Case 1
         tablero.tablero[x, y] = constantes.black
       Case 2
-        tablero.tablero[x, y] = - constantes.king
+        tablero.tablero[x, y] = -constantes.king
       Case 3
         tablero.tablero[x, y] = constantes.white
       Case 4

@@ -37,8 +37,10 @@ Public Sub _new()
 End
 
 Public Sub Form_Open()
-  'imagen de explosion
 
+  Randomize ' reinicio la semilla de numeros aleatorios (para jugadas con igual puntuacion)
+
+  'imagen de explosion
   Try Copy "calculoDI.gambas" To "/tmp/calculoDI.gambas"
   '  Chmod "/tmp/calculoDI.gambas" To "rwxrwxrwx" 'doy permisos de ejecucion
   Try Copy "explosion.png" To "/tmp/explosion.png"

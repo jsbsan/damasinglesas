@@ -101,6 +101,8 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
   '  Dim fillcolor As Integer
   Dim boxsize As Single
   ''note: hola
+
+  If htamano = 0 Then htamano = 60
   boxsize = area.h / htamano
 
   Draw.Begin(area)
@@ -232,8 +234,8 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
       ' '   Draw.FillRect((listamovimiento[a].x1 - 1) * boxsize, (listamovimiento[a].y1 - 1) * boxsize, boxsize, boxsize, color.cyan)
       ' Draw.Circle((listamovimiento[a].x0 - 0.25) * boxsize, (listamovimiento[a].y0 - 0.25) * boxsize, boxsize * 0.13)
       ' Draw.Circle((listamovimiento[a].x1 - 0.25) * boxsize, (listamovimiento[a].y1 - 0.25) * boxsize, boxsize * 0.13)
-      Draw.Picture(Picture["cuadradoVerde.png"], (listamovimiento[a].x0 - 0.75) * boxsize, (listamovimiento[a].y0 - 0.75) * boxsize)
-      Draw.Picture(Picture["cuadradoVerde.png"], (listamovimiento[a].x1 - 0.75) * boxsize, (listamovimiento[a].y1 - 0.75) * boxsize)
+      Draw.Picture(Picture["cuadradoVerde.png"], (listamovimiento[a].x0 - 0.5) * boxsize, (listamovimiento[a].y0 - 0.5) * boxsize)
+      Draw.Picture(Picture["cuadradoVerde.png"], (listamovimiento[a].x1 - 0.5) * boxsize, (listamovimiento[a].y1 - 0.5) * boxsize)
 
     Next
   Endif

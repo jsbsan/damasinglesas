@@ -22,7 +22,7 @@ Public Sub animacion(area As DrawingArea, tablero As Classboard, listaMovimiento
       nuevaexplosion = New ClassExplosion
       nuevaexplosion.nueva(movimiento.x1, Movimiento.y1, FMain.recorridoExplosion.count)
       FMain.ArrayExplosiones.Add(nuevaexplosion)
-      Exec ["play", "/tmp/explosion.wav"] 'hace ruido de colocar pieza...
+      Try Exec ["play", "/tmp/explosion.wav"] 'hace ruido de colocar pieza...
     Endif
     copiatablero = ModuloCalculos.MakeMove(copiatablero, jugadaUnica, False)
 

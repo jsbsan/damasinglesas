@@ -101,6 +101,8 @@ Public Sub displayboard(area As DrawingArea, Optional listamovimiento As ClassMo
   '  Dim fillcolor As Integer
   Dim boxsize As Single
   ''note: hola
+
+  If htamano = 0 Then htamano = 65
   boxsize = area.h / htamano
 
   Draw.Begin(area)
